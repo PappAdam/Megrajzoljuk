@@ -15,6 +15,7 @@
             <Rectangle Height="27"  Width="100" Canvas.Left="196" Canvas.Top="122" Fill="#FF13798C"/>
             <Rectangle Height="100" Canvas.Left="184" Canvas.Top="137" Width="4" Fill="#FFEB9486"/>
             <Rectangle Height="4" Canvas.Left="184" Canvas.Top="134" Width="12" Fill="#FFEB9486"/>
+            <Button Content="RUN" Canvas.Left="488" Canvas.Top="368" Height="41" Width="124" Background="#FFE9D758" Foreground="#FF2F2235" Click="RUN"/>
         </Canvas>
         <Rectangle Fill="#EB9486"></Rectangle>
     </Grid>

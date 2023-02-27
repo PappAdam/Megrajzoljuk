@@ -15,15 +15,17 @@ using System.Windows.Shapes;
 
 namespace Rajzi
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            List<Element> elements = new List<Element>();
+        }
+
+        private void RUN(object sender, RoutedEventArgs e)
+        {
+            RunWindow runWindow = new RunWindow();
+            runWindow.Show();
         }
     }
 }
