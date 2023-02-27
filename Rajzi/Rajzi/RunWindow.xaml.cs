@@ -10,26 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace Rajzi
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for RunWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class RunWindow : Window
     {
-        public MainWindow()
+        public RunWindow()
         {
             InitializeComponent();
-            List<Element> elements = new List<Element>();
-        }
-
-        private void RunDraw(object sender, RoutedEventArgs e)
-        {
-            RunWindow newWindow = new RunWindow();
-            newWindow.Show();
         }
     }
 }
