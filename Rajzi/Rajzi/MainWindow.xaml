@@ -17,5 +17,6 @@
             <Rectangle Height="4" Canvas.Left="184" Canvas.Top="134" Width="12" Fill="#FFEB9486"/>
         </Canvas>
         <Rectangle Fill="#EB9486"></Rectangle>
+        <Button Grid.Column="1" Content="RUN" HorizontalAlignment="Left" Margin="500,382,0,0" VerticalAlignment="Top" Height="42" Width="130" Background="#FFE9D758" Foreground="#FF252323" Click="RunDraw"/>
     </Grid>
 </Window>
