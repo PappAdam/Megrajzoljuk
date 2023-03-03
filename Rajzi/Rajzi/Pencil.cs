@@ -4,21 +4,27 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Rajzi
 {
-    struct Vec2 {
-        internal int x;
-        internal int y;
+    struct Vec3
+    {
+        internal double x;
+        internal double y;
     }
-
     internal class Pencil
     {
-        Vec2 position = new Vec2 { x = 0, y = 0};
+        Vec3 pixelPosition = new Vec3 { x = 0, y = 0 };
+        public int size { get; set; } = 1;
+        public Color color { get; set; } = Colors.White;
 
-        Pencil()
+        public Pencil(double x, double y)
         {
-
+            pixelPosition.x = x;
+            pixelPosition.y = y;
         }
     }
 }

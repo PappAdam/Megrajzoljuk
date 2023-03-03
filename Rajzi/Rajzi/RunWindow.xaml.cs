@@ -11,6 +11,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 
@@ -21,30 +22,42 @@ namespace Rajzi
     /// </summary>
     public partial class RunWindow : Window
     {
+        List<Pencil> pixels = new List<Pencil>();
         public RunWindow()
         {
             InitializeComponent();
             TextBox textBox = new TextBox { Text = "Test" };
-            Canvas.Children.Add(textBox);
+            //Canvas.Children.Add(textBox);
+            for (int i = 0; i < 100; i++)
+            {
+                AddPixel(200, 25 + i);
+                AddPixel(300, 25 + i);
+                AddPixel(200 + i, 25);
+                AddPixel(200 + i, 125);
+            }
         }
+            private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
+            {
+                var matTrans = grid2.RenderTransform as MatrixTransform;
+                var pos1 = e.GetPosition(grid1);
 
-        private void MouseScroll(object sender, MouseWheelEventArgs e)
+                var scale = e.Delta > 0 ? 1.1 : 1 / 1.1;
+
+                var mat = matTrans.Matrix;
+                mat.ScaleAt(scale, scale, pos1.X, pos1.Y);
+                matTrans.Matrix = mat;
+                e.Handled = true;
+            }
+        private void AddPixel(double x, double y)
         {
-            Point mousePosition = Mouse.GetPosition(Screen);
-            Teszt.Content = mousePosition.X - Screen.Width / 5;
-            Teszt2.Content = mousePosition.Y;
-            ScaleTransform.CenterX = mousePosition.X - Screen.Width / 5;
-            ScaleTransform.CenterY = mousePosition.Y;
-            if (e.Delta > 0)
-            {
-                ScaleTransform.ScaleX *= 1.1;
-                ScaleTransform.ScaleY *= 1.1;
-            }
-            else
-            {
-                ScaleTransform.ScaleX /= 1.1;
-                ScaleTransform.ScaleY /= 1.1;
-            }
+            pixels.Insert(0, new Pencil(x, y));
+            Rectangle rec = new Rectangle();
+            rec.Width = pixels[0].size;
+            rec.Height = pixels[0].size;
+            rec.Fill = new SolidColorBrush(pixels[0].color);
+            Canvas.Children.Add(rec);
+            Canvas.SetLeft(rec, x);
+            Canvas.SetTop(rec, y);
         }
     }
 }
