@@ -11,11 +11,16 @@
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="MainCanvas" Grid.Column="1">
-            <Rectangle Height="27"  Width="100" Canvas.Left="196" Canvas.Top="122" Fill="#FF13798C"/>
-            <Rectangle Height="100" Canvas.Left="184" Canvas.Top="137" Width="4" Fill="#FFEB9486"/>
-            <Rectangle Height="4" Canvas.Left="184" Canvas.Top="134" Width="12" Fill="#FFEB9486"/>
+         <Label Name="Debug" Content="Label" Canvas.Left="532" Canvas.Top="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="108" Background="#FFDA9696" Foreground="#FF250606" Grid.Column="1" Margin="522,10,0,0"/>
+        <Canvas x:Name="MainCanvas" Grid.Column="1" >
+            <StackPanel Name="MainBlockContainer" Orientation="Vertical" Canvas.Left="62" Canvas.Top="24" HorizontalAlignment="Left" VerticalAlignment="Center">
+                <Rectangle Height="27"  Width="166" Fill="#FF13798C" MouseLeftButtonDown="OnStackPanelClick"/>
+            </StackPanel>
         </Canvas>
-        <Rectangle Fill="#EB9486"></Rectangle>
+        <StackPanel Grid.Column="0" Background="#EB9486">
+            <Rectangle Name="Function" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Fill="#dde" MouseLeftButtonDown="OnBlockDoubleClick"/>
+            <Rectangle Name="Container" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Fill="#af1" MouseLeftButtonDown="OnBlockDoubleClick"/>
+            <Rectangle Name="Variable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Fill="#f1b" MouseLeftButtonDown="OnBlockDoubleClick"/>
+        </StackPanel>
     </Grid>
 </Window>

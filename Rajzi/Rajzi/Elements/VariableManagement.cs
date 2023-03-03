@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 
 namespace Rajzi.Elements
 {
-    internal class Variable
+    enum VariableType
     {
-        internal Variable()
-        {
+        RGB,
+        Number,
+        Bool,
+        String,
+    }
 
+    public class Variable
+    {
+        double[] value;
+        public Variable(double[] value)
+        {
+            this.value = value;
         }
     }
 }

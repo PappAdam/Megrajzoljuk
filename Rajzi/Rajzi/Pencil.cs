@@ -12,13 +12,13 @@ namespace Rajzi
         internal int y;
     }
 
-    internal class Pencil
+    public class Pencil
     {
         Vec2 position = new Vec2 { x = 0, y = 0};
 
         Pencil()
         {
-
+            
         }
     }
 }
