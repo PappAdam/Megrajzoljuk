@@ -63,6 +63,8 @@ namespace Rajzi
                 AddPixel(x, y);
             }
 
+            AddLine(100, 100);
+            AddLine(0, -100);
 
 
 
@@ -89,6 +91,19 @@ namespace Rajzi
             Canvas.Children.Add(rec);
             Canvas.SetLeft(rec, x - pencil.size/2);
             Canvas.SetTop(rec, y - pencil.size / 2);
+        }
+        private void AddLine(double x, double y)
+        {
+            Line line = new Line();
+            line.Stroke = Brushes.Red; // a vonal színe
+            line.StrokeThickness = pencil.size; // a vonal vastagsága
+            line.X1 = pencil.pixellPositionX; // az első pont x koordinátája
+            line.Y1 = pencil.pixelPositionY; // az első pont y koordinátája
+            line.X2 = pencil.pixellPositionX + x; // a második pont x koordinátája
+            line.Y2 = pencil.pixelPositionY + y;
+            pencil.pixellPositionX = pencil.pixellPositionX + x;
+            pencil.pixelPositionY = pencil.pixelPositionY + y;
+            Canvas.Children.Add(line);
         }
     }
 }

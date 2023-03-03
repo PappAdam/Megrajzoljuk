@@ -10,14 +10,10 @@ using System.Windows.Controls;
 
 namespace Rajzi
 {
-    struct Vec2
-    {
-        internal double x;
-        internal double y;
-    }
     internal class Pencil
     {
-        Vec2 pencilPosition = new Vec2 { x = 225, y = 320 };
+        public double pixellPositionX { get; set; } = 225;
+        public double pixelPositionY { get; set; } = 320;
         public double size { get; set; } = 1;
         public Color color { get; set; } = Colors.White;
 
@@ -32,6 +28,12 @@ namespace Rajzi
         public void changeColor(Color color)
         {
             this.color = color;
+        }
+        public void positionChange(double x, double y)
+        {
+            pixellPositionX = x;
+            pixelPositionY = y;
+
         }
     }
 }

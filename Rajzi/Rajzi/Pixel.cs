@@ -7,19 +7,15 @@ using System.Windows.Media;
 
 namespace Rajzi
 {
-    struct Vec3
-    {
-        internal double x;
-        internal double y;
-    }
     internal class Pixel
     {
-        Vec3 pixelPosition = new Vec3 { x = 0, y = 0 };
-
+        public double pixellPositionX { get; set; }
+        public double pixelPositionY { get; set; }
+        
         public Pixel(double x, double y)
         {
-            this.pixelPosition.x = x;
-            this.pixelPosition.y = y;
+            this.pixellPositionX = x;
+            this.pixelPositionY = y;
         }
 
         struct Vec3
