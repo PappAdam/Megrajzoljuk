@@ -22,21 +22,52 @@ namespace Rajzi
     /// </summary>
     public partial class RunWindow : Window
     {
-        List<Pencil> pixels = new List<Pencil>();
+        List<Pixel> pixels = new List<Pixel>();
+        Pencil pencil = new Pencil();
         public RunWindow()
         {
             InitializeComponent();
-            TextBox textBox = new TextBox { Text = "Test" };
-            //Canvas.Children.Add(textBox);
-            for (int i = 0; i < 100; i++)
+
+
+            pencil.changeSize(1);
+            double cx = 300;
+            double cy = 300;
+            double r = 50;
+            for (int i = 0; i <= 360; i++)
             {
-                AddPixel(200, 25 + i);
-                AddPixel(300, 25 + i);
-                AddPixel(200 + i, 25);
-                AddPixel(200 + i, 125);
+                if (i == 180)
+                {
+                    pencil.changeSize(5);
+                }
+                double radians = i * Math.PI / 180;
+                double x = cx + r * Math.Cos(radians);
+                double y = cy + r * Math.Sin(radians);
+                AddPixel(x, y);
+                // x és y értékek használata...
             }
+            pencil.changeSize(10);
+            pencil.changeColor(Colors.Brown);
+            AddPixel(325, 290);
+            AddPixel(275, 290);
+
+            cx = 300;
+            cy = 310;
+            r = 30;
+            pencil.changeSize(4);
+            pencil.changeColor(Colors.Red);
+            for (int i = 0; i <= 180; i++)
+            {
+                double radians = i * Math.PI / 180;
+                double x = cx + r * Math.Cos(radians);
+                double y = cy + r * Math.Sin(radians);
+                AddPixel(x, y);
+            }
+
+
+
+
         }
-            private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
+        private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
             {
                 var matTrans = grid2.RenderTransform as MatrixTransform;
                 var pos1 = e.GetPosition(grid1);
@@ -50,14 +81,14 @@ namespace Rajzi
             }
         private void AddPixel(double x, double y)
         {
-            pixels.Insert(0, new Pencil(x, y));
+            pixels.Insert(0, new Pixel(x, y));
             Rectangle rec = new Rectangle();
-            rec.Width = pixels[0].size;
-            rec.Height = pixels[0].size;
-            rec.Fill = new SolidColorBrush(pixels[0].color);
+            rec.Width = pencil.size;
+            rec.Height = pencil.size;
+            rec.Fill = new SolidColorBrush(pencil.color);
             Canvas.Children.Add(rec);
-            Canvas.SetLeft(rec, x);
-            Canvas.SetTop(rec, y);
+            Canvas.SetLeft(rec, x - pencil.size/2);
+            Canvas.SetTop(rec, y - pencil.size / 2);
         }
     }
 }
