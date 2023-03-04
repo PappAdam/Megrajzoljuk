@@ -13,9 +13,7 @@
         </Grid.ColumnDefinitions>
          <Label Name="Debug" Content="Label" Canvas.Left="532" Canvas.Top="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="108" Background="#FFDA9696" Foreground="#FF250606" Grid.Column="1" Margin="522,10,0,0"/>
         <Canvas x:Name="MainCanvas" Grid.Column="1" >
-            <StackPanel Name="MainBlockContainer" Orientation="Vertical" Canvas.Left="62" Canvas.Top="24" HorizontalAlignment="Left" VerticalAlignment="Center">
-                <Rectangle Height="27"  Width="166" Fill="#FF13798C" MouseLeftButtonDown="OnStackPanelClick"/>
-            </StackPanel>
+
         </Canvas>
         <StackPanel Grid.Column="0" Background="#EB9486">
             <Rectangle Name="Function" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Fill="#dde" MouseLeftButtonDown="OnBlockDoubleClick"/>

@@ -4,18 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Shapes;
 
 namespace Rajzi
 {
-    public abstract class Element 
+    public abstract class Element
     {
-        public Container? parentElement { get; set; } = null;
+        public Container? container { get; set; } = null;
         public Element? prevElement { get; set; } = null;
         public Element? nextElement { get; set; } = null;
 
         public void InsertElementAfter(Element element)
         {
-            element.parentElement = this.parentElement;
+            element.container = this.container;
             element.nextElement = this.nextElement;
             this.nextElement = element;
             if (element.nextElement != null)
@@ -45,7 +49,8 @@ namespace Rajzi
         public Element? firstChild = null;
         public int containedElementCount = 0;
         public bool condition = false;
-        public int depth = 0;
+        public int depth = 1;
+        public StackPanel panel;
 
         public Element this[int index]
         {
@@ -73,13 +78,25 @@ namespace Rajzi
             if (this.firstChild == null)
             {
                 this.firstChild = element;
-                element.parentElement = this;
+                element.container = this;
                 this.containedElementCount++;
             }
             else
             {
                 this[containedElementCount - 1].InsertElementAfter(element);
                 this.containedElementCount++;
+            }
+
+            if (this[containedElementCount-1] is Container)
+            {
+                ((Container)element).panel = new StackPanel();
+                ((Container)element).depth = this.depth + 1;
+                Blocks.CreateBlockWithType(BlockType.Loop, (Container)element);
+                this.panel.Children.Add(((Container)element).panel);
+            }
+            else
+            {
+                Blocks.CreateBlockWithType(BlockType.Action, this);
             }
         }
     }
