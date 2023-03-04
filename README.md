@@ -1,7 +1,7 @@
 # Megrajzoljuk
 - Sractch like programming language
 - For drawing
-- Helps those, who want to get started with programming
+- Help those, who want to get started with programming
 
 # Project
 - https://trello.com/b/dWkDBsoH/project-management
