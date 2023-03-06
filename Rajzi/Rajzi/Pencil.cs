@@ -12,8 +12,8 @@ namespace Rajzi
 {
     internal class Pencil
     {
-        public double pixellPositionX { get; set; } = 225;
-        public double pixelPositionY { get; set; } = 320;
+        public double pixellPositionX { get; set; } = 205;
+        public double pixelPositionY { get; set; } = 310;
         public double size { get; set; } = 1;
         public Color color { get; set; } = Colors.White;
 
@@ -29,7 +29,7 @@ namespace Rajzi
         {
             this.color = color;
         }
-        public void positionChange(double x, double y)
+        public void changePosition(double x, double y)
         {
             pixellPositionX = x;
             pixelPositionY = y;

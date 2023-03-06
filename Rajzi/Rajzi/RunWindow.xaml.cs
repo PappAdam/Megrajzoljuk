@@ -14,60 +14,18 @@ using System.Windows.Media.Imaging;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 using static System.Net.Mime.MediaTypeNames;
+using System.Windows.Media;
 
 namespace Rajzi
 {
-    /// <summary>
-    /// Interaction logic for RunWindow.xaml
-    /// </summary>
     public partial class RunWindow : Window
     {
         List<Pixel> pixels = new List<Pixel>();
+        List<Vector> vectors = new List<Vector>();
         Pencil pencil = new Pencil();
         public RunWindow()
         {
             InitializeComponent();
-
-
-            pencil.changeSize(1);
-            double cx = 300;
-            double cy = 300;
-            double r = 50;
-            for (int i = 0; i <= 360; i++)
-            {
-                if (i == 180)
-                {
-                    pencil.changeSize(5);
-                }
-                double radians = i * Math.PI / 180;
-                double x = cx + r * Math.Cos(radians);
-                double y = cy + r * Math.Sin(radians);
-                AddPixel(x, y);
-                // x és y értékek használata...
-            }
-            pencil.changeSize(10);
-            pencil.changeColor(Colors.Brown);
-            AddPixel(325, 290);
-            AddPixel(275, 290);
-
-            cx = 300;
-            cy = 310;
-            r = 30;
-            pencil.changeSize(4);
-            pencil.changeColor(Colors.Red);
-            for (int i = 0; i <= 180; i++)
-            {
-                double radians = i * Math.PI / 180;
-                double x = cx + r * Math.Cos(radians);
-                double y = cy + r * Math.Sin(radians);
-                AddPixel(x, y);
-            }
-
-            AddLine(100, 100);
-            AddLine(0, -100);
-
-
-
         }
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
             {
@@ -95,14 +53,14 @@ namespace Rajzi
         private void AddLine(double x, double y)
         {
             Line line = new Line();
-            line.Stroke = Brushes.Red; // a vonal színe
-            line.StrokeThickness = pencil.size; // a vonal vastagsága
-            line.X1 = pencil.pixellPositionX; // az első pont x koordinátája
-            line.Y1 = pencil.pixelPositionY; // az első pont y koordinátája
-            line.X2 = pencil.pixellPositionX + x; // a második pont x koordinátája
+            line.Stroke = new SolidColorBrush(pencil.color);
+            line.StrokeThickness = pencil.size;
+            line.X1 = pencil.pixellPositionX;
+            line.Y1 = pencil.pixelPositionY;
+            line.X2 = pencil.pixellPositionX + x;
             line.Y2 = pencil.pixelPositionY + y;
-            pencil.pixellPositionX = pencil.pixellPositionX + x;
-            pencil.pixelPositionY = pencil.pixelPositionY + y;
+            vectors.Insert(0, new Vector(line.X1, line.Y1, line.X2, line.Y2));
+            pencil.changePosition(pencil.pixellPositionX + x, pencil.pixelPositionY + y);
             Canvas.Children.Add(line);
         }
     }

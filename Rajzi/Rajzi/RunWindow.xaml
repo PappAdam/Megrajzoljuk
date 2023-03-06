@@ -22,5 +22,6 @@
             </Grid>
         </Grid>
         <Rectangle Grid.Column="0" Fill="#EB9486"></Rectangle>
+        <Label x:Name="teszt1"></Label>
     </Grid>
 </Window>
