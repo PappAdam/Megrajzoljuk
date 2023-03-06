@@ -8,23 +8,23 @@
     "net6.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\szabo.taddeus\\.nuget\\packages\\": {},
+    "C:\\Users\\zoltai.balazs\\.nuget\\packages\\": {},
     "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "Z:\\2022-23\\WPF\\WPF\\Megrajzoljuk\\Megrajzoljuk\\Rajzi\\Rajzi\\Rajzi.csproj",
+      "projectUniqueName": "Z:\\Megrajzoljuk\\Rajzi\\Rajzi\\Rajzi.csproj",
       "projectName": "Rajzi",
-      "projectPath": "Z:\\2022-23\\WPF\\WPF\\Megrajzoljuk\\Megrajzoljuk\\Rajzi\\Rajzi\\Rajzi.csproj",
-      "packagesPath": "C:\\Users\\szabo.taddeus\\.nuget\\packages\\",
-      "outputPath": "Z:\\2022-23\\WPF\\WPF\\Megrajzoljuk\\Megrajzoljuk\\Rajzi\\Rajzi\\obj\\",
+      "projectPath": "Z:\\Megrajzoljuk\\Rajzi\\Rajzi\\Rajzi.csproj",
+      "packagesPath": "C:\\Users\\zoltai.balazs\\.nuget\\packages\\",
+      "outputPath": "Z:\\Megrajzoljuk\\Rajzi\\Rajzi\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\szabo.taddeus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\zoltai.balazs\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -70,7 +70,7 @@
             "privateAssets": "none"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
       }
     }
   }

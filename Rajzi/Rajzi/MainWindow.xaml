@@ -5,18 +5,124 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rajzi"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid Background="#252323">
+        Title="MainWindow" Height="600" Width="800"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        WindowStartupLocation="CenterScreen"
+        >    
+    <Window.Resources>
+        <Style x:Key="MyButtonStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                        BorderThickness="1"
+                        Padding="4,2" 
+                        BorderBrush="DarkGray" 
+                        CornerRadius="3" 
+                        Background="{TemplateBinding Background}">
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="#297373"
+                                        />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid x:Name="grMainGrid"
+          Background="#252323">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="MainCanvas" Grid.Column="1">
-            <Rectangle Height="27"  Width="100" Canvas.Left="196" Canvas.Top="122" Fill="#FF13798C"/>
-            <Rectangle Height="100" Canvas.Left="184" Canvas.Top="137" Width="4" Fill="#FFEB9486"/>
-            <Rectangle Height="4" Canvas.Left="184" Canvas.Top="134" Width="12" Fill="#FFEB9486"/>
+        <Canvas x:Name="Canvas" Grid.Column="2">
         </Canvas>
-        <Rectangle Fill="#EB9486"></Rectangle>
-        <Button Grid.Column="1" Content="RUN" HorizontalAlignment="Left" Margin="500,382,0,0" VerticalAlignment="Top" Height="42" Width="130" Background="#FFE9D758" Foreground="#FF252323" Click="RunDraw"/>
+        <Grid x:Name="grToolbox"
+              Grid.Column="1"
+              Background="#EB9486"
+              Height="580"
+              Margin="15 0 0 0"              
+              />
+        <Grid Background="#297373"
+              x:Name="gr_nav_holder"
+              Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"/>
+                <RowDefinition Height="6*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+
+                <StackPanel x:Name="stpOptHolder"
+                            Orientation="Vertical"
+                            >
+
+                    <Button Content="Category"
+                            Grid.Column="1"
+                            Height="35"
+                            Width="110"
+                            Background="#2F2235"
+                            Foreground="#5DDFC0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            FontSize="15"
+                            Margin="0 25 0 15"
+                            Cursor="Hand" Click="MenuOpt" 
+                            Style="{StaticResource MyButtonStyle}"
+                         />
+                    <Button Content="Category"
+                            Grid.Column="1"
+                            Height="35"
+                            Width="110"
+                            Background="#2F2235"
+                            Foreground="#5DDFC0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            FontSize="15"
+                            Margin="0 0 0 15"
+                            Cursor="Hand" Click="MenuOpt"
+                            Style="{StaticResource MyButtonStyle}"
+                         />
+                    <Button Content="Category"
+                            Grid.Column="1"
+                            Height="35"
+                            Width="110"
+                            Background="#2F2235"
+                            Foreground="#5DDFC0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            FontSize="15"
+                            Margin="0 0 0 15"
+                            Cursor="Hand" Click="MenuOpt"
+                            Style="{StaticResource MyButtonStyle}"
+                         />
+                    <Button Content="Category"
+                            Grid.Column="1"
+                            Height="35"
+                            Width="110"
+                            Background="#2F2235"
+                            Foreground="#5DDFC0"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            FontSize="15"
+                            Margin="0 0 0 15"
+                            Cursor="Hand" Click="MenuOpt"
+                            Style="{StaticResource MyButtonStyle}"
+                         />
+                </StackPanel>
+
+            </Grid>
+
+        </Grid>
     </Grid>
 </Window>
