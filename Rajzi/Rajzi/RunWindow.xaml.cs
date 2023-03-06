@@ -28,9 +28,9 @@ namespace Rajzi
         {
             InitializeComponent();
             Point startPoint = new Point(0, 0);
-            Point startPoint2 = new Point(2, 3);
-            Point endPoint = new Point(0, 3);
-            Point endPoint2 = new Point(2, 0);
+            Point endPoint = new Point(2, 3);
+            Point startPoint2 = new Point(2, 0);
+            Point endPoint2 = new Point(5, -3);
             var metszet = vectorIntersection(startPoint, endPoint, startPoint2, endPoint2);
             teszt3.Content = metszet;
         }
@@ -107,7 +107,7 @@ namespace Rajzi
             double y = vec1.Item1 * x + vec1.Item2;
             var point = Tuple.Create(x, y);
 
-            if ((point.Item1 >= startPoint.X && point.Item1 <= endPoint.X) || (point.Item1 <= startPoint.X && point.Item1 >= endPoint.X))
+            if (((point.Item1 >= startPoint.X && point.Item1 <= endPoint.X) || (point.Item1 <= startPoint.X && point.Item1 >= endPoint.X)) && ((point.Item1 >= startPoint2.X && point.Item1 <= endPoint2.X) || (point.Item1 <= startPoint2.X && point.Item1 >= endPoint2.X)))
             {
                 return Tuple.Create(x, y);
             }
@@ -116,35 +116,5 @@ namespace Rajzi
                 return Tuple.Create(double.NaN, double.NaN);
             }
         }
-
-
-
-        public static Tuple<double, double> GetEquation(Point startPoint, Point endPoint)
-        {
-            double slope = (endPoint.Y - startPoint.Y) / (endPoint.X - startPoint.X);
-            double yIntercept = startPoint.Y - slope * startPoint.X;
-
-            return Tuple.Create(slope, yIntercept);
-        }
-
-        public static Tuple<double, double> GetIntersection(Tuple<double, double> vec1, Tuple<double, double> vec2)
-        {
-            double x = (vec2.Item2 - vec1.Item2) / (vec1.Item1 - vec2.Item1);
-            double y = vec1.Item1 * x + vec1.Item2;
-            return Tuple.Create(x, y);
-        }
-
-        public static bool VectorContainsPoint(Point startPoint, Point endPoint, Point a)
-        {
-            if ((a.X >= startPoint.X && a.X <= endPoint.X) || (a.X <= startPoint.X && a.X >= endPoint.X))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
     }
 }
