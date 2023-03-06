@@ -29,8 +29,8 @@ namespace Rajzi
             InitializeComponent();
             Point startPoint = new Point(0, 0);
             Point endPoint = new Point(2, 3);
-            Point startPoint2 = new Point(2, 0);
-            Point endPoint2 = new Point(5, -3);
+            Point startPoint2 = new Point(1, 5);
+            Point endPoint2 = new Point(4, 2);
             var metszet = vectorIntersection(startPoint, endPoint, startPoint2, endPoint2);
             teszt3.Content = metszet;
         }
@@ -84,13 +84,6 @@ namespace Rajzi
             pencil.changePosition(line.X2, line.Y2);
             Canvas.Children.Add(line);
         }
-
-
-
-
-
-
-
 
 
         public static Tuple<double, double> vectorIntersection(Point startPoint, Point endPoint, Point startPoint2, Point endPoint2)
