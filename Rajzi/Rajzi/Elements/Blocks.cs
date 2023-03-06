@@ -23,49 +23,50 @@ namespace Rajzi.Elements
     {
         static public void CreateBlockWithType(BlockType type, Container container)
         {
-            Rectangle newRect = NewRectangle(150, 20, new Thickness());
 
+            Grid newGrid = CreateNewGrid(150, 30, new Thickness(20 + 20 * container.depth, 3, 0, 0));
+
+            var label = new Label();
             switch (type)
             {
                 case BlockType.Main:
-                    newRect.Fill = new SolidColorBrush(Color.FromRgb(41, 115, 115));
-                    newRect.Margin = new Thickness();
+                    newGrid.Background = new SolidColorBrush(Color.FromRgb(41, 115, 115));
+                    label.Content = "MAIN";
+                    label.Foreground = Brushes.WhiteSmoke;
+                    newGrid.Children.Add(label);
                     break;
                 case BlockType.Statement:
-                    newRect.Fill = new SolidColorBrush(Color.FromRgb(194, 23, 23));
-                    newRect.Margin = new Thickness(20 + 20 * (container.depth-1), 3, 0, 0);
+
                     break;
                 case BlockType.Loop:
-                    newRect.Fill = new SolidColorBrush(Color.FromRgb(194, 23, 23));
-                    newRect.Margin = new Thickness(20 + 20 * (container.depth-1), 3, 0, 0);
+
                     break;
                 case BlockType.Variable:
-                    newRect.Margin = new Thickness(20 + 20 * (container.depth), 3, 0, 0);
 
-                    newRect.Fill = new SolidColorBrush(Color.FromRgb(234, 146, 134));
                     break;
                 case BlockType.Action:
-                    newRect.Margin = new Thickness(20 + 20 * (container.depth), 3, 0, 0);
-                    newRect.Fill = new SolidColorBrush(Color.FromRgb(233, 215, 88));
+
                     break;
                 case BlockType.Function:
-                    newRect.Margin = new Thickness(20 + 20 * (container.depth), 3, 0, 0);
-                    newRect.Fill = new SolidColorBrush(Color.FromRgb(36, 200, 190));
+
                     break;
             }
 
-            container.panel.Children.Add(newRect);
+            container.panel.Children.Add(newGrid);
         }
 
-        static public Rectangle NewRectangle(int width, int height, Thickness margin)
+        static public Grid CreateNewGrid(int width, int height, Thickness margin)
         {
-            Rectangle rect = new Rectangle();
-            rect.Height = height;
-            rect.Width = width;
-            rect.HorizontalAlignment = HorizontalAlignment.Left;
-            rect.Margin = margin;
+            Grid newGrid = new Grid();
+            newGrid.Width = width;
+            newGrid.Height = height;
+            newGrid.Margin = margin;
+            newGrid.HorizontalAlignment = HorizontalAlignment.Left;
+            var colDef = new ColumnDefinition();
+            colDef.Width = GridLength.Auto;
+            newGrid.ColumnDefinitions.Add(colDef);
 
-            return rect;
+            return newGrid;
         }
     }
 

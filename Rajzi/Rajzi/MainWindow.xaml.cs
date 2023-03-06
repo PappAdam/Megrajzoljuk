@@ -70,54 +70,55 @@ namespace Rajzi
 
         public void OnStackPanelClick(object sender, MouseButtonEventArgs e)
         {
-            var panel = (StackPanel)((Rectangle)sender).Parent;
-            this.selectedContainer = null;
-            Element? element = this.mainContainer.firstChild;
+            //var clickedElement = (Rectangle)sender;
 
-            if (panel == this.mainContainer.panel)
-            {
-                this.selectedContainer = this.mainContainer;
-            }
+            //this.selectedContainer = null;
+            //Element? element = this.mainContainer.firstChild;
 
-            while (selectedContainer == null)
-            {
-                if (element is Container)
-                {
-                    if (((Container)element).panel == panel)
-                    {
-                        selectedContainer = (Container)element;
-                    }
-                    else
-                    {
-                        if (((Container)element).firstChild != null)
-                        {
-                            element = ((Container)element).firstChild;
-                        }
-                        else
-                        {
-                            if (element.nextElement != null)
-                                element = element.nextElement;
-                            else
-                            {
-                                while (element.container.nextElement == null)
-                                    element = element.container;
-                                element = element.container.nextElement;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    if (element.nextElement != null)
-                        element = element.nextElement;
-                    else
-                    {
-                        while (element.container.nextElement == null)
-                            element = element.container;
-                        element = element.container.nextElement;
-                    }
-                }
-            }
+            //if (panel == this.mainContainer.panel)
+            //{
+            //    this.selectedContainer = this.mainContainer;
+            //}
+
+            //while (selectedContainer == null)
+            //{
+            //    if (element is Container)
+            //    {
+            //        if (((Container)element).panel == panel)
+            //        {
+            //            selectedContainer = (Container)element;
+            //        }
+            //        else
+            //        {
+            //            if (((Container)element).firstChild != null)
+            //            {
+            //                element = ((Container)element).firstChild;
+            //            }
+            //            else
+            //            {
+            //                if (element.nextElement != null)
+            //                    element = element.nextElement;
+            //                else
+            //                {
+            //                    while (element.container.nextElement == null)
+            //                        element = element.container;
+            //                    element = element.container.nextElement;
+            //                }
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (element.nextElement != null)
+            //            element = element.nextElement;
+            //        else
+            //        {
+            //            while (element.container.nextElement == null)
+            //                element = element.container;
+            //            element = element.container.nextElement;
+            //        }
+            //    }
+            //}
         }
     }
 }
