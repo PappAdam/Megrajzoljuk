@@ -9,12 +9,12 @@ namespace Rajzi
 {
     internal class Pixel
     {
-        public double pixellPositionX { get; set; }
+        public double pixelPositionX { get; set; }
         public double pixelPositionY { get; set; }
         
         public Pixel(double x, double y)
         {
-            this.pixellPositionX = x;
+            this.pixelPositionX = x;
             this.pixelPositionY = y;
         }
 

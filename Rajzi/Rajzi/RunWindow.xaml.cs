@@ -39,7 +39,7 @@ namespace Rajzi
                 matTrans.Matrix = mat;
                 e.Handled = true;
             }
-        private void AddPixel(double x, double y)
+        private void goToAddPixel(double x, double y)
         {
             pixels.Insert(0, new Pixel(x, y));
             Rectangle rec = new Rectangle();
@@ -47,21 +47,36 @@ namespace Rajzi
             rec.Height = pencil.size;
             rec.Fill = new SolidColorBrush(pencil.color);
             Canvas.Children.Add(rec);
+            pencil.changePosition(x, y);
             Canvas.SetLeft(rec, x - pencil.size/2);
             Canvas.SetTop(rec, y - pencil.size / 2);
         }
-        private void AddLine(double x, double y)
+        private void goToAddLine(double x, double y)
         {
             Line line = new Line();
             line.Stroke = new SolidColorBrush(pencil.color);
             line.StrokeThickness = pencil.size;
-            line.X1 = pencil.pixellPositionX;
+            line.X1 = pencil.pixelPositionX;
             line.Y1 = pencil.pixelPositionY;
-            line.X2 = pencil.pixellPositionX + x;
-            line.Y2 = pencil.pixelPositionY + y;
+            line.X2 = x;
+            line.Y2 = y;
             vectors.Insert(0, new Vector(line.X1, line.Y1, line.X2, line.Y2));
-            pencil.changePosition(pencil.pixellPositionX + x, pencil.pixelPositionY + y);
+            pencil.changePosition(line.X2, line.Y2);
             Canvas.Children.Add(line);
         }
+        private void forward(double forward)
+        {
+            Line line = new Line();
+            line.Stroke = new SolidColorBrush(pencil.color);
+            line.StrokeThickness = pencil.size;
+            line.X1 = pencil.pixelPositionX;
+            line.Y1 = pencil.pixelPositionY;
+            line.X2 = pencil.pixelPositionX + Math.Cos(Math.PI / 180 * pencil.rotate) * forward;
+            line.Y2 = pencil.pixelPositionY + Math.Sin(Math.PI / 180 * pencil.rotate) * forward;
+            vectors.Insert(0, new Vector(line.X1, line.Y1, line.X2, line.Y2));
+            pencil.changePosition(line.X2, line.Y2);
+            Canvas.Children.Add(line);
+        }
+
     }
 }
