@@ -1,6 +1,8 @@
 ﻿using Rajzi.Elements;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,11 +13,39 @@ using System.Windows.Shapes;
 
 namespace Rajzi
 {
-    public abstract class Element
+    public abstract class Element : IEnumerable<Element>
     {
+        public int index = 0;
         public Container? container { get; set; } = null;
         public Element? prevElement { get; set; } = null;
         public Element? nextElement { get; set; } = null;
+        public Variable? variable { get; set; } = null;
+
+        public IEnumerator<Element> GetEnumerator()
+        {
+            Element? el = this;
+            while (el != null)
+            {
+                yield return el;
+                if (el is Container && ((Container)el).firstChild != null)
+                {
+                    el = ((Container)el).firstChild;
+                }
+                else
+                {
+                    while (el != null && el.nextElement == null)
+                    {
+                        el = el.container;
+                    }
+                    el = el.nextElement;
+                }
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
         public void InsertElementAfter(Element element)
         {
@@ -73,8 +103,9 @@ namespace Rajzi
             }
         }
 
-        public void push(Element element)
+        public void push(Element element, int index)
         {
+            element.index = index;
             if (this.firstChild == null)
             {
                 this.firstChild = element;
@@ -87,14 +118,14 @@ namespace Rajzi
                 this.containedElementCount++;
             }
 
-            if (this[containedElementCount-1] is Container)
+            if (element is Container)
             {
                 ((Container)element).panel = new StackPanel();
                 ((Container)element).depth = this.depth + 1;
                 Blocks.CreateBlockWithType(BlockType.Loop, (Container)element);
                 this.panel.Children.Add(((Container)element).panel);
             }
-            else
+            else if (element is Function)
             {
                 Blocks.CreateBlockWithType(BlockType.Action, this);
             }
@@ -104,10 +135,11 @@ namespace Rajzi
     public class Function : Element
     {
         public Func<Pencil, bool>? func;
-        public Variable? variable;
+        public Grid? grid;
         public Function()
         {
 
         }
     }
 }
+ 

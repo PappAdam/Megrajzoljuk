@@ -27,10 +27,12 @@ namespace Rajzi
     {
         Container selectedContainer;
         Statement mainContainer = new Statement();
+        int index = 0;
         public MainWindow()
         {
             InitializeComponent();
             this.mainContainer.depth = 0;
+            this.mainContainer.index = 0;
             this.selectedContainer = mainContainer;
             this.mainContainer.condition = true;
             this.mainContainer.panel = new StackPanel();
@@ -47,17 +49,15 @@ namespace Rajzi
 
                 case "Container":
                     var c = new Container();
-                    selectedContainer.push(c);
+                    selectedContainer.push(c, ++index);
                     c.panel.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnStackPanelClick);
                     break;
 
                 case "Function":
                     var f = new Function();
-                    selectedContainer.push(f);
+                    selectedContainer.push(f, ++index);
                     break;
             }
-
-            Debug.Content = selectedContainer.containedElementCount;
         }
 
         private void OnBlockDoubleClick(object sender, MouseButtonEventArgs e)
@@ -70,55 +70,20 @@ namespace Rajzi
 
         public void OnStackPanelClick(object sender, MouseButtonEventArgs e)
         {
-            //var clickedElement = (Rectangle)sender;
+            object clickedElement = null;
+            if (sender == ((StackPanel)((Grid)sender).Parent).Children[0])
+                clickedElement = ((Grid)sender).Parent as StackPanel;
+            else
+                clickedElement = (Grid)sender;
 
-            //this.selectedContainer = null;
-            //Element? element = this.mainContainer.firstChild;
-
-            //if (panel == this.mainContainer.panel)
-            //{
-            //    this.selectedContainer = this.mainContainer;
-            //}
-
-            //while (selectedContainer == null)
-            //{
-            //    if (element is Container)
-            //    {
-            //        if (((Container)element).panel == panel)
-            //        {
-            //            selectedContainer = (Container)element;
-            //        }
-            //        else
-            //        {
-            //            if (((Container)element).firstChild != null)
-            //            {
-            //                element = ((Container)element).firstChild;
-            //            }
-            //            else
-            //            {
-            //                if (element.nextElement != null)
-            //                    element = element.nextElement;
-            //                else
-            //                {
-            //                    while (element.container.nextElement == null)
-            //                        element = element.container;
-            //                    element = element.container.nextElement;
-            //                }
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        if (element.nextElement != null)
-            //            element = element.nextElement;
-            //        else
-            //        {
-            //            while (element.container.nextElement == null)
-            //                element = element.container;
-            //            element = element.container.nextElement;
-            //        }
-            //    }
-            //}
+            foreach (Element el in this.mainContainer)
+            {
+                if (clickedElement != null && el is Container && ((Container)el).panel == clickedElement)
+                {
+                    selectedContainer = (Container)el;
+                    break;
+                }
+            }
         }
     }
 }

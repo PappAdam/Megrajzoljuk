@@ -1,0 +1,14 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/Rajzi/Rajzi/obj/Debug/net6.0-windows/Rajzi_kpz4yj5t_wpftmp.GeneratedMSBuildEditorConfig.editorconfig
+/Rajzi/Rajzi/obj/Debug/net6.0-windows/Rajzi_kpz4yj5t_wpftmp.csproj.BuildWithSkipAnalyzers
+/Rajzi/Rajzi/obj/Debug/net6.0-windows/Rajzi_kpz4yj5t_wpftmp.assets.cache
+/Rajzi/Rajzi/obj/Debug/net6.0-windows/Rajzi_kpz4yj5t_wpftmp.AssemblyInfoInputs.cache
+/Rajzi/Rajzi/obj/Debug/net6.0-windows/Rajzi_kpz4yj5t_wpftmp.AssemblyInfo.cs
+/Rajzi/.vs/Rajzi/v17/.suo
+/Rajzi/.vs/Rajzi/v17/.futdcache.v2
+/Rajzi/.vs/Rajzi/FileContentIndex/4b6b1cce-dbb2-4d8e-b1da-7a674c5bed3e.vsidx
+/Rajzi/.vs/ProjectEvaluation/rajzi.projects.v5.2
+/Rajzi/.vs/ProjectEvaluation/rajzi.metadata.v5.2
