@@ -26,6 +26,7 @@ namespace Rajzi
     public partial class MainWindow : Window
     {
         Container selectedContainer;
+        Element selectedElement;
         Statement mainContainer = new Statement();
         int index = 0;
         public MainWindow()
@@ -37,25 +38,28 @@ namespace Rajzi
             this.mainContainer.condition = true;
             this.mainContainer.panel = new StackPanel();
             MainCanvas.Children.Add(this.mainContainer.panel);
-            Blocks.CreateBlockWithType(BlockType.Main, this.mainContainer);
-            this.mainContainer.panel.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnStackPanelClick);
+            var grid = Blocks.CreateBlockWithType(BlockType.Main, this.mainContainer);
+            grid.Tag = this.mainContainer;
+            this.mainContainer.panel.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
         }
 
         private void AddElement(object sender)
         {
             switch (((Rectangle)sender).Name) {
                 case "Variable":
+                    
                     break;
 
                 case "Container":
                     var c = new Container();
                     selectedContainer.push(c, ++index);
-                    c.panel.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnStackPanelClick);
+                    c.panel.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
                     break;
 
                 case "Function":
-                    var f = new Function();
+                    var f = new Action();
                     selectedContainer.push(f, ++index);
+                    f.grid.MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
                     break;
             }
         }
@@ -68,22 +72,11 @@ namespace Rajzi
             //}
         }
 
-        public void OnStackPanelClick(object sender, MouseButtonEventArgs e)
+        public void OnBlockClick(object sender, MouseButtonEventArgs e)
         {
-            object clickedElement = null;
-            if (sender == ((StackPanel)((Grid)sender).Parent).Children[0])
-                clickedElement = ((Grid)sender).Parent as StackPanel;
-            else
-                clickedElement = (Grid)sender;
-
-            foreach (Element el in this.mainContainer)
-            {
-                if (clickedElement != null && el is Container && ((Container)el).panel == clickedElement)
-                {
-                    selectedContainer = (Container)el;
-                    break;
-                }
-            }
+            selectedElement = (Element)((Grid)sender).Tag;      
+            if (selectedElement is Container)
+                selectedContainer = (Container)selectedElement;
         }
     }
 }

@@ -22,12 +22,11 @@ namespace Rajzi.Elements
     }
     public class Blocks
     {
-        static public void CreateBlockWithType(BlockType type, Container container)
+        static public Grid CreateBlockWithType(BlockType type, Container container)
         {
 
             Grid newGrid = CreateNewGrid(150, 30, new Thickness(20 * container.depth, 3, 0, 0));
 
-            var label = new Label();
             switch (type)
             {
                 case BlockType.Main:
@@ -37,8 +36,6 @@ namespace Rajzi.Elements
                     break;
                 case BlockType.Loop:
                     ChangeGrid(newGrid, Color.FromRgb(194, 23, 23), Color.FromRgb(240, 240, 240), "LOOP");
-                    var expGrid = ExpandGrid(newGrid);
-                    ExpandGrid(expGrid);
                     break;  
                 case BlockType.Variable:
                     break;
@@ -51,6 +48,7 @@ namespace Rajzi.Elements
             }
 
             container.panel.Children.Add(newGrid);
+            return newGrid;
         }
 
         static public Grid CreateNewGrid(int width, int height, Thickness margin)

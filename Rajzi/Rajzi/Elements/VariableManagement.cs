@@ -8,21 +8,26 @@ using System.Windows.Controls;
 
 namespace Rajzi.Elements
 {
-    enum VariableType
+    public enum VariableType
     {
+        None,
         RGB,
         Number,
         Bool,
         String,
+        Vector2,
     }
 
     public class Variable
     {
-        double[] value;
+        public double[]? value { get; set; } = null;
+        public VariableType Type { get; set; } = VariableType.None;
     }
 
-    public class VariableManagement : Variable
+    public class ManageVariable 
     {
-        public Variable? variable { get; set; } = null;
+        public Func<Variable[] ,Variable>? value { get; set;} = null;
+        public ManageVariable[]? parameters = null;
+        public Grid? grid = null;
     }
 }

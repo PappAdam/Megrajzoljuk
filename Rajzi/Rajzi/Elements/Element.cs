@@ -19,7 +19,20 @@ namespace Rajzi
         public Container? container { get; set; } = null;
         public Element? prevElement { get; set; } = null;
         public Element? nextElement { get; set; } = null;
-        public Variable? variable { get; set; } = null;
+        public ManageVariable? variable { get; set; } = null;
+
+        public void AddParameter()
+        {
+            this.variable = new ManageVariable();
+            this.variable.value = new Func<Variable[], Variable>(x =>
+            {
+                if (x != null)
+                {
+                    return x[0];
+                }
+                throw new NullReferenceException();
+            });
+        }
 
         public IEnumerator<Element> GetEnumerator()
         {
@@ -37,7 +50,11 @@ namespace Rajzi
                     {
                         el = el.container;
                     }
-                    el = el.nextElement;
+
+                    if (el != null)
+                    {
+                        el = el.nextElement;
+                    }
                 }
             }
         }
@@ -122,21 +139,24 @@ namespace Rajzi
             {
                 ((Container)element).panel = new StackPanel();
                 ((Container)element).depth = this.depth + 1;
-                Blocks.CreateBlockWithType(BlockType.Loop, (Container)element);
+                var grid = Blocks.CreateBlockWithType(BlockType.Loop, (Container)element);
+                grid.Tag = element;
                 this.panel.Children.Add(((Container)element).panel);
             }
-            else if (element is Function)
+            else if (element is Action)
             {
-                Blocks.CreateBlockWithType(BlockType.Action, this);
+                var grid = Blocks.CreateBlockWithType(BlockType.Action, this);
+                grid.Tag = element;
+                ((Action)element).grid = grid;
             }
         }
     }
 
-    public class Function : Element
+    public class Action : Element
     {
         public Func<Pencil, bool>? func;
         public Grid? grid;
-        public Function()
+        public Action()
         {
 
         }

@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace Rajzi
 {
-    struct Vec2 {
+    public struct Vec2 {
         internal int x;
         internal int y;
     }
 
     public class Pencil
     {
-        Vec2 position = new Vec2 { x = 0, y = 0};
+        public Vec2 position = new Vec2 { x = 0, y = 0};
 
-        Pencil()
+        public Pencil()
         {
             
         }
