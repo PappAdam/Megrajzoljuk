@@ -25,7 +25,7 @@ namespace Rajzi.Elements
         static public Grid CreateBlockWithType(BlockType type, Container container)
         {
 
-            Grid newGrid = CreateNewGrid(150, 30, new Thickness(20 * container.depth, 3, 0, 0));
+            Grid newGrid = CreateNewGrid(150, 30, container != null ? new Thickness(20 * container.depth, 3, 0, 0) : new Thickness() );
 
             switch (type)
             {
@@ -38,6 +38,7 @@ namespace Rajzi.Elements
                     ChangeGrid(newGrid, Color.FromRgb(194, 23, 23), Color.FromRgb(240, 240, 240), "LOOP");
                     break;  
                 case BlockType.Variable:
+                    ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), "VARIABLE");
                     break;
                 case BlockType.Action:
                     ChangeGrid(newGrid, Color.FromRgb(233, 215, 88), Color.FromRgb(12, 20, 99), "ACTION");
@@ -46,8 +47,8 @@ namespace Rajzi.Elements
                 case BlockType.Function:
                     break;
             }
-
-            container.panel.Children.Add(newGrid);
+            if (container != null) 
+                container.panel.Children.Add(newGrid);
             return newGrid;
         }
 
@@ -83,14 +84,17 @@ namespace Rajzi.Elements
             grid.Children.Add(label);
         }
 
-        static public Grid ExpandGrid(Grid grid)
+        static public void ExpandGrid(Grid srcGrid, Grid dstGrid, int index)
         {
-            var expGrid = CreateNewGrid(150, 30, new Thickness());
-            ChangeGrid(expGrid, Color.FromRgb(30, 20, 20), Color.FromRgb(200, 200, 200), "Expanded");
-            Grid.SetColumn(expGrid, 1);
+            Grid.SetColumn(dstGrid, index + 1);
+            try
+            {
+                srcGrid.Children.Add(dstGrid);
+            }
+            catch (Exception)
+            {
 
-            grid.Children.Add(expGrid);
-            return expGrid;
+            }
         }
     }
 }

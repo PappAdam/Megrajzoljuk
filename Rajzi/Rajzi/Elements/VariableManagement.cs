@@ -24,10 +24,22 @@ namespace Rajzi.Elements
         public VariableType Type { get; set; } = VariableType.None;
     }
 
-    public class ManageVariable 
+    public class Parameter : Element
     {
         public Func<Variable[] ,Variable>? value { get; set;} = null;
-        public ManageVariable[]? parameters = null;
         public Grid? grid = null;
+        public int containedElementDepth = 0;
+
+        public override void InitElement(Element container)
+        {
+            this.container = container;
+            this.grid = Blocks.CreateBlockWithType(BlockType.Variable, null);
+            Canvas.SetZIndex(this.grid, -1);
+        }
+
+        public Parameter()
+        {
+
+        }
     }
 }

@@ -10,21 +10,39 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using System.Xml.Linq;
 
 namespace Rajzi
 {
     public abstract class Element : IEnumerable<Element>
     {
         public int index = 0;
-        public Container? container { get; set; } = null;
-        public Element? prevElement { get; set; } = null;
+        public Element? container { get; set; } = null;
         public Element? nextElement { get; set; } = null;
-        public ManageVariable? variable { get; set; } = null;
+        public List<Parameter> parameters { get; set; } = new List<Parameter>();
 
-        public void AddParameter()
+        public void AddParameter(Parameter parameter, int index)
         {
-            this.variable = new ManageVariable();
-            this.variable.value = new Func<Variable[], Variable>(x =>
+            this.parameters.Add(parameter);
+            if (this is Action)
+            {
+                Blocks.ExpandGrid(((Action)this).grid, this.parameters[index].grid, index);
+            }
+            else if (this is Container)
+            {
+                Blocks.ExpandGrid((Grid)((Container)this).panel.Children[0], this.parameters[index].grid, 0);
+            }
+
+            Parameter currentParam = parameter;
+            while (currentParam.container is Parameter)
+            {
+                currentParam = (Parameter)currentParam.container;
+                currentParam.containedElementDepth++;
+                currentParam.grid.Height += 20;
+                currentParam.grid.Width += 75;
+            }
+
+            this.parameters[index].value = new Func<Variable[], Variable>(x =>
             {
                 if (x != null)
                 {
@@ -69,26 +87,15 @@ namespace Rajzi
             element.container = this.container;
             element.nextElement = this.nextElement;
             this.nextElement = element;
-            if (element.nextElement != null)
-                element.nextElement.prevElement = element;
 
-            element.prevElement = this;
         }
 
         public void MoveElementBefore(Element element)
         {
-            if (element.prevElement != null)
-                element.prevElement.nextElement = element.nextElement;
-
-            if (element.nextElement != null)
-                element.nextElement.prevElement = element.prevElement;
-
-            if (this.prevElement != null)
-                element.prevElement = this.prevElement;
-
             element.nextElement = this;
-            this.prevElement = element;
         }
+
+        public abstract void InitElement(Element container);
     }
 
     public class Container : Element
@@ -120,9 +127,19 @@ namespace Rajzi
             }
         }
 
+        public override void InitElement(Element container)
+        {
+            this.panel = new StackPanel();
+            this.depth = ((Container)container).depth + 1;
+            var grid = Blocks.CreateBlockWithType(BlockType.Loop, this);
+            grid.Tag = this;
+            ((Container)container).panel.Children.Add(this.panel);
+        }
+
         public void push(Element element, int index)
         {
             element.index = index;
+            element.InitElement(this);
             if (this.firstChild == null)
             {
                 this.firstChild = element;
@@ -134,21 +151,6 @@ namespace Rajzi
                 this[containedElementCount - 1].InsertElementAfter(element);
                 this.containedElementCount++;
             }
-
-            if (element is Container)
-            {
-                ((Container)element).panel = new StackPanel();
-                ((Container)element).depth = this.depth + 1;
-                var grid = Blocks.CreateBlockWithType(BlockType.Loop, (Container)element);
-                grid.Tag = element;
-                this.panel.Children.Add(((Container)element).panel);
-            }
-            else if (element is Action)
-            {
-                var grid = Blocks.CreateBlockWithType(BlockType.Action, this);
-                grid.Tag = element;
-                ((Action)element).grid = grid;
-            }
         }
     }
 
@@ -156,9 +158,12 @@ namespace Rajzi
     {
         public Func<Pencil, bool>? func;
         public Grid? grid;
-        public Action()
-        {
 
+        public override void InitElement(Element container)
+        {
+            var grid = Blocks.CreateBlockWithType(BlockType.Action, (Container)container);
+            grid.Tag = this;
+            ((Action)this).grid = grid;
         }
     }
 }

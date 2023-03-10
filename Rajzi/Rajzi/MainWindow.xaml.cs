@@ -47,19 +47,27 @@ namespace Rajzi
         {
             switch (((Rectangle)sender).Name) {
                 case "Variable":
-                    
+                    if (selectedElement == null)
+                        break;
+
+
+                    Parameter param = new Parameter();
+                    param.InitElement(selectedElement);
+                    selectedElement.AddParameter(param, 0);
+                    selectedElement.parameters[0].grid.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
+                    ((Rectangle)selectedElement.parameters[0].grid.Children[0]).Tag = selectedElement.parameters[0];
                     break;
 
                 case "Container":
                     var c = new Container();
                     selectedContainer.push(c, ++index);
-                    c.panel.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
+                    ((Grid)c.panel.Children[0]).Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
                     break;
 
                 case "Function":
                     var f = new Action();
                     selectedContainer.push(f, ++index);
-                    f.grid.MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
+                    f.grid.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
                     break;
             }
         }
@@ -74,7 +82,7 @@ namespace Rajzi
 
         public void OnBlockClick(object sender, MouseButtonEventArgs e)
         {
-            selectedElement = (Element)((Grid)sender).Tag;      
+            selectedElement = (Element)((Grid)sender).Tag;
             if (selectedElement is Container)
                 selectedContainer = (Container)selectedElement;
         }
