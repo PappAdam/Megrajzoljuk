@@ -68,6 +68,7 @@
                             >
 
                     <Button Content="Category"
+                            x:Name="btnCategory1"
                             Grid.Column="1"
                             Height="35"
                             Width="110"
@@ -81,6 +82,7 @@
                             Style="{StaticResource MyButtonStyle}"
                          />
                     <Button Content="Category"
+                            x:Name="btnCategory2"
                             Grid.Column="1"
                             Height="35"
                             Width="110"
@@ -94,6 +96,7 @@
                             Style="{StaticResource MyButtonStyle}"
                          />
                     <Button Content="Category"
+                            x:Name="btnCategory3"
                             Grid.Column="1"
                             Height="35"
                             Width="110"
@@ -107,6 +110,7 @@
                             Style="{StaticResource MyButtonStyle}"
                          />
                     <Button Content="Category"
+                            x:Name="btnCategory4"
                             Grid.Column="1"
                             Height="35"
                             Width="110"
