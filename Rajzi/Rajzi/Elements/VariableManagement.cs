@@ -34,7 +34,6 @@ namespace Rajzi.Elements
         {
             this.container = container;
             this.grid = Blocks.CreateBlockWithType(BlockType.Variable, null);
-            Canvas.SetZIndex(this.grid, -1);
         }
 
         public Parameter()

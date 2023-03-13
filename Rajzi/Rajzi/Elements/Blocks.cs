@@ -22,10 +22,10 @@ namespace Rajzi.Elements
     }
     public class Blocks
     {
-        static public Grid CreateBlockWithType(BlockType type, Container container)
+        static public Grid CreateBlockWithType(BlockType type, Container container, int columns = 4)
         {
 
-            Grid newGrid = CreateNewGrid(150, 30, container != null ? new Thickness(20 * container.depth, 3, 0, 0) : new Thickness() );
+            Grid newGrid = CreateNewGrid(150, 30, container != null ? new Thickness(20 * container.depth, 3, 0, 0) : new Thickness(), columns );
 
             switch (type)
             {
@@ -36,7 +36,7 @@ namespace Rajzi.Elements
                     break;
                 case BlockType.Loop:
                     ChangeGrid(newGrid, Color.FromRgb(194, 23, 23), Color.FromRgb(240, 240, 240), "LOOP");
-                    break;  
+                    break;
                 case BlockType.Variable:
                     ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), "VARIABLE");
                     break;
@@ -47,54 +47,60 @@ namespace Rajzi.Elements
                 case BlockType.Function:
                     break;
             }
+
+
             if (container != null) 
                 container.panel.Children.Add(newGrid);
             return newGrid;
         }
 
-        static public Grid CreateNewGrid(int width, int height, Thickness margin)
+        static public Grid CreateNewGrid(int width, int height, Thickness margin, int columns)
         {
             Grid newGrid = new Grid();
-            newGrid.Width = width;
             newGrid.Height = height;
             newGrid.Margin = margin;
             newGrid.HorizontalAlignment = HorizontalAlignment.Left;
-            var colDef = new ColumnDefinition();
-            colDef.Width = new GridLength(width/2);
+            ColumnDefinition colDef = new ColumnDefinition();
             newGrid.ColumnDefinitions.Add(colDef);
-            colDef = new ColumnDefinition();
-            colDef.Width = GridLength.Auto;
-            newGrid.ColumnDefinitions.Add(colDef);
+            newGrid.Children.Add(new Label());
+
+            for (int i = 0; i < columns-1; i++)
+            {
+                var label = new Label();
+                label.Background = new SolidColorBrush(Color.FromRgb(Convert.ToByte(255 / columns * i), Convert.ToByte(255 / columns * i), Convert.ToByte(255 / columns * i)));
+                colDef = new ColumnDefinition();
+                colDef.Width = new GridLength(30);
+                Grid.SetColumn(label, i + 1);
+                newGrid.ColumnDefinitions.Add(colDef);
+                newGrid.Children.Add(label);
+            }
 
             return newGrid;
         }
 
-        static public void ChangeGrid(Grid grid, Color rFillColor, Color lForegroundC, String labelContent)
+        static public void ChangeGrid(Grid grid, Color rFillColor, Color lForegroundC, String labelContent, int index = 0)
         {
-            var rect = new Rectangle();
-            rect.Fill = new SolidColorBrush(rFillColor);
-            Grid.SetColumn(rect, 0);
-            var label = new Label();
+            var label = (Label)grid.Children[0];
+            label.Background = new SolidColorBrush(rFillColor);
             label.Content = labelContent;
             label.Foreground = new SolidColorBrush(lForegroundC);
-            label.HorizontalAlignment = HorizontalAlignment.Center;
-            Grid.SetColumn(label, 0);
+            label.HorizontalAlignment = HorizontalAlignment.Left;
+            Grid.SetColumn(label, index);
 
-            grid.Children.Add(rect);
-            grid.Children.Add(label);
+            label.Loaded += (sender, e) =>
+            {
+                double labelWidth = label.ActualWidth;
+                grid.ColumnDefinitions[index].Width = new GridLength(labelWidth);
+            };
         }
 
         static public void ExpandGrid(Grid srcGrid, Grid dstGrid, int index)
         {
             Grid.SetColumn(dstGrid, index + 1);
-            try
-            {
-                srcGrid.Children.Add(dstGrid);
-            }
-            catch (Exception)
-            {
 
-            }
+            srcGrid.Children[index + 1].Visibility = Visibility.Collapsed;
+            srcGrid.Children.RemoveAt(index+1);
+            srcGrid.Children.Insert(index+1, dstGrid);
         }
     }
 }

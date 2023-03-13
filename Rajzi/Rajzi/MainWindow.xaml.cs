@@ -39,8 +39,8 @@ namespace Rajzi
             this.mainContainer.panel = new StackPanel();
             MainCanvas.Children.Add(this.mainContainer.panel);
             var grid = Blocks.CreateBlockWithType(BlockType.Main, this.mainContainer);
-            grid.Tag = this.mainContainer;
-            this.mainContainer.panel.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
+            ((Label)grid.Children[0]).Tag = this.mainContainer;
+            ((Grid)(this.mainContainer.panel.Children[0])).Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
         }
 
         private void AddElement(object sender)
@@ -50,12 +50,11 @@ namespace Rajzi
                     if (selectedElement == null)
                         break;
 
-
                     Parameter param = new Parameter();
                     param.InitElement(selectedElement);
                     selectedElement.AddParameter(param, 0);
                     selectedElement.parameters[0].grid.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
-                    ((Rectangle)selectedElement.parameters[0].grid.Children[0]).Tag = selectedElement.parameters[0];
+                    ((Label)selectedElement.parameters[0].grid.Children[0]).Tag = selectedElement.parameters[0];
                     break;
 
                 case "Container":
@@ -82,9 +81,11 @@ namespace Rajzi
 
         public void OnBlockClick(object sender, MouseButtonEventArgs e)
         {
-            selectedElement = (Element)((Grid)sender).Tag;
+            selectedElement = (Element)((Label)sender).Tag;
             if (selectedElement is Container)
+            {
                 selectedContainer = (Container)selectedElement;
+            }
         }
     }
 }

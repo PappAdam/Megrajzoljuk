@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -30,16 +31,11 @@ namespace Rajzi
             }
             else if (this is Container)
             {
-                Blocks.ExpandGrid((Grid)((Container)this).panel.Children[0], this.parameters[index].grid, 0);
+                Blocks.ExpandGrid((Grid)((Container)this).panel.Children[0], this.parameters[index].grid, index);
             }
-
-            Parameter currentParam = parameter;
-            while (currentParam.container is Parameter)
+            else if (this is Parameter)
             {
-                currentParam = (Parameter)currentParam.container;
-                currentParam.containedElementDepth++;
-                currentParam.grid.Height += 20;
-                currentParam.grid.Width += 75;
+                Blocks.ExpandGrid(((Parameter)this).grid, this.parameters[index].grid, index);
             }
 
             this.parameters[index].value = new Func<Variable[], Variable>(x =>
@@ -132,7 +128,7 @@ namespace Rajzi
             this.panel = new StackPanel();
             this.depth = ((Container)container).depth + 1;
             var grid = Blocks.CreateBlockWithType(BlockType.Loop, this);
-            grid.Tag = this;
+            ((Label)grid.Children[0]).Tag = this;
             ((Container)container).panel.Children.Add(this.panel);
         }
 
@@ -162,7 +158,7 @@ namespace Rajzi
         public override void InitElement(Element container)
         {
             var grid = Blocks.CreateBlockWithType(BlockType.Action, (Container)container);
-            grid.Tag = this;
+            ((Label)grid.Children[0]).Tag = this;
             ((Action)this).grid = grid;
         }
     }
