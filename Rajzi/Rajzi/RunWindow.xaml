@@ -22,8 +22,18 @@
             </Grid>
         </Grid>
         <Rectangle Grid.Column="0" Fill="#EB9486"></Rectangle>
-        <Label x:Name="teszt1" Content="fkl"></Label>
-        <Label x:Name="teszt2" Content="fkl" Margin="0,26,0,-26"></Label>
-        <Label x:Name="teszt3" Content="fkl" Margin="0,53,0,-53"></Label>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="teszt1" Content="fkl" Grid.Row="0"/>
+            <Label x:Name="teszt2" Content="Ez egy csoda doboz: &#xD;&#xA;Ez lesz a png-d neve:" Margin="0,52,0,328" Grid.Row="1"/>
+            <Label x:Name="teszt3" Margin="-5,37,5,375" Grid.Row="1"/>
+            <TextBox x:Name="FileName" TextWrapping="Wrap" Text="FileName" Width="120" Margin="10,99,30,305" Grid.Row="1"/>
+            <Button x:Name="save" Content="Ez itt egy gomb, &#x0a; hogy kimentsed &#x0a; a gyönyörű rajzodat. &#x0a; (elvileg)" Margin="10,122,10,232" Click="PngSave" Grid.Row="1"/>
+        </Grid>
     </Grid>
 </Window>
