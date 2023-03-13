@@ -43,7 +43,7 @@
           Background="#252323">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="0*" x:Name="cldToolboxHolder"/>
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
         <Canvas x:Name="Canvas" Grid.Column="2">

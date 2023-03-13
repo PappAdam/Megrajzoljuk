@@ -22,6 +22,7 @@ namespace Rajzi
     public partial class MainWindow : Window
     {
         Button activeMenuBtn;
+        BrushConverter bc = new BrushConverter();     
         public MainWindow()
         {
             InitializeComponent();
@@ -95,22 +96,6 @@ namespace Rajzi
         {
             grToolbox.Children.Clear();
 
-            grToolbox.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
-            grToolbox.ColumnDefinitions[1].Width = new GridLength(5, GridUnitType.Star);
-            grToolbox.ColumnDefinitions[2].Width = new GridLength(1, GridUnitType.Star);
-
-            StackPanel stcPnl = new StackPanel();
-            Grid.SetColumn(stcPnl, 1);
-
-            grToolbox.Children.Add(stcPnl);
-
-            for (int i = 0; i < 4; i++)
-            {
-                TextBlock tb = new TextBlock();
-                tb.Text = $"menu-{i}";                
-                tb.TextAlignment = TextAlignment.Center;
-                stcPnl.Children.Add(tb);
-            }
             
 
         }
@@ -118,8 +103,7 @@ namespace Rajzi
         private void MenuOpt(object sender, RoutedEventArgs e)
         {
             //IsActive(sender, e);
-            Button chosenMenuOpt = sender as Button;
-
+            Button chosenMenuOpt = sender as Button;            
             switch (activeMenuBtn)
             {
                 case not null:
@@ -134,12 +118,12 @@ namespace Rajzi
                         BtnCollapseAnimation(activeMenuBtn);
 
                         BtnExpandAnimation(chosenMenuOpt);
-                        activeMenuBtn = chosenMenuOpt;
+                        activeMenuBtn = chosenMenuOpt;                        
                     }
                     break;
                 default:
-                    //myWidthAnimatedButtonStoryboard.Begin(chosenMenuOpt);
                     BtnExpandAnimation(chosenMenuOpt);
+                    toolboxExpandAnimation(grMainGrid.ColumnDefinitions[1]);
                     activeMenuBtn = chosenMenuOpt;
                     break;
             }
@@ -154,6 +138,8 @@ namespace Rajzi
             btnCollapse.From = 128;
             btnCollapse.To = 110;
             btnCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(125));
+
+            activeBtn.Background = (Brush)bc.ConvertFrom("#2F2235");
 
             // Configure the animation to target the button's Width property.
             Storyboard.SetTargetName(btnCollapse, activeBtn.Name);
@@ -174,6 +160,8 @@ namespace Rajzi
             btnExpand.To = 128;
             btnExpand.Duration = new Duration(TimeSpan.FromMilliseconds(125));
 
+            nonActiveBtn.Background = (Brush)bc.ConvertFrom("#EB9486");
+
             // Configure the animation to target the button's Width property.
             Storyboard.SetTargetName(btnExpand, nonActiveBtn.Name);
             Storyboard.SetTargetProperty(btnExpand, new PropertyPath(Button.WidthProperty));
@@ -185,23 +173,27 @@ namespace Rajzi
             ButtonExpandStorboard.Begin(nonActiveBtn);
         }
 
-        private void toolboxExpandAnimation()
+        private void toolboxExpandAnimation(ColumnDefinition toolbox)
         {
-            this.RegisterName(grToolbox.Name, grToolbox);
+
+            this.RegisterName(toolbox.Name, toolbox);
             DoubleAnimation toolboxExpand = new DoubleAnimation();
-            toolboxExpand.From = 110;
-            toolboxExpand.To = 128;
+            toolboxExpand.From = toolbox.ActualWidth;
+            toolboxExpand.To = gr_nav_holder.ActualWidth;
+            
             toolboxExpand.Duration = new Duration(TimeSpan.FromMilliseconds(125));
 
             // Configure the animation to target the button's Width property.
-            Storyboard.SetTargetName(toolboxExpand, grToolbox.Name);
-            Storyboard.SetTargetProperty(toolboxExpand, new PropertyPath(Button.WidthProperty));
+            Storyboard.SetTargetName(toolboxExpand, toolbox.Name);
+            Storyboard.SetTargetProperty(toolboxExpand, new PropertyPath(ColumnDefinition.WidthProperty));
 
             // Create a storyboard to contain the animation.
-            Storyboard ButtonExpandStorboard = new Storyboard();
-            ButtonExpandStorboard.Children.Add(toolboxExpand);
+            Storyboard toolboxExpandeAnimation = new Storyboard();
+            toolboxExpandeAnimation.Children.Add(toolboxExpand);
 
-            ButtonExpandStorboard.Begin(grToolbox);
+            toolboxExpandeAnimation.Begin(toolbox);
+
+
         }
     }
 }
