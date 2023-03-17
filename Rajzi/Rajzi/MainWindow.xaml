@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Rajzi"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="800"
-        WindowStyle="None"
-        ResizeMode="NoResize"
+        WindowStyle="ThreeDBorderWindow"
+        ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
         >    
     <Window.Resources>
@@ -46,12 +46,12 @@
             <ColumnDefinition Width="0*" x:Name="cldToolboxHolder"/>
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="Canvas" Grid.Column="2">
-        </Canvas>
+        <Canvas x:Name="Canvas" Grid.Column="2" Background="#252323"/>
         <Grid x:Name="grToolbox"
+              Width="0"
+              HorizontalAlignment="Left"
               Grid.Column="1"
               Background="#EB9486"
-              Height="580"
               Margin="15 0 0 0"              
               />
         <Grid Background="#297373"

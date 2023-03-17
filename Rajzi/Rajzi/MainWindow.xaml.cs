@@ -20,20 +20,13 @@ namespace Rajzi
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-    {
+    {        
         Button activeMenuBtn;
         BrushConverter bc = new BrushConverter();     
         public MainWindow()
         {
-            InitializeComponent();
+            InitializeComponent();            
             List<Element> elements = new List<Element>();
-            for (int i = 0; i < 3; i++)
-            {
-                ColumnDefinition c = new ColumnDefinition();
-                grToolbox.ColumnDefinitions.Add(c);
-            }
-
-
         }
 
         private void RunDraw(object sender, RoutedEventArgs e)
@@ -42,67 +35,24 @@ namespace Rajzi
             newWindow.Show();
         }
 
-        //private void IsActive(object sender, RoutedEventArgs e)
-        //{
-        //    BrushConverter bc = new BrushConverter();
-        //    if (activeBtn != null)
-        //    {
-        //        activeBtn.Background = (Brush)bc.ConvertFrom("#2F2235");
-        //        activeBtn.Width = 110;
-        //        if (activeBtn == sender)
-        //        {
-        //            activeBtn.Background = (Brush)bc.ConvertFrom("#2F2235");
-        //            activeBtn.Width = 110;
-        //            activeBtn = null;
-        //            grMainGrid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
-        //            grMainGrid.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Star);
-        //            grMainGrid.ColumnDefinitions[2].Width = new GridLength(5, GridUnitType.Star);
-        //        }
-        //        else
-        //        {
-        //            activeBtn = sender as Button;
-        //            activeBtn.Background = (Brush)bc.ConvertFrom("#EB9486");
-        //            activeBtn.Width = 128;
-        //            grMainGrid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
-        //            grMainGrid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
-        //            grMainGrid.ColumnDefinitions[2].Width = new GridLength(4, GridUnitType.Star);;                }
-        //    }
-        //    else
-        //    {
-        //        activeBtn = sender as Button;
-        //        activeBtn.Background = (Brush)bc.ConvertFrom("#EB9486");
-        //        activeBtn.Width = 128;
-        //        grMainGrid.ColumnDefinitions[0].Width = new GridLength(1, GridUnitType.Star);
-        //        grMainGrid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
-        //        grMainGrid.ColumnDefinitions[2].Width = new GridLength(4, GridUnitType.Star);
-        //    }
-
-        //}
-
         public bool IsActive(Button btn)
         {
             switch (btn.Width)
             {
                 case not 110:
                     return true;
-                    break;
                 default:
                     return false;
-                    break;
             }
         }
 
         private void AddMenuContent(Button sender)
         {
             grToolbox.Children.Clear();
-
-            
-
         }
 
         private void MenuOpt(object sender, RoutedEventArgs e)
         {
-            //IsActive(sender, e);
             Button chosenMenuOpt = sender as Button;            
             switch (activeMenuBtn)
             {
@@ -111,25 +61,26 @@ namespace Rajzi
                     if (activeMenuBtn == chosenMenuOpt)
                     {
                         BtnCollapseAnimation(activeMenuBtn);
+                        toolboxCollapseAnimation(grToolbox);
+                        canvasExpandAnimation(Canvas);
                         activeMenuBtn = null;
                     }
                     else
                     {
                         BtnCollapseAnimation(activeMenuBtn);
-
                         BtnExpandAnimation(chosenMenuOpt);
-                        activeMenuBtn = chosenMenuOpt;                        
+                        activeMenuBtn = chosenMenuOpt;
                     }
                     break;
                 default:
-                    BtnExpandAnimation(chosenMenuOpt);
-                    toolboxExpandAnimation(grMainGrid.ColumnDefinitions[1]);
+                    BtnExpandAnimation(chosenMenuOpt);                    
+                    canvasCollapseAnimation(Canvas);
+                    toolboxExpandAnimation(grToolbox);
                     activeMenuBtn = chosenMenuOpt;
                     break;
             }
-
-
         }
+
 
         private void BtnCollapseAnimation(Button activeBtn)
         {
@@ -162,37 +113,88 @@ namespace Rajzi
 
             nonActiveBtn.Background = (Brush)bc.ConvertFrom("#EB9486");
 
-            // Configure the animation to target the button's Width property.
             Storyboard.SetTargetName(btnExpand, nonActiveBtn.Name);
             Storyboard.SetTargetProperty(btnExpand, new PropertyPath(Button.WidthProperty));
 
-            // Create a storyboard to contain the animation.
             Storyboard ButtonExpandStorboard = new Storyboard();
             ButtonExpandStorboard.Children.Add(btnExpand);
 
             ButtonExpandStorboard.Begin(nonActiveBtn);
         }
 
-        private void toolboxExpandAnimation(ColumnDefinition toolbox)
-        {
-
+        private void toolboxExpandAnimation(Grid toolbox)
+        {   
+            grToolbox.Height = grMainGrid.ActualHeight*0.97;
             this.RegisterName(toolbox.Name, toolbox);
             DoubleAnimation toolboxExpand = new DoubleAnimation();
-            toolboxExpand.From = toolbox.ActualWidth;
-            toolboxExpand.To = gr_nav_holder.ActualWidth;
-            
-            toolboxExpand.Duration = new Duration(TimeSpan.FromMilliseconds(125));
+            toolboxExpand.From = toolbox.Width;
+            toolboxExpand.To = grMainGrid.ActualWidth/6;
+            toolboxExpand.Duration = new Duration(TimeSpan.FromMilliseconds(250));
 
-            // Configure the animation to target the button's Width property.
             Storyboard.SetTargetName(toolboxExpand, toolbox.Name);
-            Storyboard.SetTargetProperty(toolboxExpand, new PropertyPath(ColumnDefinition.WidthProperty));
+            Storyboard.SetTargetProperty(toolboxExpand, new PropertyPath(Grid.WidthProperty));
 
-            // Create a storyboard to contain the animation.
             Storyboard toolboxExpandeAnimation = new Storyboard();
             toolboxExpandeAnimation.Children.Add(toolboxExpand);
 
             toolboxExpandeAnimation.Begin(toolbox);
 
+            
+
+        }
+        private void toolboxCollapseAnimation(Grid toolbox)
+        {
+            grToolbox.Height = grMainGrid.ActualHeight * 0.97;
+            this.RegisterName(toolbox.Name, toolbox);
+            DoubleAnimation toolboxExpand = new DoubleAnimation();
+            toolboxExpand.From = toolbox.ActualWidth;
+            toolboxExpand.To = 0;
+            toolboxExpand.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+
+            Storyboard.SetTargetName(toolboxExpand, toolbox.Name);
+            Storyboard.SetTargetProperty(toolboxExpand, new PropertyPath(Grid.WidthProperty));
+
+            Storyboard toolboxCollapseAnimation = new Storyboard();
+            toolboxCollapseAnimation.Children.Add(toolboxExpand);
+
+            toolboxCollapseAnimation.Begin(toolbox);
+        }
+        private void canvasCollapseAnimation(Canvas canvas)
+        {
+            canvas.HorizontalAlignment = HorizontalAlignment.Right;
+            this.RegisterName(canvas.Name, canvas);
+            DoubleAnimation canvasCollapse = new DoubleAnimation();
+            canvasCollapse.From = canvas.ActualWidth;
+            canvasCollapse.To = (grMainGrid.ActualWidth/6)*4;
+            canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+
+            Storyboard.SetTargetName(canvasCollapse, canvas.Name);
+            Storyboard.SetTargetProperty(canvasCollapse, new PropertyPath(Canvas.WidthProperty));
+
+            Storyboard canvasCollapseAnimation = new Storyboard();
+            canvasCollapseAnimation.Children.Add(canvasCollapse);
+
+            canvasCollapseAnimation.Begin(canvas);
+
+            grMainGrid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
+            grMainGrid.ColumnDefinitions[2].Width = new GridLength(4, GridUnitType.Star);
+        }
+        private void canvasExpandAnimation(Canvas canvas)
+        {
+            canvas.HorizontalAlignment = HorizontalAlignment.Right;
+            this.RegisterName(canvas.Name, canvas);
+            DoubleAnimation canvasCollapse = new DoubleAnimation();
+            canvasCollapse.From = canvas.ActualWidth;
+            canvasCollapse.To = (grMainGrid.ActualWidth / 6) * 5;
+            canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+
+            Storyboard.SetTargetName(canvasCollapse, canvas.Name);
+            Storyboard.SetTargetProperty(canvasCollapse, new PropertyPath(Canvas.WidthProperty));
+
+            Storyboard canvasCollapseAnimation = new Storyboard();
+            canvasCollapseAnimation.Children.Add(canvasCollapse);
+
+            canvasCollapseAnimation.Begin(canvas);
 
         }
     }
