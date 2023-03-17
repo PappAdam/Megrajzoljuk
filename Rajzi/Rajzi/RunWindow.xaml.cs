@@ -25,9 +25,15 @@ namespace Rajzi
         List<Pixel> pixels = new List<Pixel>();
         List<Vector> vectors = new List<Vector>();
         Pencil pencil = new Pencil();
+        private TranslateTransform transform = new TranslateTransform(0, 0);
+        private bool _isMouseDown;
+        private Point _startPoint;
         public RunWindow()
         {
             InitializeComponent();
+            grid1.MouseLeftButtonDown += Grid1_MouseLeftButtonDown;
+            grid1.MouseLeftButtonUp += Grid1_MouseLeftButtonUp;
+            grid1.MouseMove += Grid1_MouseMove;
             Point startPoint = new Point(0, 0);
             Point endPoint = new Point(2, 3);
             Point startPoint2 = new Point(1, 5);
@@ -175,5 +181,39 @@ namespace Rajzi
         {
             RenderVisualService.RenderToPNGFile(Canvas, $"{FileName.Text}.png");
         }
+
+
+        private void Grid1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isMouseDown = true;
+            _startPoint = e.GetPosition(Canvas);
+            teszt1.Content = e.GetPosition(Canvas);
+        }
+
+        private void Grid1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isMouseDown = false;
+        }
+
+        private void Grid1_MouseMove(object sender, MouseEventArgs e)
+        {
+            var currentPoint = e.GetPosition(Canvas);
+            var offset = currentPoint - _startPoint;
+            _startPoint = currentPoint;
+            if (_isMouseDown)
+            {
+                transform = new TranslateTransform(transform.X + offset.X, transform.Y + offset.Y);
+
+                foreach (var child in Canvas.Children)
+                {
+                    if (child is UIElement element)
+                    {
+                        element.RenderTransform = transform;
+                    }
+                }
+                Canvas.RenderTransform = transform;
+            }
+        }
+
     }
 }
