@@ -38,48 +38,45 @@ namespace Rajzi
             this.mainContainer.condition = true;
             this.mainContainer.panel = new StackPanel();
             MainCanvas.Children.Add(this.mainContainer.panel);
-            var grid = Blocks.CreateBlockWithType(BlockType.Main, this.mainContainer);
+            var grid = Blocks.CreateBlockWithType(BlockType.Main, this.mainContainer, new MouseButtonEventHandler(OnElementClick), 0);
             ((Label)grid.Children[0]).Tag = this.mainContainer;
-            ((Grid)(this.mainContainer.panel.Children[0])).Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
         }
 
         private void AddElement(object sender)
         {
+            var eventHandler = new MouseButtonEventHandler(OnElementClick);
             switch (((Rectangle)sender).Name) {
                 case "Variable":
                     if (selectedElement == null)
                         break;
 
                     Parameter param = new Parameter();
-                    param.InitElement(selectedElement);
-                    selectedElement.AddParameter(param, 0);
-                    selectedElement.parameters[0].grid.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
-                    ((Label)selectedElement.parameters[0].grid.Children[0]).Tag = selectedElement.parameters[0];
+                    if (selectedElement is Parameter)
+                    {
+                        param.InitElement(selectedElement.container, eventHandler);
+                        var ind = Grid.GetColumn(selectedElement.grid);
+                        Element.AddParameter(param, ind, (Parameter)selectedElement);
+                    }
                     break;
 
                 case "Container":
                     var c = new Container();
-                    selectedContainer.push(c, ++index);
-                    ((Grid)c.panel.Children[0]).Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
+                    selectedContainer.push(c, ++index, eventHandler);
                     break;
 
                 case "Function":
                     var f = new Action();
-                    selectedContainer.push(f, ++index);
-                    f.grid.Children[0].MouseLeftButtonDown += new MouseButtonEventHandler(OnBlockClick);
+                    selectedContainer.push(f, ++index, eventHandler);
                     break;
             }
         }
 
         private void OnBlockDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            //if (e.ClickCount == 2)
-            //{
-                AddElement(sender);
-            //}
+            AddElement(sender);
         }
 
-        public void OnBlockClick(object sender, MouseButtonEventArgs e)
+        public void OnElementClick(object sender, MouseButtonEventArgs e)
         {
             selectedElement = (Element)((Label)sender).Tag;
             if (selectedElement is Container)
