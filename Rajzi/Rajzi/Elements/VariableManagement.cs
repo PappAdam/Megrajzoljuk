@@ -5,7 +5,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace Rajzi.Elements
 {
@@ -28,14 +27,13 @@ namespace Rajzi.Elements
     public class Parameter : Element
     {
         public Func<Variable[] ,Variable>? value { get; set;} = null;
+        public Grid? grid = null;
         public int containedElementDepth = 0;
 
-        public override void InitElement(Element container, MouseButtonEventHandler eventHandler)
+        public override void InitElement(Element container)
         {
             this.container = container;
-            this.grid = Blocks.CreateBlockWithType(BlockType.Variable, null, eventHandler);
-            this.InitParameters(eventHandler);
-
+            this.grid = Blocks.CreateBlockWithType(BlockType.Variable, null);
         }
 
         public Parameter()

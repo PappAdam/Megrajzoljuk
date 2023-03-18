@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -18,16 +17,15 @@ namespace Rajzi.Elements
         Statement,
         Loop,
         Variable,
-        EmptyParam,
         Action,
         Function
     }
     public class Blocks
     {
-        static public Grid CreateBlockWithType(BlockType type, Container container, MouseButtonEventHandler eventHandler, int columns = 1)
+        static public Grid CreateBlockWithType(BlockType type, Container container, int columns = 4)
         {
 
-            Grid newGrid = CreateNewGrid(150, 30, container != null ? new Thickness(20 * container.depth, 3, 0, 0) : new Thickness(), columns + 1, eventHandler );
+            Grid newGrid = CreateNewGrid(150, 30, container != null ? new Thickness(20 * container.depth, 3, 0, 0) : new Thickness(), columns );
 
             switch (type)
             {
@@ -42,9 +40,6 @@ namespace Rajzi.Elements
                 case BlockType.Variable:
                     ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), "VARIABLE");
                     break;
-                case BlockType.EmptyParam:
-                    ChangeGrid(newGrid, Color.FromRgb(60, 60, 60), Color.FromRgb(240, 240, 240), "param");
-                    break;
                 case BlockType.Action:
                     ChangeGrid(newGrid, Color.FromRgb(233, 215, 88), Color.FromRgb(12, 20, 99), "ACTION");
                     newGrid.Margin = new Thickness(20 + 20 * container.depth, 3, 0, 0);
@@ -53,12 +48,13 @@ namespace Rajzi.Elements
                     break;
             }
 
+
             if (container != null) 
                 container.panel.Children.Add(newGrid);
             return newGrid;
         }
 
-        static public Grid CreateNewGrid(int width, int height, Thickness margin, int columns, MouseButtonEventHandler eventHandler)
+        static public Grid CreateNewGrid(int width, int height, Thickness margin, int columns)
         {
             Grid newGrid = new Grid();
             newGrid.Height = height;
@@ -70,14 +66,13 @@ namespace Rajzi.Elements
 
             for (int i = 0; i < columns-1; i++)
             {
-                var grid = CreateBlockWithType(BlockType.EmptyParam, null, eventHandler, 0);
+                var label = new Label();
+                label.Background = new SolidColorBrush(Color.FromRgb(Convert.ToByte(255 / columns * i), Convert.ToByte(255 / columns * i), Convert.ToByte(255 / columns * i)));
                 colDef = new ColumnDefinition();
-                Grid.SetColumn(grid, i + 1);
+                colDef.Width = new GridLength(30);
+                Grid.SetColumn(label, i + 1);
                 newGrid.ColumnDefinitions.Add(colDef);
-                grid.Children[0].MouseLeftButtonDown += eventHandler;
-                newGrid.Children.Add(grid);
-
-                var ind = Grid.GetColumn(grid);
+                newGrid.Children.Add(label);
             }
 
             return newGrid;
@@ -99,16 +94,13 @@ namespace Rajzi.Elements
             };
         }
 
-        static public void ExpandGrid(Grid grid, int index, Parameter clickedParam)
+        static public void ExpandGrid(Grid srcGrid, Grid dstGrid, int index)
         {
-            Grid.SetColumn(grid, index);
+            Grid.SetColumn(dstGrid, index + 1);
 
-            if (clickedParam != null)
-            {
-                Grid dstGrid = clickedParam.container.grid;
-                dstGrid.Children.RemoveAt(index);
-                dstGrid.Children.Insert(index, grid);
-            }
+            srcGrid.Children[index + 1].Visibility = Visibility.Collapsed;
+            srcGrid.Children.RemoveAt(index+1);
+            srcGrid.Children.Insert(index+1, dstGrid);
         }
     }
 }
