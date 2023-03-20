@@ -22,7 +22,7 @@ namespace Rajzi
     public partial class MainWindow : Window
     {        
         Button activeMenuBtn;
-        BrushConverter bc = new BrushConverter();     
+        BrushConverter bc = new BrushConverter();
         public MainWindow()
         {
             InitializeComponent();            
@@ -144,7 +144,6 @@ namespace Rajzi
         }
         private void toolboxCollapseAnimation(Grid toolbox)
         {
-            grToolbox.Height = grMainGrid.ActualHeight * 0.97;
             this.RegisterName(toolbox.Name, toolbox);
             DoubleAnimation toolboxExpand = new DoubleAnimation();
             toolboxExpand.From = toolbox.ActualWidth;
@@ -196,6 +195,12 @@ namespace Rajzi
 
             canvasCollapseAnimation.Begin(canvas);
 
+        }
+
+        private void sizeChange(object sender, SizeChangedEventArgs e)
+        {
+            grToolbox.Height = grMainGrid.ActualHeight*0.97;
+            grToolbox.Width = grMainGrid.Width / 6;
         }
     }
 }

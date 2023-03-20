@@ -40,7 +40,7 @@
     </Window.Resources>
     
     <Grid x:Name="grMainGrid"
-          Background="#252323">
+          Background="#252323" SizeChanged="sizeChange">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="0*" x:Name="cldToolboxHolder"/>
