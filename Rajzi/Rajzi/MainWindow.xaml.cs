@@ -59,15 +59,47 @@ namespace Rajzi
                     }
                     break;
 
-                case "Container":
-                    var c = new Container();
+                case "Statement":
+                    var c = new Statement();
                     selectedContainer.push(c, ++index, eventHandler);
                     break;
 
-                case "Function":
+                case "Loop":
+                    var l = new Loop();
+                    selectedContainer.push(l, ++index, eventHandler);
+                    break;
+
+                case "Action":
                     var f = new Action();
                     selectedContainer.push(f, ++index, eventHandler);
                     break;
+            }
+        }
+
+        public void Run()
+        {
+            Element? el = this.mainContainer;
+            while (el != null)
+            {
+                if (el is Container && ((Container)el).firstChild != null)
+                {
+                    ((Container)el).SetCondition();
+                    if (((Container)el).condition)
+                        el = ((Container)el).firstChild;
+                }
+                else
+                {
+                    ((Action)el).func((Action)el);
+                    while (el != null && el.nextElement == null)
+                    {
+                        el = el.container;
+                    }
+
+                    if (el != null)
+                    {
+                        el = el.nextElement;
+                    }
+                }
             }
         }
 
@@ -83,6 +115,11 @@ namespace Rajzi
             {
                 selectedContainer = (Container)selectedElement;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Run();
         }
     }
 }

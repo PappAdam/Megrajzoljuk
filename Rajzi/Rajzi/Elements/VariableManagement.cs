@@ -27,15 +27,14 @@ namespace Rajzi.Elements
 
     public class Parameter : Element
     {
-        public Func<Variable[] ,Variable>? value { get; set;} = null;
+        public Func<Parameter ,Variable>? value { get; set;} = null;
         public int containedElementDepth = 0;
 
         public override void InitElement(Element container, MouseButtonEventHandler eventHandler)
         {
             this.container = container;
-            this.grid = Blocks.CreateBlockWithType(BlockType.Variable, null, eventHandler);
+            this.grid = Blocks.CreateBlockWithType(BlockType.Variable, null, eventHandler, 0);
             this.InitParameters(eventHandler);
-
         }
 
         public Parameter()

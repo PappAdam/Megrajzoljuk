@@ -16,9 +16,11 @@
 
         </Canvas>
         <StackPanel Grid.Column="0" Background="#EB9486">
-            <Rectangle Name="Function" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Fill="#dde" MouseLeftButtonDown="OnBlockDoubleClick"/>
-            <Rectangle Name="Container" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Fill="#af1" MouseLeftButtonDown="OnBlockDoubleClick"/>
+            <Rectangle Name="Action" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Fill="#dde" MouseLeftButtonDown="OnBlockDoubleClick"/>
+            <Rectangle Name="Loop" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Fill="#af1" MouseLeftButtonDown="OnBlockDoubleClick"/>
+            <Rectangle Name="Statement" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Fill="#af1" MouseLeftButtonDown="OnBlockDoubleClick"/>
             <Rectangle Name="Variable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Fill="#f1b" MouseLeftButtonDown="OnBlockDoubleClick"/>
+            <Button Content="RUN" Click="Button_Click"></Button>
         </StackPanel>
     </Grid>
 </Window>

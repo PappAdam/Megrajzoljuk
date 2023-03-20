@@ -35,12 +35,19 @@ namespace Rajzi.Elements
                     ChangeGrid(newGrid, Color.FromRgb(15, 115, 115), Color.FromRgb(240, 240, 240), "MAIN");
                     break;
                 case BlockType.Statement:
+                    ChangeGrid(newGrid, Color.FromRgb(194, 23, 23), Color.FromRgb(240, 240, 240), "IF");
                     break;
                 case BlockType.Loop:
-                    ChangeGrid(newGrid, Color.FromRgb(194, 23, 23), Color.FromRgb(240, 240, 240), "LOOP");
+                    ChangeGrid(newGrid, Color.FromRgb(194, 23, 23), Color.FromRgb(240, 240, 240), "FOR");
                     break;
                 case BlockType.Variable:
-                    ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), "VARIABLE");
+                    ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), "Get");
+                    var tb = new TextBox();
+                    tb.Width = 20;
+                    Grid.SetColumn(tb, 2);
+                    var cd = new ColumnDefinition();
+                    newGrid.ColumnDefinitions.Add(cd);
+                    newGrid.Children.Add(tb);
                     break;
                 case BlockType.EmptyParam:
                     ChangeGrid(newGrid, Color.FromRgb(60, 60, 60), Color.FromRgb(240, 240, 240), "param");
