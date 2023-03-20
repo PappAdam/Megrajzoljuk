@@ -17,7 +17,6 @@
                     <MatrixTransform/>
                 </Grid.RenderTransform>
                 <Canvas x:Name="Canvas" Grid.Column="1">
-                    <Rectangle Width="20" Height="20" Margin="20" VerticalAlignment="Top" HorizontalAlignment="Left" Fill="Green"/>
                 </Canvas>
             </Grid>
         </Grid>

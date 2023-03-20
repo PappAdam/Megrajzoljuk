@@ -17,6 +17,7 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Media;
 using System.Runtime.Intrinsics;
 using System.IO;
+using System.Diagnostics;
 
 namespace Rajzi
 {
@@ -28,26 +29,27 @@ namespace Rajzi
         private TranslateTransform transform = new TranslateTransform(0, 0);
         private bool _isMouseDown;
         private Point _startPoint;
+        private int counter = 0;
         public RunWindow()
         {
             InitializeComponent();
             grid1.MouseLeftButtonDown += Grid1_MouseLeftButtonDown;
             grid1.MouseLeftButtonUp += Grid1_MouseLeftButtonUp;
             grid1.MouseMove += Grid1_MouseMove;
-            Point startPoint = new Point(0, 0);
-            Point endPoint = new Point(2, 3);
-            Point startPoint2 = new Point(1, 5);
-            Point endPoint2 = new Point(4, 2);
-            var metszet = vectorIntersection(startPoint, endPoint, startPoint2, endPoint2);
-            teszt3.Content = metszet;
-            forward(100);
-            pencil.changeRotate(90);
-            forward(100);
-            pencil.changeRotate(180);
-            forward(100);
-            pencil.changeRotate(270);
-            forward(100);
-            pencil.changeRotate(0);
+
+            //Random random = new Random();
+            //for (int i = 100; i > 0; i--)
+            //{
+            //    Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+            //    pencil.changeColor(randomColor);
+            //    for (int e = 0; e < 360; e++)
+            //    {
+            //        forward(i*10);
+            //        forward(-1*i*10);
+            //        pencil.changeRotate(e);
+            //        pencil.changeSize(i/2);
+            //    }
+            //}
         }
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
             {
@@ -187,7 +189,7 @@ namespace Rajzi
         {
             _isMouseDown = true;
             _startPoint = e.GetPosition(Canvas);
-            teszt1.Content = e.GetPosition(Canvas);
+
         }
 
         private void Grid1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -200,18 +202,10 @@ namespace Rajzi
             var currentPoint = e.GetPosition(Canvas);
             var offset = currentPoint - _startPoint;
             _startPoint = currentPoint;
+
             if (_isMouseDown)
             {
-                transform = new TranslateTransform(transform.X + offset.X, transform.Y + offset.Y);
-
-                foreach (var child in Canvas.Children)
-                {
-                    if (child is UIElement element)
-                    {
-                        element.RenderTransform = transform;
-                    }
-                }
-                Canvas.RenderTransform = transform;
+                Canvas.Margin = new Thickness(Canvas.Margin.Left + offset.X,Canvas.Margin.Top + offset.Y, 0, 0);
             }
         }
 
