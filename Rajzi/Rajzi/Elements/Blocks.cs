@@ -17,14 +17,15 @@ namespace Rajzi.Elements
         Main,
         Statement,
         Loop,
-        Variable,
+        GetVariable,
+        Input,
         EmptyParam,
         Action,
         Function
     }
     public class Blocks
     {
-        static public Grid CreateBlockWithType(BlockType type, Container container, MouseButtonEventHandler eventHandler, int columns = 1)
+        static public Grid CreateBlockWithType(BlockType type, Container container, MouseButtonEventHandler eventHandler, String name, int columns = 1)
         {
 
             Grid newGrid = CreateNewGrid(150, 30, container != null ? new Thickness(20 * container.depth, 3, 0, 0) : new Thickness(), columns + 1, eventHandler );
@@ -32,28 +33,42 @@ namespace Rajzi.Elements
             switch (type)
             {
                 case BlockType.Main:
-                    ChangeGrid(newGrid, Color.FromRgb(15, 115, 115), Color.FromRgb(240, 240, 240), "MAIN");
+                    ChangeGrid(newGrid, Color.FromRgb(15, 115, 115), Color.FromRgb(240, 240, 240), name);
                     break;
+
                 case BlockType.Statement:
-                    ChangeGrid(newGrid, Color.FromRgb(194, 23, 23), Color.FromRgb(240, 240, 240), "IF");
+                    ChangeGrid(newGrid, Color.FromRgb(194, 23, 23), Color.FromRgb(240, 240, 240), name);
                     break;
+
                 case BlockType.Loop:
-                    ChangeGrid(newGrid, Color.FromRgb(194, 23, 23), Color.FromRgb(240, 240, 240), "FOR");
+                    ChangeGrid(newGrid, Color.FromRgb(194, 23, 23), Color.FromRgb(240, 240, 240), name);
                     break;
-                case BlockType.Variable:
-                    ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), "Get");
+
+                case BlockType.Input:
+                    ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), name);
                     var tb = new TextBox();
-                    tb.Width = 20;
-                    Grid.SetColumn(tb, 2);
+                    tb.Width = 60;
+                    Grid.SetColumn(tb, 1);
                     var cd = new ColumnDefinition();
                     newGrid.ColumnDefinitions.Add(cd);
                     newGrid.Children.Add(tb);
                     break;
+
+                case BlockType.GetVariable:
+                    ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), name);
+                    var tb1 = new TextBox();
+                    tb1.Width = 60;
+                    Grid.SetColumn(tb1, 1);
+                    var cd1 = new ColumnDefinition();
+                    newGrid.ColumnDefinitions.Add(cd1);
+                    newGrid.Children.Add(tb1);
+                    break;
+
                 case BlockType.EmptyParam:
-                    ChangeGrid(newGrid, Color.FromRgb(60, 60, 60), Color.FromRgb(240, 240, 240), "param");
+                    ChangeGrid(newGrid, Color.FromRgb(60, 60, 60), Color.FromRgb(240, 240, 240), name);
                     break;
                 case BlockType.Action:
-                    ChangeGrid(newGrid, Color.FromRgb(233, 215, 88), Color.FromRgb(12, 20, 99), "ACTION");
+                    ChangeGrid(newGrid, Color.FromRgb(233, 215, 88), Color.FromRgb(12, 20, 99), name);
                     newGrid.Margin = new Thickness(20 + 20 * container.depth, 3, 0, 0);
                     break;
                 case BlockType.Function:
@@ -77,7 +92,7 @@ namespace Rajzi.Elements
 
             for (int i = 0; i < columns-1; i++)
             {
-                var grid = CreateBlockWithType(BlockType.EmptyParam, null, eventHandler, 0);
+                var grid = CreateBlockWithType(BlockType.EmptyParam, null, eventHandler, "param", 0);
                 colDef = new ColumnDefinition();
                 Grid.SetColumn(grid, i + 1);
                 newGrid.ColumnDefinitions.Add(colDef);

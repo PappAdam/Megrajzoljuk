@@ -23,30 +23,13 @@ namespace Rajzi
         public Grid grid { get; set; } = null;
         public List<Parameter> parameters { get; set; } = new List<Parameter>();
 
-        public static void AddParameter(Parameter parameter, int index, Parameter selectedParam)
+        public static void AddParameter(Parameter parameter, int index, Parameter selectedParam, Func<Variable, Variable> value)
         {
-            selectedParam.container.parameters.Add(parameter);
+            selectedParam.container.parameters[index-1] = parameter;
 
             Blocks.ExpandGrid(parameter.grid, index, selectedParam);
 
-            selectedParam.container.parameters[index].value = new Func<Parameter, Variable>(param =>
-            {
-                var value = ((TextBox)param.grid.Children[2]).Text;
-                Variable var = new Variable();
-                var.Type = VariableType.Bool;
-                var.value = new double[1];
-
-                switch (value) {
-                    case "true":
-                        var.value[0] = 1;
-                        break;
-                    default:
-                        var.value[0] = 0;
-                        break;
-                }
-
-                return var;
-            });
+            parameter.value = value;
         }
 
         public void InitParameters(MouseButtonEventHandler eventHandler)
@@ -104,7 +87,7 @@ namespace Rajzi
             element.nextElement = this;
         }
 
-        public abstract void InitElement(Element container, MouseButtonEventHandler eventHandler);
+        public abstract void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0);
     }
 
     public class Container : Element
@@ -136,17 +119,18 @@ namespace Rajzi
             }
         }
 
-        public override void InitElement(Element container, MouseButtonEventHandler eventHandler)
+        public override void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0)
+
         {
             this.panel = new StackPanel();
             this.depth = ((Container)container).depth + 1;
             if (this is Loop)
             {
-                this.grid = Blocks.CreateBlockWithType(BlockType.Loop, this, eventHandler, 3);
+                this.grid = Blocks.CreateBlockWithType(BlockType.Loop, this, eventHandler, "Loop", cols);
             }
             else
             {
-                this.grid = Blocks.CreateBlockWithType(BlockType.Statement, this, eventHandler, 1);
+                this.grid = Blocks.CreateBlockWithType(BlockType.Statement, this, eventHandler, "If", cols);
             }
             ((Label)grid.Children[0]).Tag = this;
             ((Label)grid.Children[0]).MouseLeftButtonDown += eventHandler;
@@ -154,10 +138,9 @@ namespace Rajzi
             this.InitParameters(eventHandler);
         }
 
-        public void push(Element element, int index, MouseButtonEventHandler mainBlockEventHandler)
+        public void push(Element element, int index)
         {
             element.index = index;
-            element.InitElement(this, mainBlockEventHandler);
             if (this.firstChild == null)
             {
                 this.firstChild = element;
@@ -173,13 +156,13 @@ namespace Rajzi
 
         public void SetCondition()
         {
-            if (this.parameters[0].value(this.parameters[0]).value[0] == 0)
+            if (((double)this.parameters[0].value(null).value) != 0)
             {
-                this.condition = false;
+                this.condition = true;
             }
             else
             {
-                this.condition = true;
+                this.condition = false;
             }
         }
     }
@@ -188,20 +171,13 @@ namespace Rajzi
     {
         public Func<Action, bool>? func;
 
-        public override void InitElement(Element container, MouseButtonEventHandler eventHandler)
+        public override void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0)
         {
-            var grid = Blocks.CreateBlockWithType(BlockType.Action, (Container)container, eventHandler);
+            var grid = Blocks.CreateBlockWithType(BlockType.Action, (Container)container, eventHandler, name, cols);
             ((Label)grid.Children[0]).Tag = this;
             ((Label)grid.Children[0]).MouseLeftButtonDown += eventHandler;
             ((Action)this).grid = grid;
             this.InitParameters(eventHandler);
-
-            this.func = new Func<Action, bool>(act =>
-            {
-                MessageBox.Show($"{act.parameters[0].value(act.parameters[0]).value}");
-
-                return true;
-            });
         }
     }
 }

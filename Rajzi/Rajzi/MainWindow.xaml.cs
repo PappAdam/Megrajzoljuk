@@ -25,10 +25,11 @@ namespace Rajzi
     /// </summary>
     public partial class MainWindow : Window
     {
-        Container selectedContainer;
-        Element selectedElement;
+        Container selectedContainer; 
+        Element selectedElement; 
         Statement mainContainer = new Statement();
-        int index = 0;
+        List<Variable> variables = new List<Variable>();
+        int index = 0; 
         public MainWindow()
         {
             InitializeComponent();
@@ -38,40 +39,125 @@ namespace Rajzi
             this.mainContainer.condition = true;
             this.mainContainer.panel = new StackPanel();
             MainCanvas.Children.Add(this.mainContainer.panel);
-            var grid = Blocks.CreateBlockWithType(BlockType.Main, this.mainContainer, new MouseButtonEventHandler(OnElementClick), 0);
+            var grid = Blocks.CreateBlockWithType(BlockType.Main, this.mainContainer, new MouseButtonEventHandler(OnElementClick), "Main", 0);
             ((Label)grid.Children[0]).Tag = this.mainContainer;
         }
 
         private void AddElement(object sender)
         {
             var eventHandler = new MouseButtonEventHandler(OnElementClick);
-            switch (((Rectangle)sender).Name) {
-                case "Variable":
+            switch (((Label)sender).Name) {
+                case "Input":
                     if (selectedElement == null)
                         break;
 
                     Parameter param = new Parameter();
                     if (selectedElement is Parameter)
                     {
-                        param.InitElement(selectedElement.container, eventHandler);
+                        param.createGrid(BlockType.Input, eventHandler);
+                        param.InitElement(selectedElement.container, eventHandler, "Input", 1);
                         var ind = Grid.GetColumn(selectedElement.grid);
-                        Element.AddParameter(param, ind, (Parameter)selectedElement);
+                        Element.AddParameter(param, ind, (Parameter)selectedElement, new Func<Variable, Variable>(variable =>
+                        {
+                            var value = ((TextBox)param.grid.Children[1]).Text;
+                            Variable var = new Variable();
+                            var.Type = VariableType.Bool;
+                            var.value = new double[1];
+                            
+                            try
+                            {
+                                int val = Convert.ToInt32(value);
+                                var.value = val;
+                            }
+                            catch
+                            {
+                                var.value = value;
+                            }
+
+                            return var;
+                        }));
                     }
                     break;
 
                 case "Statement":
                     var c = new Statement();
-                    selectedContainer.push(c, ++index, eventHandler);
+                    c.InitElement(selectedContainer, eventHandler, "If", 1);
+                    selectedContainer.push(c, ++index);
                     break;
 
                 case "Loop":
                     var l = new Loop();
-                    selectedContainer.push(l, ++index, eventHandler);
+                    l.InitElement(selectedContainer, eventHandler, "Loop", 3);
+                    selectedContainer.push(l, ++index);
                     break;
 
                 case "Action":
                     var f = new Action();
-                    selectedContainer.push(f, ++index, eventHandler);
+                    f.func = new Func<Action, bool>(act =>
+                    {
+                        MessageBox.Show($"{act.parameters[0].value(null).value}");
+
+                        return true;
+                    });
+
+                    f.InitElement(selectedContainer, eventHandler, "Print", 1);
+                    selectedContainer.push(f, ++index);
+                    break;
+
+                case "CreateVariable":
+                    var cv = new Action();
+                    Variable var = new Variable();
+                    cv.func = new Func<Action, bool>(act =>
+                    {
+                        var.value = act.parameters[0].value(null).value;
+                        var.name = (String)cv.parameters[1].value(null).value;
+                        return true;
+                    });
+
+                    cv.InitElement(selectedContainer, eventHandler, "Add variable", 2);
+                    selectedContainer.push(cv, ++index);
+                    variables.Add(var);
+                    break;
+
+                case "SetVariable":
+                    var set = new Action();
+                    set.func = new Func<Action, bool>(act =>
+                    {
+                        Variable var = set.parameters[0].value(null);
+                        var.value = set.parameters[1].value(null).value;
+                        return true;
+                    });
+
+                    set.InitElement(selectedContainer, eventHandler, "Set variable", 2);
+                    selectedContainer.push(set, ++index);
+                    break;
+
+                case "Variable":
+                    if (selectedElement == null)
+                        break;
+
+                    Parameter getparam = new Parameter();
+                    if (selectedElement is Parameter)
+                    {
+                        getparam.createGrid(BlockType.GetVariable, eventHandler);
+
+                        getparam.InitElement(selectedElement.container, eventHandler, "Input");
+                        var ind = Grid.GetColumn(selectedElement.grid);
+                        Element.AddParameter(getparam, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
+                        {
+                            var value = ((TextBox)getparam.grid.Children[1]).Text;
+
+                            foreach (var v in variables)
+                            {
+                                if (v.name == value)
+                                {
+                                    return v;
+                                }
+                            }
+
+                            throw new Exception("Failed to find variable");
+                        }));
+                    }
                     break;
             }
         }
@@ -83,18 +169,23 @@ namespace Rajzi
             {
                 if (el is Container && ((Container)el).firstChild != null)
                 {
-                    ((Container)el).SetCondition();
+                    if (el != this.mainContainer)
+                        ((Container)el).SetCondition();
+
+
                     if (((Container)el).condition)
                         el = ((Container)el).firstChild;
+                    else
+                        el = el.nextElement;
                 }
                 else
                 {
                     ((Action)el).func((Action)el);
+
                     while (el != null && el.nextElement == null)
                     {
                         el = el.container;
                     }
-
                     if (el != null)
                     {
                         el = el.nextElement;
