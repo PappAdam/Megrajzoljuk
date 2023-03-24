@@ -12,12 +12,14 @@
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
         <Grid x:Name="grid1" Background="#252323" MouseWheel="Grid_MouseWheel" Grid.Column="1">
+            <Grid x:Name="move">
             <Grid x:Name="grid2">
                 <Grid.RenderTransform>
                     <MatrixTransform/>
                 </Grid.RenderTransform>
                 <Canvas x:Name="Canvas" Grid.Column="1">
                 </Canvas>
+            </Grid>
             </Grid>
         </Grid>
         <Rectangle Grid.Column="0" Fill="#EB9486"></Rectangle>

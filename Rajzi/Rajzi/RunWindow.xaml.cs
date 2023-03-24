@@ -25,6 +25,7 @@ namespace Rajzi
         private bool _isMouseDown;
         private Point _startPoint;
         private int counter = 0;
+        TranslateTransform translateTransform = new TranslateTransform(0, 0);
         public RunWindow()
         {
             InitializeComponent();
@@ -176,14 +177,14 @@ namespace Rajzi
 
         private void PngSave(object sender, RoutedEventArgs e)
         {
-            RenderVisualService.RenderToPNGFile(Canvas, $"{FileName.Text}.png");
+            RenderVisualService.RenderToPNGFile(move, $"{FileName.Text}.png");
         }
 
 
         private void Grid1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             _isMouseDown = true;
-            _startPoint = e.GetPosition(Canvas);
+            _startPoint = e.GetPosition(move);
 
         }
 
@@ -194,13 +195,33 @@ namespace Rajzi
 
         private void Grid1_MouseMove(object sender, MouseEventArgs e)
         {
-            var currentPoint = e.GetPosition(Canvas);
+            var currentPoint = e.GetPosition(move);
             var offset = currentPoint - _startPoint;
             _startPoint = currentPoint;
 
             if (_isMouseDown)
             {
-                Canvas.Margin = new Thickness(Canvas.Margin.Left + offset.X, Canvas.Margin.Top + offset.Y, 0, 0);
+                foreach (UIElement child in Canvas.Children)
+                {
+                    double left = Canvas.GetLeft(child);
+                    double top = Canvas.GetTop(child);
+                    if (!double.IsNaN(left))
+                    {
+                        Canvas.SetLeft(child, left + offset.X);
+                    }
+                    else
+                    {
+                        Canvas.SetLeft(child, offset.X);
+                    }
+                    if (!double.IsNaN(top))
+                    {
+                        Canvas.SetTop(child, top + offset.Y);
+                    }
+                    else
+                    {
+                        Canvas.SetTop(child, offset.Y);
+                    }
+                }
             }
         }
 
