@@ -156,7 +156,7 @@ namespace Rajzi
 
     public class Action : Element
     {
-        public Func<Pencil, bool>? func;
+        //public Func<Pencil, bool>? func;
 
         public override void InitElement(Element container, MouseButtonEventHandler eventHandler)
         {

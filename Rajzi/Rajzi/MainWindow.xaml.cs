@@ -84,5 +84,11 @@ namespace Rajzi
                 selectedContainer = (Container)selectedElement;
             }
         }
+
+        private void RunWindow(object sender, RoutedEventArgs e)
+        {
+            Window myWindow = new RunWindow();
+            myWindow.Show();
+        }
     }
 }
