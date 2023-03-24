@@ -23,9 +23,12 @@ namespace Rajzi
     {        
         Button activeMenuBtn;
         BrushConverter bc = new BrushConverter();
+        bool menuIsActive = false;
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            grMainGrid.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
+            grMainGrid.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Pixel);
             List<Element> elements = new List<Element>();
         }
 
@@ -128,7 +131,7 @@ namespace Rajzi
             this.RegisterName(toolbox.Name, toolbox);
             DoubleAnimation toolboxExpand = new DoubleAnimation();
             toolboxExpand.From = toolbox.Width;
-            toolboxExpand.To = grMainGrid.ActualWidth/6;
+            toolboxExpand.To = gr_nav_holder.ActualWidth-15;
             toolboxExpand.Duration = new Duration(TimeSpan.FromMilliseconds(250));
 
             Storyboard.SetTargetName(toolboxExpand, toolbox.Name);
@@ -139,7 +142,7 @@ namespace Rajzi
 
             toolboxExpandeAnimation.Begin(toolbox);
 
-            
+            menuIsActive = true;
 
         }
         private void toolboxCollapseAnimation(Grid toolbox)
@@ -157,6 +160,8 @@ namespace Rajzi
             toolboxCollapseAnimation.Children.Add(toolboxExpand);
 
             toolboxCollapseAnimation.Begin(toolbox);
+
+            menuIsActive = false;
         }
         private void canvasCollapseAnimation(Canvas canvas)
         {
@@ -164,7 +169,7 @@ namespace Rajzi
             this.RegisterName(canvas.Name, canvas);
             DoubleAnimation canvasCollapse = new DoubleAnimation();
             canvasCollapse.From = canvas.ActualWidth;
-            canvasCollapse.To = (grMainGrid.ActualWidth/6)*4;
+            canvasCollapse.To = grMainGrid.ActualWidth-260;
             canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(250));
 
             Storyboard.SetTargetName(canvasCollapse, canvas.Name);
@@ -175,8 +180,10 @@ namespace Rajzi
 
             canvasCollapseAnimation.Begin(canvas);
 
-            grMainGrid.ColumnDefinitions[1].Width = new GridLength(1, GridUnitType.Star);
-            grMainGrid.ColumnDefinitions[2].Width = new GridLength(4, GridUnitType.Star);
+            grMainGrid.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
+            grMainGrid.ColumnDefinitions[1].Width = new GridLength(130, GridUnitType.Pixel);
+
+            Canvas.Width = canvas.ActualWidth;
         }
         private void canvasExpandAnimation(Canvas canvas)
         {
@@ -184,7 +191,7 @@ namespace Rajzi
             this.RegisterName(canvas.Name, canvas);
             DoubleAnimation canvasCollapse = new DoubleAnimation();
             canvasCollapse.From = canvas.ActualWidth;
-            canvasCollapse.To = (grMainGrid.ActualWidth / 6) * 5;
+            canvasCollapse.To = grMainGrid.ActualWidth - 130;
             canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(250));
 
             Storyboard.SetTargetName(canvasCollapse, canvas.Name);
@@ -195,12 +202,14 @@ namespace Rajzi
 
             canvasCollapseAnimation.Begin(canvas);
 
+            Canvas.Width = canvas.ActualWidth;
         }
 
         private void sizeChange(object sender, SizeChangedEventArgs e)
         {
             grToolbox.Height = grMainGrid.ActualHeight*0.97;
-            grToolbox.Width = grMainGrid.Width / 6;
+            //Canvas.Width = grMainGrid.ActualWidth - (grToolbox.ActualWidth + gr_nav_holder.ActualWidth);
+            //MessageBox.Show($"grMain {grMainGrid.ActualWidth}, toolbox{grToolbox.ActualWidth}, navHolder{gr_nav_holder.ActualWidth} => {grMainGrid.ActualWidth - (grToolbox.ActualWidth + gr_nav_holder.ActualWidth)}, canvas {Canvas.ActualWidth}");
         }
     }
 }
