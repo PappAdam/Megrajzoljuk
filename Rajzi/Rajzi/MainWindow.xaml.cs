@@ -23,13 +23,13 @@ namespace Rajzi
     {        
         Button activeMenuBtn;
         BrushConverter bc = new BrushConverter();
-        bool menuIsActive = false;
+        bool startupResize = true;        
         public MainWindow()
         {
             InitializeComponent();
             grMainGrid.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
             grMainGrid.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Pixel);
-            List<Element> elements = new List<Element>();
+            List<Element> elements = new List<Element>();;
         }
 
         private void RunDraw(object sender, RoutedEventArgs e)
@@ -51,7 +51,18 @@ namespace Rajzi
 
         private void AddMenuContent(Button sender)
         {
-            grToolbox.Children.Clear();
+            stckToolbox.Children.Clear();
+            for (int element = 0; element < 4; element++)
+            {
+                Label lbl = new Label();
+                lbl.Height = 50;
+                lbl.Width = 150;
+                lbl.Content = $"opt_{element}";
+                lbl.FontSize = 24;
+                lbl.HorizontalContentAlignment= HorizontalAlignment.Center;
+                lbl.VerticalContentAlignment= VerticalAlignment.Center;
+                stckToolbox.Children.Add(lbl);                
+            }
         }
 
         private void MenuOpt(object sender, RoutedEventArgs e)
@@ -64,7 +75,7 @@ namespace Rajzi
                     if (activeMenuBtn == chosenMenuOpt)
                     {
                         BtnCollapseAnimation(activeMenuBtn);
-                        toolboxCollapseAnimation(grToolbox);
+                        toolboxCollapseAnimation(stckToolbox);
                         canvasExpandAnimation(Canvas);
                         activeMenuBtn = null;
                     }
@@ -78,10 +89,11 @@ namespace Rajzi
                 default:
                     BtnExpandAnimation(chosenMenuOpt);                    
                     canvasCollapseAnimation(Canvas);
-                    toolboxExpandAnimation(grToolbox);
+                    toolboxExpandAnimation(stckToolbox);
+                    AddMenuContent(chosenMenuOpt);
                     activeMenuBtn = chosenMenuOpt;
                     break;
-            }
+            }            
         }
 
 
@@ -125,28 +137,27 @@ namespace Rajzi
             ButtonExpandStorboard.Begin(nonActiveBtn);
         }
 
-        private void toolboxExpandAnimation(Grid toolbox)
+        private void toolboxExpandAnimation(StackPanel toolbox)
         {   
-            grToolbox.Height = grMainGrid.ActualHeight*0.97;
+            stckToolbox.Height = grMainGrid.ActualHeight*0.97;
             this.RegisterName(toolbox.Name, toolbox);
             DoubleAnimation toolboxExpand = new DoubleAnimation();
             toolboxExpand.From = toolbox.Width;
-            toolboxExpand.To = gr_nav_holder.ActualWidth-15;
+            toolboxExpand.To = 235;
             toolboxExpand.Duration = new Duration(TimeSpan.FromMilliseconds(250));
 
             Storyboard.SetTargetName(toolboxExpand, toolbox.Name);
-            Storyboard.SetTargetProperty(toolboxExpand, new PropertyPath(Grid.WidthProperty));
+            Storyboard.SetTargetProperty(toolboxExpand, new PropertyPath(StackPanel.WidthProperty));
 
             Storyboard toolboxExpandeAnimation = new Storyboard();
             toolboxExpandeAnimation.Children.Add(toolboxExpand);
 
             toolboxExpandeAnimation.Begin(toolbox);
 
-            menuIsActive = true;
-
         }
-        private void toolboxCollapseAnimation(Grid toolbox)
+        private void toolboxCollapseAnimation(StackPanel toolbox)
         {
+            toolbox.Children.Clear();
             this.RegisterName(toolbox.Name, toolbox);
             DoubleAnimation toolboxExpand = new DoubleAnimation();
             toolboxExpand.From = toolbox.ActualWidth;
@@ -154,22 +165,21 @@ namespace Rajzi
             toolboxExpand.Duration = new Duration(TimeSpan.FromMilliseconds(250));
 
             Storyboard.SetTargetName(toolboxExpand, toolbox.Name);
-            Storyboard.SetTargetProperty(toolboxExpand, new PropertyPath(Grid.WidthProperty));
+            Storyboard.SetTargetProperty(toolboxExpand, new PropertyPath(StackPanel.WidthProperty));
 
             Storyboard toolboxCollapseAnimation = new Storyboard();
             toolboxCollapseAnimation.Children.Add(toolboxExpand);
 
             toolboxCollapseAnimation.Begin(toolbox);
-
-            menuIsActive = false;
         }
         private void canvasCollapseAnimation(Canvas canvas)
         {
             canvas.HorizontalAlignment = HorizontalAlignment.Right;
             this.RegisterName(canvas.Name, canvas);
             DoubleAnimation canvasCollapse = new DoubleAnimation();
+
             canvasCollapse.From = canvas.ActualWidth;
-            canvasCollapse.To = grMainGrid.ActualWidth-260;
+            canvasCollapse.To = grMainGrid.ActualWidth-380;
             canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(250));
 
             Storyboard.SetTargetName(canvasCollapse, canvas.Name);
@@ -181,17 +191,16 @@ namespace Rajzi
             canvasCollapseAnimation.Begin(canvas);
 
             grMainGrid.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
-            grMainGrid.ColumnDefinitions[1].Width = new GridLength(130, GridUnitType.Pixel);
-
-            Canvas.Width = canvas.ActualWidth;
+            grMainGrid.ColumnDefinitions[1].Width = new GridLength(250, GridUnitType.Pixel);
         }
         private void canvasExpandAnimation(Canvas canvas)
         {
             canvas.HorizontalAlignment = HorizontalAlignment.Right;
             this.RegisterName(canvas.Name, canvas);
             DoubleAnimation canvasCollapse = new DoubleAnimation();
+
             canvasCollapse.From = canvas.ActualWidth;
-            canvasCollapse.To = grMainGrid.ActualWidth - 130;
+            canvasCollapse.To = grMainGrid.ActualWidth - gr_nav_holder.ActualWidth;
             canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(250));
 
             Storyboard.SetTargetName(canvasCollapse, canvas.Name);
@@ -201,15 +210,88 @@ namespace Rajzi
             canvasCollapseAnimation.Children.Add(canvasCollapse);
 
             canvasCollapseAnimation.Begin(canvas);
+        }
 
-            Canvas.Width = canvas.ActualWidth;
+        private void canvasExpandResize(Canvas canvas)
+        {
+            canvas.HorizontalAlignment = HorizontalAlignment.Right;
+            this.RegisterName(canvas.Name, canvas);
+            DoubleAnimation canvasCollapse = new DoubleAnimation();
+            canvasCollapse.From = canvas.ActualWidth;
+            switch (activeMenuBtn)
+            {
+                case null:
+                    canvasCollapse.To = grMainGrid.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth;
+                    break;
+                case not null:
+                    canvasCollapse.To = grMainGrid.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth -15;
+                    break;
+                default:
+                    break;
+            }
+            canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(1));
+
+            Storyboard.SetTargetName(canvasCollapse, canvas.Name);
+            Storyboard.SetTargetProperty(canvasCollapse, new PropertyPath(Canvas.WidthProperty));
+
+            Storyboard canvasCollapseAnimation = new Storyboard();
+            canvasCollapseAnimation.Children.Add(canvasCollapse);
+
+            canvasCollapseAnimation.Begin(canvas);
+        }
+
+        private void canvasCollapseResize(Canvas canvas)
+        {
+            canvas.HorizontalAlignment = HorizontalAlignment.Right;
+            this.RegisterName(canvas.Name, canvas);
+            DoubleAnimation canvasCollapse = new DoubleAnimation();
+            canvasCollapse.From = canvas.ActualWidth;
+            switch (activeMenuBtn)
+            {
+                case null:
+                    canvasCollapse.To = grMainGrid.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth;
+                    break;
+                case not null:
+                    canvasCollapse.To = grMainGrid.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth - 15;
+                    break;
+                default:
+                    break;
+            }
+            canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(1));
+
+            Storyboard.SetTargetName(canvasCollapse, canvas.Name);
+            Storyboard.SetTargetProperty(canvasCollapse, new PropertyPath(Canvas.WidthProperty));
+
+            Storyboard canvasCollapseAnimation = new Storyboard();
+            canvasCollapseAnimation.Children.Add(canvasCollapse);
+
+            canvasCollapseAnimation.Begin(canvas);
+
+            grMainGrid.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
+            grMainGrid.ColumnDefinitions[1].Width = new GridLength(250, GridUnitType.Pixel);
         }
 
         private void sizeChange(object sender, SizeChangedEventArgs e)
         {
-            grToolbox.Height = grMainGrid.ActualHeight*0.97;
-            //Canvas.Width = grMainGrid.ActualWidth - (grToolbox.ActualWidth + gr_nav_holder.ActualWidth);
-            //MessageBox.Show($"grMain {grMainGrid.ActualWidth}, toolbox{grToolbox.ActualWidth}, navHolder{gr_nav_holder.ActualWidth} => {grMainGrid.ActualWidth - (grToolbox.ActualWidth + gr_nav_holder.ActualWidth)}, canvas {Canvas.ActualWidth}");
+            stckToolbox.Height = grMainGrid.ActualHeight*0.97;
+            switch (startupResize)
+            {
+                case false:
+                    if (Canvas.ActualWidth < grMainGrid.ActualWidth -(stckToolbox.ActualWidth+gr_nav_holder.ActualWidth))
+                    {
+                        canvasExpandResize(Canvas);
+                    }
+                    else if (Canvas.ActualWidth > grMainGrid.ActualWidth - (stckToolbox.ActualWidth + gr_nav_holder.ActualWidth))
+                    {
+                        canvasCollapseResize(Canvas);
+                    }
+                    break;
+                case true:
+                    startupResize = false;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

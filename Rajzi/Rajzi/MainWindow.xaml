@@ -48,23 +48,22 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="Canvas" Grid.Column="2" Background="red"/>
-        <Grid x:Name="grToolbox"
+        <Canvas x:Name="Canvas" Grid.Column="2" Background="#252323"/>
+        <StackPanel x:Name="stckToolbox"
               Width="0"
-              MaxWidth="130"
+              MaxWidth="250"
               HorizontalAlignment="Left"
               Grid.Column="1"
               Background="#EB9486"
-              Margin="15 0 0 0"              
+              Margin="15 0 0 0"
               />
+        
         <Grid Background="#297373"
               x:Name="gr_nav_holder"
               Grid.Column="0"
               MinWidth="130"
               MaxWidth="130"
               >
-            <Grid>
-
                 <StackPanel x:Name="stpOptHolder"
                             Orientation="Vertical"
                             >
@@ -126,8 +125,6 @@
                             Style="{StaticResource MyButtonStyle}"
                          />
                 </StackPanel>
-
-            </Grid>
 
         </Grid>
     </Grid>
