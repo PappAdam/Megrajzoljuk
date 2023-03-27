@@ -1,6 +1,7 @@
 ﻿using Rajzi.Elements;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -29,7 +30,6 @@ namespace Rajzi
         Element selectedElement; 
         Statement mainContainer = new Statement();
         List<Variable> variables = new List<Variable>();
-        int index = 0; 
         public MainWindow()
         {
             InitializeComponent();
@@ -46,120 +46,7 @@ namespace Rajzi
         private void AddElement(object sender)
         {
             var eventHandler = new MouseButtonEventHandler(OnElementClick);
-            switch (((Label)sender).Name) {
-                case "Input":
-                    if (selectedElement == null)
-                        break;
-
-                    Parameter param = new Parameter();
-                    if (selectedElement is Parameter)
-                    {
-                        param.createGrid(BlockType.Input, eventHandler);
-                        param.InitElement(selectedElement.container, eventHandler, "Input", 1);
-                        var ind = Grid.GetColumn(selectedElement.grid);
-                        Element.AddParameter(param, ind, (Parameter)selectedElement, new Func<Variable, Variable>(variable =>
-                        {
-                            var value = ((TextBox)param.grid.Children[1]).Text;
-                            Variable var = new Variable();
-                            var.Type = VariableType.Bool;
-                            var.value = new double[1];
-                            
-                            try
-                            {
-                                int val = Convert.ToInt32(value);
-                                var.value = val;
-                            }
-                            catch
-                            {
-                                var.value = value;
-                            }
-
-                            return var;
-                        }));
-                    }
-                    break;
-
-                case "Statement":
-                    var c = new Statement();
-                    c.InitElement(selectedContainer, eventHandler, "If", 1);
-                    selectedContainer.push(c, ++index);
-                    break;
-
-                case "Loop":
-                    var l = new Loop();
-                    l.InitElement(selectedContainer, eventHandler, "Loop", 3);
-                    selectedContainer.push(l, ++index);
-                    break;
-
-                case "Action":
-                    var f = new Action();
-                    f.func = new Func<Action, bool>(act =>
-                    {
-                        MessageBox.Show($"{act.parameters[0].value(null).value}");
-
-                        return true;
-                    });
-
-                    f.InitElement(selectedContainer, eventHandler, "Print", 1);
-                    selectedContainer.push(f, ++index);
-                    break;
-
-                case "CreateVariable":
-                    var cv = new Action();
-                    Variable var = new Variable();
-                    cv.func = new Func<Action, bool>(act =>
-                    {
-                        var.value = act.parameters[0].value(null).value;
-                        var.name = (String)cv.parameters[1].value(null).value;
-                        return true;
-                    });
-
-                    cv.InitElement(selectedContainer, eventHandler, "Add variable", 2);
-                    selectedContainer.push(cv, ++index);
-                    variables.Add(var);
-                    break;
-
-                case "SetVariable":
-                    var set = new Action();
-                    set.func = new Func<Action, bool>(act =>
-                    {
-                        Variable var = set.parameters[0].value(null);
-                        var.value = set.parameters[1].value(null).value;
-                        return true;
-                    });
-
-                    set.InitElement(selectedContainer, eventHandler, "Set variable", 2);
-                    selectedContainer.push(set, ++index);
-                    break;
-
-                case "Variable":
-                    if (selectedElement == null)
-                        break;
-
-                    Parameter getparam = new Parameter();
-                    if (selectedElement is Parameter)
-                    {
-                        getparam.createGrid(BlockType.GetVariable, eventHandler);
-
-                        getparam.InitElement(selectedElement.container, eventHandler, "Input");
-                        var ind = Grid.GetColumn(selectedElement.grid);
-                        Element.AddParameter(getparam, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
-                        {
-                            var value = ((TextBox)getparam.grid.Children[1]).Text;
-
-                            foreach (var v in variables)
-                            {
-                                if (v.name == value)
-                                {
-                                    return v;
-                                }
-                            }
-
-                            throw new Exception("Failed to find variable");
-                        }));
-                    }
-                    break;
-            }
+            BlockInput.GetInput((Label)sender, selectedElement, selectedContainer, eventHandler, variables);
         }
 
         public void Run()
@@ -171,7 +58,6 @@ namespace Rajzi
                 {
                     if (el != this.mainContainer)
                         ((Container)el).SetCondition();
-
 
                     if (((Container)el).condition)
                         el = ((Container)el).firstChild;
@@ -188,13 +74,24 @@ namespace Rajzi
                     }
                     if (el != null)
                     {
-                        el = el.nextElement;
+                        if (el is Loop)
+                        {
+                            ((Container)el).SetCondition();
+                            if (((Container)el).condition)
+                            {
+                                el = ((Container)el).firstChild;
+                            }
+                        }
+                        else
+                        {
+                            el = el.nextElement;
+                        }
                     }
                 }
             }
         }
 
-        private void OnBlockDoubleClick(object sender, MouseButtonEventArgs e)
+        private void OnBlockClick(object sender, MouseButtonEventArgs e)
         {
             AddElement(sender);
         }

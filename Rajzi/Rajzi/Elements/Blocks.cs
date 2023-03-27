@@ -89,6 +89,7 @@ namespace Rajzi.Elements
             ColumnDefinition colDef = new ColumnDefinition();
             newGrid.ColumnDefinitions.Add(colDef);
             newGrid.Children.Add(new Label());
+            newGrid.Children[0].MouseLeftButtonDown += eventHandler;
 
             for (int i = 0; i < columns-1; i++)
             {

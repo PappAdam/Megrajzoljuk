@@ -29,30 +29,20 @@ namespace Rajzi.Elements
     public class Parameter : Element
     {
         public Func<Variable ,Variable>? value { get; set;} = null;
-        public int containedElementDepth = 0;
 
-        public void createGrid(BlockType type, MouseButtonEventHandler eventHandler)
+        public void createGrid(BlockType type, MouseButtonEventHandler eventHandler, String name, int cols = 0)
         {
-            String name;
-            switch (type) {
-                case BlockType.GetVariable:
-                    name = "Get";
-                    break;
-                case BlockType.Input:
-                    name = "Input";
-                    break;
-                default:
-                    name = "haha";
-                    break;
-            }
-
-            this.grid = Blocks.CreateBlockWithType(type, null, eventHandler, name, 0);
+            this.grid = Blocks.CreateBlockWithType(type, null, eventHandler, name, cols);
         }
 
-        public override void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0)
+        // Dont use it, does nothing
+        public override void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0){}
+
+        public void InitElement(Element container, MouseButtonEventHandler eventHandler)
         {
             this.container = container;
             this.InitParameters(eventHandler);
+            ((Label)this.grid.Children[0]).Tag = this;
         }
 
         public Parameter()

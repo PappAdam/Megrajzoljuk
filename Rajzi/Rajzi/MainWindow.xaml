@@ -5,25 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rajzi"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="800">
+        Title="MainWindow" Height="600" Width="1000">
     <Grid Background="#252323">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
          <Label Name="Debug" Content="Label" Canvas.Left="532" Canvas.Top="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="108" Background="#FFDA9696" Foreground="#FF250606" Grid.Column="1" Margin="522,10,0,0"/>
         <Canvas x:Name="MainCanvas" Grid.Column="1" >
 
         </Canvas>
-        <StackPanel Grid.Column="0" Background="#EB9486">
-            <Label Name="Action" Content="Action" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#dde" MouseLeftButtonDown="OnBlockDoubleClick"/>
-            <Label Name="CreateVariable" Content="Add variable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#a43" MouseLeftButtonDown="OnBlockDoubleClick"/>
-            <Label Name="Loop" Content="For Loop" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockDoubleClick"/>
-            <Label Name="Statement" Content="If statement" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockDoubleClick"/>
-            <Label Name="Input" Content="GetInput" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockDoubleClick"/>
-            <Label Name="Variable" Content="GetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockDoubleClick"/>
-            <Label Name="SetVariable" Content="SetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockDoubleClick"/>
-            <Button Content="RUN" Click="Button_Click"></Button>
-        </StackPanel>
+        <Grid Background="#EB9486">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Column="0" >
+                <Label Name="Action" Content="Action" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#dde" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="CreateVariable" Content="Add variable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#a43" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="While" Content="While Loop" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="Statement" Content="If statement" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="Input" Content="GetInput" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="Variable" Content="GetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="SetVariable" Content="SetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" >
+                <Label Name="a" Content="Compare" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#dde" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="b" Content="Add variable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#a43" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="c" Content="For Loop" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="d" Content="If statement" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="e" Content="GetInput" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="f" Content="GetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="g" Content="SetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
+            </StackPanel>
+         <Button Content="RUN" Click="Button_Click" Grid.Row="1" Grid.Column="1"></Button>
+        </Grid>
     </Grid>
 </Window>

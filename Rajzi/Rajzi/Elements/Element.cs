@@ -120,7 +120,6 @@ namespace Rajzi
         }
 
         public override void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0)
-
         {
             this.panel = new StackPanel();
             this.depth = ((Container)container).depth + 1;
@@ -138,9 +137,8 @@ namespace Rajzi
             this.InitParameters(eventHandler);
         }
 
-        public void push(Element element, int index)
+        public void push(Element element)
         {
-            element.index = index;
             if (this.firstChild == null)
             {
                 this.firstChild = element;
@@ -156,9 +154,14 @@ namespace Rajzi
 
         public void SetCondition()
         {
-            if (((double)this.parameters[0].value(null).value) != 0)
+            object value = this.parameters[0].value(null).value;
+            if (value is bool)
             {
-                this.condition = true;
+                this.condition = (bool)value;
+            }
+            else if (value is String)
+            {
+                this.condition = value == "true" ? true : false;
             }
             else
             {
