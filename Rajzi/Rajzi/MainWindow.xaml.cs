@@ -54,12 +54,12 @@ namespace Rajzi
             Element? el = this.mainContainer;
             while (el != null)
             {
-                if (el is Container && ((Container)el).firstChild != null)
+                if (el is Container)
                 {
                     if (el != this.mainContainer)
                         ((Container)el).SetCondition();
 
-                    if (((Container)el).condition)
+                    if (((Container)el).condition && ((Container)el).firstChild != null)
                         el = ((Container)el).firstChild;
                     else
                         el = el.nextElement;
@@ -68,24 +68,24 @@ namespace Rajzi
                 {
                     ((Action)el).func((Action)el);
 
+                    bool loop = false;
                     while (el != null && el.nextElement == null)
                     {
                         el = el.container;
-                    }
-                    if (el != null)
-                    {
                         if (el is Loop)
                         {
                             ((Container)el).SetCondition();
                             if (((Container)el).condition)
                             {
                                 el = ((Container)el).firstChild;
+                                loop = true;
+                                break;
                             }
                         }
-                        else
-                        {
-                            el = el.nextElement;
-                        }
+                    }
+                    if (!loop && el != null)
+                    {
+                        el = el.nextElement;
                     }
                 }
             }
@@ -102,6 +102,19 @@ namespace Rajzi
             if (selectedElement is Container)
             {
                 selectedContainer = (Container)selectedElement;
+            }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                if (selectedElement == selectedContainer)
+                {
+                    selectedContainer = (Container)selectedElement.container;
+                }
+                if (selectedElement != null)
+                    selectedElement.RemoveElement();
             }
         }
 

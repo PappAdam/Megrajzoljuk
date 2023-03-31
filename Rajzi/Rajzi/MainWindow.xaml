@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rajzi"
+        KeyDown="Window_KeyDown"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000">
     <Grid Background="#252323">
@@ -34,7 +35,7 @@
                 <Label Name="SetVariable" Content="SetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
             </StackPanel>
             <StackPanel Grid.Column="1" >
-                <Label Name="a" Content="Compare" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#dde" MouseLeftButtonDown="OnBlockClick"/>
+                <Label Name="Compare" Content="Compare" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#dde" MouseLeftButtonDown="OnBlockClick"/>
                 <Label Name="b" Content="Add variable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#a43" MouseLeftButtonDown="OnBlockClick"/>
                 <Label Name="c" Content="For Loop" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockClick"/>
                 <Label Name="d" Content="If statement" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockClick"/>

@@ -40,7 +40,20 @@ namespace Rajzi.Elements
                             }
                             catch
                             {
-                                var.value = value;
+                                if (value == "true")
+                                {
+                                    var.Type = VariableType.Bool;
+                                    var.value = true;
+                                }
+                                else if (value == "false") {
+                                    var.Type = VariableType.Bool;
+                                    var.value = false;
+                                }
+                                else
+                                {
+                                    var.Type = VariableType.String;
+                                    var.value = value;
+                                }
                             }
 
                             return var;
@@ -99,6 +112,28 @@ namespace Rajzi.Elements
 
                     set.InitElement(selectedContainer, eventHandler, "Set variable", 2);
                     selectedContainer.push(set);
+                    break;
+
+                case "Compare":
+                    var compare = new Parameter();
+                    if (selectedElement is Parameter)
+                    {
+                        compare.createGrid(BlockType.Parameter, eventHandler, sender.Name, 2);
+
+                        compare.InitElement(selectedElement.container, eventHandler);
+                        var ind = Grid.GetColumn(selectedElement.grid);
+                        Element.AddParameter(compare, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
+                        {
+                            var val1 = compare.parameters[0].value(null).value;
+                            var val2 = compare.parameters[0].value(null).value;
+                            Variable newVar = new Variable();
+                            newVar.Type = VariableType.Bool;
+                            newVar.value = (int)val1 == (int)val2;
+
+                            return newVar;
+                        }));
+                    }
+
                     break;
 
                 case "Variable":

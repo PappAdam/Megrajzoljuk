@@ -20,6 +20,7 @@ namespace Rajzi
         public int index = 0;
         public Element? container { get; set; } = null;
         public Element? nextElement { get; set; } = null;
+        public Element? prevElement { get; set; } = null;
         public Grid grid { get; set; } = null;
         public List<Parameter> parameters { get; set; } = new List<Parameter>();
 
@@ -79,12 +80,37 @@ namespace Rajzi
         {
             element.container = this.container;
             element.nextElement = this.nextElement;
+            element.prevElement = this;
+            if (this.nextElement != null)
+                this.nextElement.prevElement = element;
+
             this.nextElement = element;
         }
 
-        public void MoveElementBefore(Element element)
+
+        public void RemoveElement()
         {
-            element.nextElement = this;
+            if (this.nextElement != null) 
+                this.nextElement.prevElement = this.prevElement;
+            if (this.prevElement != null)
+                this.prevElement.nextElement = this.nextElement;
+
+            if (this.container is Container)
+            {
+                if (this is Container)
+                {
+                    ((Container)this.container).panel.Children.Remove(((Container)this).panel);
+                }
+                else
+                {
+                    ((Container)this.container).panel.Children.Remove(this.grid);
+                }
+                if (((Container)this.container).firstChild == this)
+                {
+                    ((Container)this.container).firstChild = this.nextElement;
+                }
+                ((Container)this.container).containedElementCount -= 1;
+            }
         }
 
         public abstract void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0);
@@ -154,14 +180,10 @@ namespace Rajzi
 
         public void SetCondition()
         {
-            object value = this.parameters[0].value(null).value;
-            if (value is bool)
+            Variable var = (Variable)this.parameters[0].value(null);
+            if (var.value is bool)
             {
-                this.condition = (bool)value;
-            }
-            else if (value is String)
-            {
-                this.condition = value == "true" ? true : false;
+                this.condition = (bool)var.value;
             }
             else
             {

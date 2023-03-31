@@ -20,8 +20,8 @@ namespace Rajzi.Elements
         GetVariable,
         Input,
         EmptyParam,
+        Parameter,
         Action,
-        Function
     }
     public class Blocks
     {
@@ -67,11 +67,14 @@ namespace Rajzi.Elements
                 case BlockType.EmptyParam:
                     ChangeGrid(newGrid, Color.FromRgb(60, 60, 60), Color.FromRgb(240, 240, 240), name);
                     break;
+
+                case BlockType.Parameter:
+                    ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), name);
+                    break;
+
                 case BlockType.Action:
                     ChangeGrid(newGrid, Color.FromRgb(233, 215, 88), Color.FromRgb(12, 20, 99), name);
                     newGrid.Margin = new Thickness(20 + 20 * container.depth, 3, 0, 0);
-                    break;
-                case BlockType.Function:
                     break;
             }
 
@@ -99,8 +102,6 @@ namespace Rajzi.Elements
                 newGrid.ColumnDefinitions.Add(colDef);
                 grid.Children[0].MouseLeftButtonDown += eventHandler;
                 newGrid.Children.Add(grid);
-
-                var ind = Grid.GetColumn(grid);
             }
 
             return newGrid;
