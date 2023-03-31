@@ -30,16 +30,16 @@ namespace Rajzi.Elements
                         {
                             var value = ((TextBox)param.grid.Children[1]).Text;
                             Variable var = new Variable();
-                            var.Type = VariableType.Bool;
-                            var.value = new double[1];
 
                             try
                             {
-                                int val = Convert.ToInt32(value);
+                                double val = Convert.ToDouble(value);
                                 var.value = val;
+                                var.Type = VariableType.Number;
                             }
                             catch
                             {
+                                var.Type = VariableType.Bool;
                                 if (value == "true")
                                 {
                                     var.Type = VariableType.Bool;
@@ -118,17 +118,66 @@ namespace Rajzi.Elements
                     var compare = new Parameter();
                     if (selectedElement is Parameter)
                     {
-                        compare.createGrid(BlockType.Parameter, eventHandler, sender.Name, 2);
-
+                        compare.createGrid(BlockType.Compare, eventHandler, sender.Name, 2);
                         compare.InitElement(selectedElement.container, eventHandler);
                         var ind = Grid.GetColumn(selectedElement.grid);
                         Element.AddParameter(compare, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
                         {
-                            var val1 = compare.parameters[0].value(null).value;
-                            var val2 = compare.parameters[0].value(null).value;
+                            var val1 = compare.parameters[0].value(null);
+                            var val2 = compare.parameters[1].value(null);
+                            var compSign = ((ComboBox)compare.grid.Children[3]).SelectedValue.ToString();
                             Variable newVar = new Variable();
                             newVar.Type = VariableType.Bool;
-                            newVar.value = (int)val1 == (int)val2;
+                            switch (val1.Type)
+                            {
+                                case VariableType.Number:
+                                    switch (compSign)
+                                    {
+                                        case "=":
+                                            newVar.value = (double)val1.value == (double)val2.value;
+                                            break;
+
+                                        case "!=":
+                                            newVar.value = (double)val1.value != (double)val2.value;
+                                            break;
+
+                                        case ">=":
+                                            newVar.value = (double)val1.value >= (double)val2.value;
+                                            break;
+
+                                        case "<=":
+                                            newVar.value = (double)val1.value <= (double)val2.value;
+                                            break;
+
+                                        case ">":
+                                            newVar.value = (double)val1.value > (double)val2.value;
+                                            break;
+
+                                        case "<":
+                                            newVar.value = (double)val1.value < (double)val2.value;
+                                            break;
+
+                                        default:
+                                            throw new Exception("Couldn't recognise compare sign");
+                                    }
+                                    break;
+
+                                case VariableType.Bool:
+                                    switch (compSign)
+                                    {
+                                        case "=":
+                                            newVar.value = (bool)val1.value == (bool)val2.value;
+                                            break;
+
+                                        case "!=":
+                                            newVar.value = (bool)val1.value != (bool)val2.value;
+                                            break;
+
+                                        default:
+                                            throw new Exception("Couldn't recognise compare sign");
+                                    }
+                                    break;
+                            }
 
                             return newVar;
                         }));

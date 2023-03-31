@@ -20,7 +20,7 @@ namespace Rajzi.Elements
         GetVariable,
         Input,
         EmptyParam,
-        Parameter,
+        Compare,
         Action,
     }
     public class Blocks
@@ -68,8 +68,20 @@ namespace Rajzi.Elements
                     ChangeGrid(newGrid, Color.FromRgb(60, 60, 60), Color.FromRgb(240, 240, 240), name);
                     break;
 
-                case BlockType.Parameter:
+                case BlockType.Compare:
                     ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), name);
+                    var compSign = new ComboBox();
+                    compSign.Width = 50;
+                    compSign.Items.Add("=");
+                    compSign.Items.Add("!=");
+                    compSign.Items.Add(">=");
+                    compSign.Items.Add("<=");
+                    compSign.Items.Add("<");
+                    compSign.Items.Add(">");
+                    var compSignCD = new ColumnDefinition();
+                    newGrid.ColumnDefinitions.Add(compSignCD);
+                    newGrid.Children.Add(compSign);
+                    Grid.SetColumn(compSign, 3);
                     break;
 
                 case BlockType.Action:
