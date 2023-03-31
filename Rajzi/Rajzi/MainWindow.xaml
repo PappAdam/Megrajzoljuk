@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rajzi"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800"
-        WindowStyle="ThreeDBorderWindow"
+        Title="Rajzi" Height="600" Width="800"
+        WindowStyle="None"
+        WindowState="Normal"        
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
         MinHeight="300"
-        MinWidth="500"
+        MinWidth="500"        
         >    
     <Window.Resources>
         <Style x:Key="MyButtonStyle" TargetType="Button">
@@ -40,25 +41,58 @@
             </Setter>
         </Style>
     </Window.Resources>
-    
-    <Grid x:Name="grMainGrid"
-          Background="#252323" SizeChanged="sizeChange">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Canvas x:Name="Canvas" Grid.Column="2" Background="#252323"/>
-        <StackPanel x:Name="stckToolbox"
+    <Grid x:Name="grMainGrid">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        
+        <DockPanel x:Name="RootWindow"
+                   Grid.Row="0"
+                   Background="Red">
+            <DockPanel x:Name="TitleBar" DockPanel.Dock="Top">
+                <Button x:Name="CloseButton"
+                        Content="X"
+                        Click="CloseButton_Click"
+                        DockPanel.Dock="Right"
+                        Width="20"
+                        Margin="15 0 0 0"/>
+                <Button x:Name="MaxButton"
+                        Content="Restore"
+                        Click="MaximizeButton_Click"
+                        DockPanel.Dock="Right"
+                        Margin="15 0 0 0"/>
+                <Button x:Name="MinButton" Content="Min"
+                    Click="MinimizeButton_Click"
+                    DockPanel.Dock="Right" />
+
+                <TextBlock HorizontalAlignment="Center">Application Name</TextBlock>
+            </DockPanel>
+
+            <ContentControl Content="{Binding CurrentPage}" />
+        </DockPanel>
+
+        <Grid x:Name="grContent"
+              Background="#252323"
+              SizeChanged="sizeChange"
+              Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Canvas x:Name="Canvas" Grid.Column="2" Background="#252323"/>
+            <StackPanel x:Name="stckToolbox"
               Width="0"
               MaxWidth="250"
               HorizontalAlignment="Left"
               Grid.Column="1"
               Background="#EB9486"
-              Margin="15 0 0 0"
+              Margin="15 0 0 0"              
               />
-        
-        <Grid Background="#297373"
+
+            <Grid Background="#297373"
               x:Name="gr_nav_holder"
               Grid.Column="0"
               MinWidth="130"
@@ -126,6 +160,7 @@
                          />
                 </StackPanel>
 
+            </Grid>
         </Grid>
-    </Grid>
+    </Grid>    
 </Window>

@@ -27,9 +27,45 @@ namespace Rajzi
         public MainWindow()
         {
             InitializeComponent();
-            grMainGrid.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
-            grMainGrid.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Pixel);
+            grContent.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
+            grContent.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Pixel);
             List<Element> elements = new List<Element>();;
+        }
+
+        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            AdjustWindowSize();
+        }
+
+        /// <summary>
+        /// Minimized Button_Clicked
+        /// </summary>
+        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        /// <summary>
+        /// Adjusts the WindowSize to correct parameters when Maximize button is clicked
+        /// </summary>
+        private void AdjustWindowSize()
+        {
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+                MaxButton.Content = "1";
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+                MaxButton.Content = "2";
+            }
+
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.MainWindow.Close();
         }
 
         private void RunDraw(object sender, RoutedEventArgs e)
@@ -59,9 +95,9 @@ namespace Rajzi
                 lbl.Width = 150;
                 lbl.Content = $"opt_{element}";
                 lbl.FontSize = 24;
-                lbl.HorizontalContentAlignment= HorizontalAlignment.Center;
-                lbl.VerticalContentAlignment= VerticalAlignment.Center;
-                stckToolbox.Children.Add(lbl);                
+                lbl.HorizontalContentAlignment = HorizontalAlignment.Center;
+                lbl.VerticalContentAlignment = VerticalAlignment.Center;
+                stckToolbox.Children.Add(lbl);
             }
         }
 
@@ -139,7 +175,7 @@ namespace Rajzi
 
         private void toolboxExpandAnimation(StackPanel toolbox)
         {   
-            stckToolbox.Height = grMainGrid.ActualHeight*0.97;
+            stckToolbox.Height = grContent.ActualHeight*0.97;
             this.RegisterName(toolbox.Name, toolbox);
             DoubleAnimation toolboxExpand = new DoubleAnimation();
             toolboxExpand.From = toolbox.Width;
@@ -179,7 +215,7 @@ namespace Rajzi
             DoubleAnimation canvasCollapse = new DoubleAnimation();
 
             canvasCollapse.From = canvas.ActualWidth;
-            canvasCollapse.To = grMainGrid.ActualWidth-380;
+            canvasCollapse.To = grContent.ActualWidth-380;
             canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(250));
 
             Storyboard.SetTargetName(canvasCollapse, canvas.Name);
@@ -190,8 +226,8 @@ namespace Rajzi
 
             canvasCollapseAnimation.Begin(canvas);
 
-            grMainGrid.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
-            grMainGrid.ColumnDefinitions[1].Width = new GridLength(250, GridUnitType.Pixel);
+            grContent.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
+            grContent.ColumnDefinitions[1].Width = new GridLength(250, GridUnitType.Pixel);
         }
         private void canvasExpandAnimation(Canvas canvas)
         {
@@ -200,7 +236,7 @@ namespace Rajzi
             DoubleAnimation canvasCollapse = new DoubleAnimation();
 
             canvasCollapse.From = canvas.ActualWidth;
-            canvasCollapse.To = grMainGrid.ActualWidth - gr_nav_holder.ActualWidth;
+            canvasCollapse.To = grContent.ActualWidth - gr_nav_holder.ActualWidth;
             canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(250));
 
             Storyboard.SetTargetName(canvasCollapse, canvas.Name);
@@ -221,10 +257,10 @@ namespace Rajzi
             switch (activeMenuBtn)
             {
                 case null:
-                    canvasCollapse.To = grMainGrid.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth;
+                    canvasCollapse.To = grContent.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth;
                     break;
                 case not null:
-                    canvasCollapse.To = grMainGrid.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth -15;
+                    canvasCollapse.To = grContent.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth -15;
                     break;
                 default:
                     break;
@@ -249,10 +285,10 @@ namespace Rajzi
             switch (activeMenuBtn)
             {
                 case null:
-                    canvasCollapse.To = grMainGrid.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth;
+                    canvasCollapse.To = grContent.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth;
                     break;
                 case not null:
-                    canvasCollapse.To = grMainGrid.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth - 15;
+                    canvasCollapse.To = grContent.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth - 15;
                     break;
                 default:
                     break;
@@ -267,21 +303,21 @@ namespace Rajzi
 
             canvasCollapseAnimation.Begin(canvas);
 
-            grMainGrid.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
-            grMainGrid.ColumnDefinitions[1].Width = new GridLength(250, GridUnitType.Pixel);
+            grContent.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
+            grContent.ColumnDefinitions[1].Width = new GridLength(250, GridUnitType.Pixel);
         }
 
         private void sizeChange(object sender, SizeChangedEventArgs e)
         {
-            stckToolbox.Height = grMainGrid.ActualHeight*0.97;
+            stckToolbox.Height = grContent.ActualHeight*0.97;
             switch (startupResize)
             {
                 case false:
-                    if (Canvas.ActualWidth < grMainGrid.ActualWidth -(stckToolbox.ActualWidth+gr_nav_holder.ActualWidth))
+                    if (Canvas.ActualWidth < grContent.ActualWidth -(stckToolbox.ActualWidth+gr_nav_holder.ActualWidth))
                     {
                         canvasExpandResize(Canvas);
                     }
-                    else if (Canvas.ActualWidth > grMainGrid.ActualWidth - (stckToolbox.ActualWidth + gr_nav_holder.ActualWidth))
+                    else if (Canvas.ActualWidth > grContent.ActualWidth - (stckToolbox.ActualWidth + gr_nav_holder.ActualWidth))
                     {
                         canvasCollapseResize(Canvas);
                     }
