@@ -1,6 +1,7 @@
 ﻿using Rajzi.Elements;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
@@ -25,10 +26,10 @@ namespace Rajzi
     /// </summary>
     public partial class MainWindow : Window
     {
-        Container selectedContainer;
-        Element selectedElement;
+        Container selectedContainer; 
+        Element selectedElement; 
         Statement mainContainer = new Statement();
-        int index = 0;
+        List<Variable> variables = new List<Variable>();
         public MainWindow()
         {
             InitializeComponent();
@@ -38,40 +39,59 @@ namespace Rajzi
             this.mainContainer.condition = true;
             this.mainContainer.panel = new StackPanel();
             MainCanvas.Children.Add(this.mainContainer.panel);
-            var grid = Blocks.CreateBlockWithType(BlockType.Main, this.mainContainer, new MouseButtonEventHandler(OnElementClick), 0);
+            var grid = Blocks.CreateBlockWithType(BlockType.Main, this.mainContainer, new MouseButtonEventHandler(OnElementClick), "Main", 0);
             ((Label)grid.Children[0]).Tag = this.mainContainer;
         }
 
         private void AddElement(object sender)
         {
             var eventHandler = new MouseButtonEventHandler(OnElementClick);
-            switch (((Rectangle)sender).Name) {
-                case "Variable":
-                    if (selectedElement == null)
-                        break;
+            BlockInput.GetInput((Label)sender, selectedElement, selectedContainer, eventHandler, variables);
+        }
 
-                    Parameter param = new Parameter();
-                    if (selectedElement is Parameter)
+        public void Run()
+        {
+            Element? el = this.mainContainer;
+            while (el != null)
+            {
+                if (el is Container)
+                {
+                    if (el != this.mainContainer)
+                        ((Container)el).SetCondition();
+
+                    if (((Container)el).condition && ((Container)el).firstChild != null)
+                        el = ((Container)el).firstChild;
+                    else
+                        el = el.nextElement;
+                }
+                else
+                {
+                    ((Action)el).func((Action)el);
+
+                    bool loop = false;
+                    while (el != null && el.nextElement == null)
                     {
-                        param.InitElement(selectedElement.container, eventHandler);
-                        var ind = Grid.GetColumn(selectedElement.grid);
-                        Element.AddParameter(param, ind, (Parameter)selectedElement);
+                        el = el.container;
+                        if (el is Loop)
+                        {
+                            ((Container)el).SetCondition();
+                            if (((Container)el).condition)
+                            {
+                                el = ((Container)el).firstChild;
+                                loop = true;
+                                break;
+                            }
+                        }
                     }
-                    break;
-
-                case "Container":
-                    var c = new Container();
-                    selectedContainer.push(c, ++index, eventHandler);
-                    break;
-
-                case "Function":
-                    var f = new Action();
-                    selectedContainer.push(f, ++index, eventHandler);
-                    break;
+                    if (!loop && el != null)
+                    {
+                        el = el.nextElement;
+                    }
+                }
             }
         }
 
-        private void OnBlockDoubleClick(object sender, MouseButtonEventArgs e)
+        private void OnBlockClick(object sender, MouseButtonEventArgs e)
         {
             AddElement(sender);
         }
@@ -85,10 +105,22 @@ namespace Rajzi
             }
         }
 
-        private void RunWindow(object sender, RoutedEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            Window myWindow = new RunWindow();
-            myWindow.Show();
+            if (e.Key == Key.Delete)
+            {
+                if (selectedElement == selectedContainer)
+                {
+                    selectedContainer = (Container)selectedElement.container;
+                }
+                if (selectedElement != null)
+                    selectedElement.RemoveElement();
+            }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            this.Run();
         }
     }
 }

@@ -16,11 +16,8 @@ namespace Rajzi.Elements
         // TODO add run loop => break
     }
 
-    internal class Statement : Container
+    public class Statement : Container
     {
-        internal Statement()
-        {
 
-        }
     }
 }

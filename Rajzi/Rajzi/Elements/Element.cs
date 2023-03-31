@@ -20,23 +20,17 @@ namespace Rajzi
         public int index = 0;
         public Element? container { get; set; } = null;
         public Element? nextElement { get; set; } = null;
+        public Element? prevElement { get; set; } = null;
         public Grid grid { get; set; } = null;
         public List<Parameter> parameters { get; set; } = new List<Parameter>();
 
-        public static void AddParameter(Parameter parameter, int index, Parameter selectedParam)
+        public static void AddParameter(Parameter parameter, int index, Parameter selectedParam, Func<Variable, Variable> value)
         {
-            selectedParam.container.parameters.Add(parameter);
+            selectedParam.container.parameters[index-1] = parameter;
 
             Blocks.ExpandGrid(parameter.grid, index, selectedParam);
 
-            selectedParam.container.parameters[index].value = new Func<Variable[], Variable>(x =>
-            {
-                if (x != null)
-                {
-                    return x[0];
-                }
-                throw new NullReferenceException();
-            });
+            parameter.value = value;
         }
 
         public void InitParameters(MouseButtonEventHandler eventHandler)
@@ -44,9 +38,11 @@ namespace Rajzi
             for (int i = 1; i < this.grid.Children.Count; i++)
             {
                 this.parameters.Add(new Parameter());
-                ((Label)(((Grid)grid.Children[i]).Children[0])).Tag = this.parameters[i - 1];
                 this.parameters[i - 1].container = this;
-                this.parameters[i - 1].grid = (Grid)this.grid.Children[i];
+                if (this.grid.Children[i] is Grid) {
+                    ((Label)(((Grid)grid.Children[i]).Children[0])).Tag = this.parameters[i - 1];
+                    this.parameters[i - 1].grid = (Grid)this.grid.Children[i];
+                }
             }
         }
 
@@ -84,16 +80,40 @@ namespace Rajzi
         {
             element.container = this.container;
             element.nextElement = this.nextElement;
+            element.prevElement = this;
+            if (this.nextElement != null)
+                this.nextElement.prevElement = element;
+
             this.nextElement = element;
-
         }
 
-        public void MoveElementBefore(Element element)
+
+        public void RemoveElement()
         {
-            element.nextElement = this;
+            if (this.nextElement != null) 
+                this.nextElement.prevElement = this.prevElement;
+            if (this.prevElement != null)
+                this.prevElement.nextElement = this.nextElement;
+
+            if (this.container is Container)
+            {
+                if (this is Container)
+                {
+                    ((Container)this.container).panel.Children.Remove(((Container)this).panel);
+                }
+                else
+                {
+                    ((Container)this.container).panel.Children.Remove(this.grid);
+                }
+                if (((Container)this.container).firstChild == this)
+                {
+                    ((Container)this.container).firstChild = this.nextElement;
+                }
+                ((Container)this.container).containedElementCount -= 1;
+            }
         }
 
-        public abstract void InitElement(Element container, MouseButtonEventHandler eventHandler);
+        public abstract void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0);
     }
 
     public class Container : Element
@@ -125,21 +145,26 @@ namespace Rajzi
             }
         }
 
-        public override void InitElement(Element container, MouseButtonEventHandler eventHandler)
+        public override void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0)
         {
             this.panel = new StackPanel();
             this.depth = ((Container)container).depth + 1;
-            this.grid = Blocks.CreateBlockWithType(BlockType.Loop, this, eventHandler, 3);
+            if (this is Loop)
+            {
+                this.grid = Blocks.CreateBlockWithType(BlockType.Loop, this, eventHandler, "Loop", cols);
+            }
+            else
+            {
+                this.grid = Blocks.CreateBlockWithType(BlockType.Statement, this, eventHandler, "If", cols);
+            }
             ((Label)grid.Children[0]).Tag = this;
             ((Label)grid.Children[0]).MouseLeftButtonDown += eventHandler;
             ((Container)container).panel.Children.Add(this.panel);
             this.InitParameters(eventHandler);
         }
 
-        public void push(Element element, int index, MouseButtonEventHandler mainBlockEventHandler)
+        public void push(Element element)
         {
-            element.index = index;
-            element.InitElement(this, mainBlockEventHandler);
             if (this.firstChild == null)
             {
                 this.firstChild = element;
@@ -152,15 +177,28 @@ namespace Rajzi
                 this.containedElementCount++;
             }
         }
+
+        public void SetCondition()
+        {
+            Variable var = (Variable)this.parameters[0].value(null);
+            if (var.value is bool)
+            {
+                this.condition = (bool)var.value;
+            }
+            else
+            {
+                this.condition = false;
+            }
+        }
     }
 
     public class Action : Element
     {
-        //public Func<Pencil, bool>? func;
+        public Func<Action, bool>? func;
 
-        public override void InitElement(Element container, MouseButtonEventHandler eventHandler)
+        public override void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0)
         {
-            var grid = Blocks.CreateBlockWithType(BlockType.Action, (Container)container, eventHandler);
+            var grid = Blocks.CreateBlockWithType(BlockType.Action, (Container)container, eventHandler, name, cols);
             ((Label)grid.Children[0]).Tag = this;
             ((Label)grid.Children[0]).MouseLeftButtonDown += eventHandler;
             ((Action)this).grid = grid;
