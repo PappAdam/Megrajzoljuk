@@ -22,50 +22,16 @@ namespace Rajzi
     public partial class MainWindow : Window
     {        
         Button activeMenuBtn;
+        Label droppedLabel;
         BrushConverter bc = new BrushConverter();
-        bool startupResize = true;        
+        bool startupResize = true;
+
         public MainWindow()
         {
             InitializeComponent();
             grContent.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
             grContent.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Pixel);
             List<Element> elements = new List<Element>();;
-        }
-
-        private void MaximizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            AdjustWindowSize();
-        }
-
-        /// <summary>
-        /// Minimized Button_Clicked
-        /// </summary>
-        private void MinimizeButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Minimized;
-        }
-
-        /// <summary>
-        /// Adjusts the WindowSize to correct parameters when Maximize button is clicked
-        /// </summary>
-        private void AdjustWindowSize()
-        {
-            if (this.WindowState == WindowState.Maximized)
-            {
-                this.WindowState = WindowState.Normal;
-                MaxButton.Content = "1";
-            }
-            else
-            {
-                this.WindowState = WindowState.Maximized;
-                MaxButton.Content = "2";
-            }
-
-        }
-
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.MainWindow.Close();
         }
 
         private void RunDraw(object sender, RoutedEventArgs e)
@@ -95,6 +61,13 @@ namespace Rajzi
                 lbl.Width = 150;
                 lbl.Content = $"opt_{element}";
                 lbl.FontSize = 24;
+                Thickness margin = lbl.Margin;
+                margin.Top = 15;
+                lbl.Margin = margin;
+                lbl.Background = Brushes.Red;
+
+                lbl.MouseMove += new MouseEventHandler(Source_MouseMove);
+
                 lbl.HorizontalContentAlignment = HorizontalAlignment.Center;
                 lbl.VerticalContentAlignment = VerticalAlignment.Center;
                 stckToolbox.Children.Add(lbl);
@@ -325,9 +298,19 @@ namespace Rajzi
                 case true:
                     startupResize = false;
                     break;
-                default:
-                    break;
             }
+        }
+
+        private void Source_MouseMove(object sender, MouseEventArgs e)
+        {
+            droppedLabel = sender as Label;
+            DragDrop.DoDragDrop(stckToolbox,sender , DragDropEffects.Copy);
+        }
+
+        private void Canvas_Drop(object sender, DragEventArgs e)
+        {            
+            //MessageBox.Show($"{droppedLabel}");
+
         }
     }
 }
