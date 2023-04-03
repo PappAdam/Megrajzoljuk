@@ -103,19 +103,24 @@ namespace Rajzi
             {
                 selectedContainer = (Container)selectedElement;
             }
+
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                selectedElement.RemoveElement();
+            }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Delete)
-            {
-                if (selectedElement == selectedContainer)
-                {
-                    selectedContainer = (Container)selectedElement.container;
-                }
-                if (selectedElement != null)
-                    selectedElement.RemoveElement();
-            }
+            //if (e.Key == Key.Delete)
+            //{
+            //    if (selectedElement == selectedContainer)
+            //    {
+            //        selectedContainer = (Container)selectedElement.container;
+            //    }
+            //    if (selectedElement != null)
+            //        selectedElement.RemoveElement();
+            //}
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -22,6 +22,8 @@ namespace Rajzi.Elements
         EmptyParam,
         Compare,
         Action,
+        Logical,
+        Math,
     }
     public class Blocks
     {
@@ -84,9 +86,27 @@ namespace Rajzi.Elements
                     Grid.SetColumn(compSign, 3);
                     break;
 
+                case BlockType.Logical:
+                    ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), name);
+                    var logOp = new ComboBox();
+                    logOp.Width = 50;
+                    logOp.Items.Add("OR");
+                    logOp.Items.Add("AND");
+                    logOp.Items.Add("XOR");
+
+                    var logOpCD = new ColumnDefinition();
+                    newGrid.ColumnDefinitions.Add(logOpCD);
+                    newGrid.Children.Add(logOp);
+                    Grid.SetColumn(logOp, 3);
+                    break;
+
                 case BlockType.Action:
                     ChangeGrid(newGrid, Color.FromRgb(233, 215, 88), Color.FromRgb(12, 20, 99), name);
                     newGrid.Margin = new Thickness(20 + 20 * container.depth, 3, 0, 0);
+                    break;
+
+                case BlockType.Math:
+                    ChangeGrid(newGrid, Color.FromRgb(129, 30, 60), Color.FromRgb(30, 120, 80), name);
                     break;
             }
 
@@ -104,7 +124,7 @@ namespace Rajzi.Elements
             ColumnDefinition colDef = new ColumnDefinition();
             newGrid.ColumnDefinitions.Add(colDef);
             newGrid.Children.Add(new Label());
-            newGrid.Children[0].MouseLeftButtonDown += eventHandler;
+            newGrid.Children[0].MouseDown += eventHandler;
 
             for (int i = 0; i < columns-1; i++)
             {
@@ -112,7 +132,7 @@ namespace Rajzi.Elements
                 colDef = new ColumnDefinition();
                 Grid.SetColumn(grid, i + 1);
                 newGrid.ColumnDefinitions.Add(colDef);
-                grid.Children[0].MouseLeftButtonDown += eventHandler;
+                grid.Children[0].MouseDown += eventHandler;
                 newGrid.Children.Add(grid);
             }
 

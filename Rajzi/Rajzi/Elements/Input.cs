@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Input;
+using System.Reflection.Metadata;
+using System.Windows.Media.Media3D;
+using System.Xml.Linq;
 
 namespace Rajzi.Elements
 {
@@ -42,11 +45,9 @@ namespace Rajzi.Elements
                                 var.Type = VariableType.Bool;
                                 if (value == "true")
                                 {
-                                    var.Type = VariableType.Bool;
                                     var.value = true;
                                 }
                                 else if (value == "false") {
-                                    var.Type = VariableType.Bool;
                                     var.value = false;
                                 }
                                 else
@@ -91,13 +92,13 @@ namespace Rajzi.Elements
                     Variable var = new Variable();
                     cv.func = new Func<Action, bool>(act =>
                     {
-                        var.value = act.parameters[0].value(null).value;
-                        var.name = (String)cv.parameters[1].value(null).value;
+                        var.value = null;
+                        var.name = (String)cv.parameters[0].value(null).value;
                         variables.Add(var);
                         return true;
                     });
 
-                    cv.InitElement(selectedContainer, eventHandler, "Add variable", 2);
+                    cv.InitElement(selectedContainer, eventHandler, "Add variable", 1);
                     selectedContainer.push(cv);
                     break;
 
@@ -107,6 +108,7 @@ namespace Rajzi.Elements
                     {
                         Variable var = set.parameters[0].value(null);
                         var.value = set.parameters[1].value(null).value;
+                        var.Type = set.parameters[1].value(null).Type;
                         return true;
                     });
 
@@ -211,6 +213,156 @@ namespace Rajzi.Elements
                             throw new Exception("Failed to find variable");
                         }));
                     }
+                    break;
+
+                case "Add":
+                    if (selectedElement == null)
+                        break;
+
+                    Parameter addparam = new Parameter();
+                    if (selectedElement is Parameter)
+                    {
+                        addparam.createGrid(BlockType.Math, eventHandler, sender.Name, 2);
+
+                        addparam.InitElement(selectedElement.container, eventHandler);
+                        var ind = Grid.GetColumn(selectedElement.grid);
+                        Element.AddParameter(addparam, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
+                        {
+                            Variable var = new Variable();
+                            var.Type = VariableType.Number;
+
+                            if (addparam.parameters[0].value(null).Type != VariableType.Number || addparam.parameters[1].value(null).Type != VariableType.Number)
+                            {
+                                throw new Exception("Add operation only usable between Number type");
+                            }
+
+                            var.value = (double)addparam.parameters[0].value(null).value + (double)addparam.parameters[1].value(null).value;
+
+                            return var;
+                        }));
+                    }
+                    break;
+
+                case "Subtr":
+                    if (selectedElement == null)
+                        break;
+
+                    Parameter subparam = new Parameter();
+                    if (selectedElement is Parameter)
+                    {
+                        subparam.createGrid(BlockType.Math, eventHandler, sender.Name, 2);
+
+                        subparam.InitElement(selectedElement.container, eventHandler);
+                        var ind = Grid.GetColumn(selectedElement.grid);
+                        Element.AddParameter(subparam, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
+                        {
+                            Variable var = new Variable();
+                            var.Type = VariableType.Number;
+
+                            if (subparam.parameters[0].value(null).Type != VariableType.Number || subparam.parameters[1].value(null).Type != VariableType.Number)
+                            {
+                                throw new Exception("Subtract operation only usable between Number type");
+                            }
+
+                            var.value = (double)subparam.parameters[0].value(null).value - (double)subparam.parameters[1].value(null).value;
+
+                            return var;
+                        }));
+                    }
+                    break;
+
+                case "Multip":
+                    if (selectedElement == null)
+                        break;
+
+                    Parameter mulparam = new Parameter();
+                    if (selectedElement is Parameter)
+                    {
+                        mulparam.createGrid(BlockType.Math, eventHandler, sender.Name, 2);
+
+                        mulparam.InitElement(selectedElement.container, eventHandler);
+                        var ind = Grid.GetColumn(selectedElement.grid);
+                        Element.AddParameter(mulparam, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
+                        {
+                            Variable var = new Variable();
+                            var.Type = VariableType.Number;
+
+                            if (mulparam.parameters[0].value(null).Type != VariableType.Number || mulparam.parameters[1].value(null).Type != VariableType.Number)
+                            {
+                                throw new Exception("Multiply operation only usable between Number type");
+                            }
+
+                            var.value = (double)mulparam.parameters[0].value(null).value * (double)mulparam.parameters[1].value(null).value;
+
+                            return var;
+                        }));
+                    }
+                    break;
+
+                case "Divide":
+                    if (selectedElement == null)
+                        break;
+
+                    Parameter divparam = new Parameter();
+                    if (selectedElement is Parameter)
+                    {
+                        divparam.createGrid(BlockType.Math, eventHandler, sender.Name, 2);
+
+                        divparam.InitElement(selectedElement.container, eventHandler);
+                        var ind = Grid.GetColumn(selectedElement.grid);
+                        Element.AddParameter(divparam, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
+                        {
+                            Variable var = new Variable();
+                            var.Type = VariableType.Number;
+
+                            if (divparam.parameters[0].value(null).Type != VariableType.Number || divparam.parameters[1].value(null).Type != VariableType.Number)
+                            {
+                                throw new Exception("Divide operation only usable between Number type");
+                            }
+
+                            var.value = (double)divparam.parameters[0].value(null).value / (double)divparam.parameters[1].value(null).value;
+
+                            return var;
+                        }));
+                    }
+                    break;
+
+                case "Logical":
+                    var logical = new Parameter();
+                    if (selectedElement is Parameter)
+                    {
+                        logical.createGrid(BlockType.Logical, eventHandler, sender.Name, 2);
+                        logical.InitElement(selectedElement.container, eventHandler);
+                        var ind = Grid.GetColumn(selectedElement.grid);
+                        Element.AddParameter(logical, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
+                        {
+                            var val1 = logical.parameters[0].value(null);
+                            var val2 = logical.parameters[1].value(null);
+                            var compSign = ((ComboBox)logical.grid.Children[3]).SelectedValue.ToString();
+                            Variable newVar = new Variable();
+                            newVar.Type = VariableType.Bool;
+                            if(val1.Type != VariableType.Bool && val1.Type != VariableType.Bool)
+                            {
+                                throw new Exception("Logical operations require boolean types");
+                            }
+                            switch (compSign)
+                            {
+                                case "AND":
+                                    newVar.value = (bool)val1.value && (bool)val2.value;
+                                    break;
+
+                                case "OR":
+                                    newVar.value = (bool)val1.value || (bool)val2.value;
+                                    break;
+
+                                default:
+                                    throw new Exception("Couldn't recognise compare sign");
+                            }
+
+                            return newVar;
+                        }));
+                    }
+
                     break;
             }
         }
