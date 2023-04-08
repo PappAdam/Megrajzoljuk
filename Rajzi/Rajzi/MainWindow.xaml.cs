@@ -23,6 +23,15 @@ namespace Rajzi
     {        
         Button activeMenuBtn;
         Label droppedLabel;
+
+        public string[] menoOptContent =
+        {
+            "M1-O1;M1-O2;M1-O3;M1-O4",
+            "M2-O1;M2-O2;M2-O3;M2-O4",
+            "M3-O1;M3-O2;M3-O3;M3-O4",
+            "M4-O1;M4-O2;M4-O3;M4-O4"
+        };
+
         BrushConverter bc = new BrushConverter();
         bool startupResize = true;
 
@@ -48,30 +57,34 @@ namespace Rajzi
                     return true;
                 default:
                     return false;
-            }
+            }            
         }
 
-        private void AddMenuContent(Button sender)
+        private void AddMenuContent(Button sender, string[] contents)
         {
             stckToolbox.Children.Clear();
-            for (int element = 0; element < 4; element++)
+
+            int activeBtnNum = int.Parse(sender.Name.ToString().Remove(0, sender.Name.Length - 1));
+            string[] actContent = contents[activeBtnNum - 1].Split(';');
+            for (int c = 0; c < actContent.Length; c++)
             {
                 Label lbl = new Label();
                 lbl.Height = 50;
                 lbl.Width = 150;
-                lbl.Content = $"opt_{element}";
+                lbl.Content = $"{actContent[c]}";
                 lbl.FontSize = 24;
                 Thickness margin = lbl.Margin;
                 margin.Top = 15;
                 lbl.Margin = margin;
                 lbl.Background = Brushes.Red;
 
-                lbl.MouseMove += new MouseEventHandler(Source_MouseMove);
+                lbl.MouseMove += Source_MouseMove;
 
                 lbl.HorizontalContentAlignment = HorizontalAlignment.Center;
                 lbl.VerticalContentAlignment = VerticalAlignment.Center;
                 stckToolbox.Children.Add(lbl);
             }
+
         }
 
         private void MenuOpt(object sender, RoutedEventArgs e)
@@ -92,6 +105,7 @@ namespace Rajzi
                     {
                         BtnCollapseAnimation(activeMenuBtn);
                         BtnExpandAnimation(chosenMenuOpt);
+                        AddMenuContent(chosenMenuOpt, menoOptContent);
                         activeMenuBtn = chosenMenuOpt;
                     }
                     break;
@@ -99,7 +113,7 @@ namespace Rajzi
                     BtnExpandAnimation(chosenMenuOpt);                    
                     canvasCollapseAnimation(Canvas);
                     toolboxExpandAnimation(stckToolbox);
-                    AddMenuContent(chosenMenuOpt);
+                    AddMenuContent(chosenMenuOpt, menoOptContent);
                     activeMenuBtn = chosenMenuOpt;
                     break;
             }            
@@ -152,17 +166,15 @@ namespace Rajzi
             this.RegisterName(toolbox.Name, toolbox);
             DoubleAnimation toolboxExpand = new DoubleAnimation();
             toolboxExpand.From = toolbox.Width;
-            toolboxExpand.To = 235;
+            toolboxExpand.To = 200;            
             toolboxExpand.Duration = new Duration(TimeSpan.FromMilliseconds(250));
 
             Storyboard.SetTargetName(toolboxExpand, toolbox.Name);
             Storyboard.SetTargetProperty(toolboxExpand, new PropertyPath(StackPanel.WidthProperty));
-
             Storyboard toolboxExpandeAnimation = new Storyboard();
             toolboxExpandeAnimation.Children.Add(toolboxExpand);
 
             toolboxExpandeAnimation.Begin(toolbox);
-
         }
         private void toolboxCollapseAnimation(StackPanel toolbox)
         {
@@ -175,7 +187,6 @@ namespace Rajzi
 
             Storyboard.SetTargetName(toolboxExpand, toolbox.Name);
             Storyboard.SetTargetProperty(toolboxExpand, new PropertyPath(StackPanel.WidthProperty));
-
             Storyboard toolboxCollapseAnimation = new Storyboard();
             toolboxCollapseAnimation.Children.Add(toolboxExpand);
 
@@ -304,13 +315,34 @@ namespace Rajzi
         private void Source_MouseMove(object sender, MouseEventArgs e)
         {
             droppedLabel = sender as Label;
-            DragDrop.DoDragDrop(stckToolbox,sender , DragDropEffects.Copy);
+            DragDrop.DoDragDrop(stckToolbox, sender, DragDropEffects.Copy);
         }
 
         private void Canvas_Drop(object sender, DragEventArgs e)
-        {            
+        {
             //MessageBox.Show($"{droppedLabel}");
+            Label lbl = new Label();
+            lbl.Height = droppedLabel.ActualHeight;
+            lbl.Width = droppedLabel.ActualWidth;
+            lbl.Content = $"{droppedLabel.Content}";
+            lbl.FontSize = droppedLabel.FontSize;
+            lbl.Background = droppedLabel.Background;
 
+            lbl.HorizontalAlignment = HorizontalAlignment.Center;
+            lbl.VerticalAlignment = VerticalAlignment.Center;
+
+            Thickness margin = lbl.Margin;
+            margin.Left = e.GetPosition(Canvas).X;
+            margin.Top = e.GetPosition(Canvas).Y;
+            margin.Right = 0;
+            margin.Bottom = 0;
+
+            lbl.Margin = margin;
+
+            lbl.HorizontalContentAlignment = droppedLabel.HorizontalContentAlignment;
+            lbl.VerticalContentAlignment = droppedLabel.VerticalContentAlignment;
+            Canvas.Children.Insert(Canvas.Children.Count,lbl);
+            //MessageBox.Show($"drop - {e.GetPosition(this).X}, tbWidth - {stckToolbox.ActualWidth}, diff - {e.GetPosition(this).X - stckToolbox.ActualWidth}");
         }
     }
 }

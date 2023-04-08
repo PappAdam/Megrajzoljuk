@@ -12,9 +12,8 @@
       }
     ],
     "additionalProbingPaths": [
-      "C:\\Users\\zoltai.balazs\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\zoltai.balazs\\.nuget\\packages",
-      "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      "C:\\Users\\Zoltai Balázs\\.dotnet\\store\\|arch|\\|tfm|",
+      "C:\\Users\\Zoltai Balázs\\.nuget\\packages"
     ],
     "configProperties": {
       "Microsoft.NETCore.DotNetHostPolicy.SetAppPaths": true
