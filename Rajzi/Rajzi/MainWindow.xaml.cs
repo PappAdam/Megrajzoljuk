@@ -246,8 +246,6 @@ namespace Rajzi
                 case not null:
                     canvasCollapse.To = grContent.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth -15;
                     break;
-                default:
-                    break;
             }
             canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(1));
 
@@ -273,8 +271,6 @@ namespace Rajzi
                     break;
                 case not null:
                     canvasCollapse.To = grContent.ActualWidth - stckToolbox.ActualWidth - gr_nav_holder.ActualWidth - 15;
-                    break;
-                default:
                     break;
             }
             canvasCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(1));
