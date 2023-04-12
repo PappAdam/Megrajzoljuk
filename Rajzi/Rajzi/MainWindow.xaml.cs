@@ -23,17 +23,17 @@ namespace Rajzi
     {        
         Button activeMenuBtn;
         Label droppedLabel;
+        BrushConverter bc = new BrushConverter();
+        bool startupResize = true;
 
         public string[] menoOptContent =
         {
-            "M1-O1;M1-O2;M1-O3;M1-O4",
-            "M2-O1;M2-O2;M2-O3;M2-O4",
-            "M3-O1;M3-O2;M3-O3;M3-O4",
-            "M4-O1;M4-O2;M4-O3;M4-O4"
+            "Action_Print;While_While Loop;Statement_If statement",
+            "CreateVariable_Add variable;Input_Get Input;Variable_Get Variable;SetVariable_Set Variable",
+            "Compare_Compare;Add_Add;Subtr_Subtract;Multip_Multiply;Divide_Divide;Logical_Logical",
+            "M4O1_M4O1;M4O2_M4O2;M4O3_M4O3;M4O4_M4O4"
         };
 
-        BrushConverter bc = new BrushConverter();
-        bool startupResize = true;
 
         public MainWindow()
         {
@@ -69,15 +69,21 @@ namespace Rajzi
             for (int c = 0; c < actContent.Length; c++)
             {
                 Label lbl = new Label();
-                lbl.Height = 50;
-                lbl.Width = 150;
-                lbl.Content = $"{actContent[c]}";
-                lbl.FontSize = 24;
+                   
+                lbl.Height = 50;                
+                lbl.Width = 150;                
+                string[] splittedElement = actContent[c].Split("_");
+                lbl.Name= splittedElement[0];
+                lbl.Content = $"{splittedElement[1]}";
+                lbl.MouseLeftButtonDown += new MouseButtonEventHandler(onDragStart);
+                lbl.FontSize = 18;
                 Thickness margin = lbl.Margin;
                 margin.Top = 15;
                 lbl.Margin = margin;
-                lbl.Background = Brushes.Red;
-
+                lbl.Background = (Brush)bc.ConvertFrom("#E9D758");
+                //Style = "{StaticResource MenuOptLblStyle}"
+                Style style = this.FindResource("MenuOptLblStyle") as Style;
+                lbl.Style = style;
                 lbl.MouseMove += Source_MouseMove;
 
                 lbl.HorizontalContentAlignment = HorizontalAlignment.Center;
@@ -85,6 +91,11 @@ namespace Rajzi
                 stckToolbox.Children.Add(lbl);
             }
 
+        }
+
+        private void onDragStart(object sender, MouseButtonEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void MenuOpt(object sender, RoutedEventArgs e)
@@ -98,7 +109,7 @@ namespace Rajzi
                     {
                         BtnCollapseAnimation(activeMenuBtn);
                         toolboxCollapseAnimation(stckToolbox);
-                        canvasExpandAnimation(Canvas);
+                        canvasExpandAnimation(MainCanvas);
                         activeMenuBtn = null;
                     }
                     else
@@ -111,7 +122,7 @@ namespace Rajzi
                     break;
                 default:
                     BtnExpandAnimation(chosenMenuOpt);                    
-                    canvasCollapseAnimation(Canvas);
+                    canvasCollapseAnimation(MainCanvas);
                     toolboxExpandAnimation(stckToolbox);
                     AddMenuContent(chosenMenuOpt, menoOptContent);
                     activeMenuBtn = chosenMenuOpt;
@@ -293,13 +304,13 @@ namespace Rajzi
             switch (startupResize)
             {
                 case false:
-                    if (Canvas.ActualWidth < grContent.ActualWidth -(stckToolbox.ActualWidth+gr_nav_holder.ActualWidth))
+                    if (MainCanvas.ActualWidth < grContent.ActualWidth -(stckToolbox.ActualWidth+gr_nav_holder.ActualWidth))
                     {
-                        canvasExpandResize(Canvas);
+                        canvasExpandResize(MainCanvas);
                     }
-                    else if (Canvas.ActualWidth > grContent.ActualWidth - (stckToolbox.ActualWidth + gr_nav_holder.ActualWidth))
+                    else if (MainCanvas.ActualWidth > grContent.ActualWidth - (stckToolbox.ActualWidth + gr_nav_holder.ActualWidth))
                     {
-                        canvasCollapseResize(Canvas);
+                        canvasCollapseResize(MainCanvas);
                     }
                     break;
                 case true:
@@ -311,34 +322,6 @@ namespace Rajzi
         private void Source_MouseMove(object sender, MouseEventArgs e)
         {
             droppedLabel = sender as Label;
-            DragDrop.DoDragDrop(stckToolbox, sender, DragDropEffects.Copy);
-        }
-
-        private void Canvas_Drop(object sender, DragEventArgs e)
-        {
-            //MessageBox.Show($"{droppedLabel}");
-            Label lbl = new Label();
-            lbl.Height = droppedLabel.ActualHeight;
-            lbl.Width = droppedLabel.ActualWidth;
-            lbl.Content = $"{droppedLabel.Content}";
-            lbl.FontSize = droppedLabel.FontSize;
-            lbl.Background = droppedLabel.Background;
-
-            lbl.HorizontalAlignment = HorizontalAlignment.Center;
-            lbl.VerticalAlignment = VerticalAlignment.Center;
-
-            Thickness margin = lbl.Margin;
-            margin.Left = e.GetPosition(Canvas).X;
-            margin.Top = e.GetPosition(Canvas).Y;
-            margin.Right = 0;
-            margin.Bottom = 0;
-
-            lbl.Margin = margin;
-
-            lbl.HorizontalContentAlignment = droppedLabel.HorizontalContentAlignment;
-            lbl.VerticalContentAlignment = droppedLabel.VerticalContentAlignment;
-            Canvas.Children.Insert(Canvas.Children.Count,lbl);
-            //MessageBox.Show($"drop - {e.GetPosition(this).X}, tbWidth - {stckToolbox.ActualWidth}, diff - {e.GetPosition(this).X - stckToolbox.ActualWidth}");
         }
     }
 }
