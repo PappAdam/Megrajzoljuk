@@ -15,7 +15,7 @@ namespace Rajzi.Elements
 {
     public class BlockInput
     {
-        public static void GetInput(Label sender, Element selectedElement, Container selectedContainer, MouseButtonEventHandler eventHandler, List<Variable> variables)
+        public static void GetInput(Label sender, Element selectedElement, Container selectedContainer, MouseEventHandler eventHandler, List<Variable> variables)
         {
             switch (sender.Name)
             {
@@ -70,7 +70,7 @@ namespace Rajzi.Elements
 
                 case "While":
                     var l = new Loop();
-                    l.InitElement(selectedContainer, eventHandler, "While", 1);
+                    l.InitElement(selectedContainer, eventHandler, "While", 1);                    
                     selectedContainer.push(l);
                     break;
 
@@ -99,7 +99,7 @@ namespace Rajzi.Elements
                     });
 
                     cv.InitElement(selectedContainer, eventHandler, "Add variable", 1);
-                    selectedContainer.push(cv);
+                    selectedContainer.push(cv);                    
                     break;
 
                 case "SetVariable":
@@ -211,7 +211,7 @@ namespace Rajzi.Elements
                             }
 
                             throw new Exception("Failed to find variable");
-                        }));
+                        }));                        
                     }
                     break;
 

@@ -30,15 +30,15 @@ namespace Rajzi.Elements
     {
         public Func<Variable ,Variable>? value { get; set;} = null;
 
-        public void createGrid(BlockType type, MouseButtonEventHandler eventHandler, String name, int cols = 0)
+        public void createGrid(BlockType type, MouseEventHandler eventHandler, String name, int cols = 0)
         {
             this.grid = Blocks.CreateBlockWithType(type, null, eventHandler, name, cols);
         }
 
         // Dont use it, does nothing
-        public override void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0){}
+        public override void InitElement(Element container, MouseEventHandler eventHandler, String name, int cols = 0){}
 
-        public void InitElement(Element container, MouseButtonEventHandler eventHandler)
+        public void InitElement(Element container, MouseEventHandler eventHandler)
         {
             this.container = container;
             this.InitParameters(eventHandler);

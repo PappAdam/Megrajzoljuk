@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rajzi"
         KeyDown="Window_KeyDown"
+        MouseLeftButtonUp="DragStop"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="1000">
     <Grid Background="#252323">
@@ -13,7 +14,7 @@
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
          <Label Name="Debug" Content="Label" Canvas.Left="532" Canvas.Top="20" HorizontalAlignment="Left" VerticalAlignment="Top" Width="108" Background="#FFDA9696" Foreground="#FF250606" Grid.Column="1" Margin="522,10,0,0"/>
-        <Canvas x:Name="MainCanvas" Grid.Column="1" >
+        <Canvas x:Name="MainCanvas" Grid.Column="1">
 
         </Canvas>
         <Grid Background="#EB9486">
@@ -25,23 +26,23 @@
                 <RowDefinition Height="9*"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
-            <StackPanel Grid.Column="0" >
-                <Label Name="Action" Content="Print" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#dde" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="CreateVariable" Content="Add variable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#a43" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="While" Content="While Loop" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="Statement" Content="If statement" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="Input" Content="GetInput" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="Variable" Content="GetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="SetVariable" Content="SetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
+            <StackPanel Grid.Column="0" x:Name="stck1">
+                <Label Name="Action" Content="Print" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#dde" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="CreateVariable" Content="Add variable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#a43" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="While" Content="While Loop" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="Statement" Content="If statement" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="Input" Content="GetInput" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="Variable" Content="GetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="SetVariable" Content="SetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="onDragStart"/>
             </StackPanel>
-            <StackPanel Grid.Column="1" >
-                <Label Name="Compare" Content="Compare" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#dde" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="Add" Content="Add" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#a43" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="Subtr" Content="Subtract" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="Multip" Content="Multiply" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="Divide" Content="Divide" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="Logical" Content="Logical" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
-                <Label Name="g" Content="SetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="OnBlockClick"/>
+            <StackPanel Grid.Column="1" x:Name="stck2">
+                <Label Name="Compare" Content="Compare" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#dde" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="Add" Content="Add" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#a43" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="Subtr" Content="Subtract" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="Multip" Content="Multiply" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#af1" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="Divide" Content="Divide" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="Logical" Content="Logical" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="onDragStart"/>
+                <Label Name="g" Content="SetVariable" Height="30" Width="100" VerticalAlignment="Top" Margin="20" Background="#f1b" MouseLeftButtonDown="onDragStart"/>
             </StackPanel>
          <Button Content="RUN" Click="Button_Click" Grid.Row="1" Grid.Column="1"></Button>
         </Grid>

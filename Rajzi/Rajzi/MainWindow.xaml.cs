@@ -27,9 +27,12 @@ namespace Rajzi
     public partial class MainWindow : Window
     {
         Container selectedContainer; 
-        Element selectedElement; 
+        Element selectedElement;
+        Label droppedLabel;
         Statement mainContainer = new Statement();
         List<Variable> variables = new List<Variable>();
+        StackPanel toplayer;
+        bool isDragging = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -39,13 +42,16 @@ namespace Rajzi
             this.mainContainer.condition = true;
             this.mainContainer.panel = new StackPanel();
             MainCanvas.Children.Add(this.mainContainer.panel);
-            var grid = Blocks.CreateBlockWithType(BlockType.Main, this.mainContainer, new MouseButtonEventHandler(OnElementClick), "Main", 0);
+            var grid = Blocks.CreateBlockWithType(BlockType.Main, this.mainContainer, new MouseEventHandler(OnHover), "Main", 0);
             ((Label)grid.Children[0]).Tag = this.mainContainer;
+            toplayer = (StackPanel)MainCanvas.Children[0];
+            toplayer.AllowDrop= true;
+            //toplayer.Drop += CanvasDrop;
         }
 
         private void AddElement(object sender)
         {
-            var eventHandler = new MouseButtonEventHandler(OnElementClick);
+            var eventHandler = new MouseEventHandler(OnHover);
             BlockInput.GetInput((Label)sender, selectedElement, selectedContainer, eventHandler, variables);
         }
 
@@ -91,23 +97,24 @@ namespace Rajzi
             }
         }
 
-        private void OnBlockClick(object sender, MouseButtonEventArgs e)
-        {
-            AddElement(sender);
-        }
+        //private void onblockclick(object sender, MouseButtonEventArgs e)
+        //{
+        //    AddElement(sender);
+        //}
 
-        public void OnElementClick(object sender, MouseButtonEventArgs e)
+        public void OnHover(object sender, MouseEventArgs e)
         {
             selectedElement = (Element)((Label)sender).Tag;
             if (selectedElement is Container)
             {
-                selectedContainer = (Container)selectedElement;
+                selectedContainer = (Container)selectedElement;                
+            }
+            Debug.Content = "";
+            if (selectedElement is Parameter)
+            {
+                Debug.Content = "asd";
             }
 
-            if (e.RightButton == MouseButtonState.Pressed)
-            {
-                selectedElement.RemoveElement();
-            }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -127,5 +134,26 @@ namespace Rajzi
         {
             this.Run();
         }
+
+        private void onDragStart(object sender, MouseEventArgs e)
+        {
+            droppedLabel = sender as Label;        
+            isDragging= true;
+        }
+
+        private void DragStop(object sender, MouseButtonEventArgs e)
+        {
+            if (isDragging == true)
+            {
+                isDragging = false;
+                AddElement(droppedLabel);
+            }
+        }
+
+        //public void CanvasDrop(object sender, DragEventArgs e)
+        //{
+        //    AddElement(droppedLabel);
+        //    //MessageBox.Show($"{selectedElement}");
+        //}
     }
 }
