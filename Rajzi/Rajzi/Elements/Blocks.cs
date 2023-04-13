@@ -93,7 +93,6 @@ namespace Rajzi.Elements
                     logOp.Width = 50;
                     logOp.Items.Add("OR");
                     logOp.Items.Add("AND");
-                    logOp.Items.Add("XOR");
 
                     var logOpCD = new ColumnDefinition();
                     newGrid.ColumnDefinitions.Add(logOpCD);

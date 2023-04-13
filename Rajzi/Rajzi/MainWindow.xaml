@@ -11,7 +11,8 @@
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
         MinHeight="300"
-        MinWidth="500"        
+        MinWidth="500"   
+        MouseLeftButtonUp="DragStop"
         >
     <Window.Resources>
         <Style x:Key="MyButtonStyle" TargetType="Button">
