@@ -97,11 +97,6 @@ namespace Rajzi
             }
         }
 
-        //private void onblockclick(object sender, MouseButtonEventArgs e)
-        //{
-        //    AddElement(sender);
-        //}
-
         public void OnHover(object sender, MouseEventArgs e)
         {
             selectedElement = (Element)((Label)sender).Tag;
@@ -109,12 +104,10 @@ namespace Rajzi
             {
                 selectedContainer = (Container)selectedElement;                
             }
-            Debug.Content = "";
-            if (selectedElement is Parameter)
+            else
             {
-                Debug.Content = "asd";
+                selectedContainer = selectedElement.container as Container;
             }
-
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -137,7 +130,9 @@ namespace Rajzi
 
         private void onDragStart(object sender, MouseEventArgs e)
         {
-            droppedLabel = sender as Label;        
+            droppedLabel = sender as Label;
+            selectedElement = null;
+            selectedContainer = null;
             isDragging= true;
         }
 
@@ -146,14 +141,10 @@ namespace Rajzi
             if (isDragging == true)
             {
                 isDragging = false;
-                AddElement(droppedLabel);
+                if (selectedContainer != null)
+                    AddElement(droppedLabel);
             }
         }
 
-        //public void CanvasDrop(object sender, DragEventArgs e)
-        //{
-        //    AddElement(droppedLabel);
-        //    //MessageBox.Show($"{selectedElement}");
-        //}
     }
 }
