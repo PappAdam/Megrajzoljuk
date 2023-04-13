@@ -49,7 +49,7 @@ namespace Rajzi.Elements
                 case BlockType.Input:
                     ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), name);
                     var tb = new TextBox();
-                    tb.Width = 60;
+                    tb.MinWidth = 20;
                     Grid.SetColumn(tb, 1);
                     var cd = new ColumnDefinition();
                     newGrid.ColumnDefinitions.Add(cd);
@@ -59,7 +59,7 @@ namespace Rajzi.Elements
                 case BlockType.GetVariable:
                     ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), name);
                     var tb1 = new TextBox();
-                    tb1.Width = 60;
+                    tb1.MinWidth = 20;
                     Grid.SetColumn(tb1, 1);
                     var cd1 = new ColumnDefinition();
                     newGrid.ColumnDefinitions.Add(cd1);

@@ -171,8 +171,6 @@ namespace Rajzi
             }
         }
 
-
-
         public static class RenderVisualService
         {
             private const double defaultDpi = 96.0;
