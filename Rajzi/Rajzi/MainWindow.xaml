@@ -57,14 +57,6 @@
                                               VerticalAlignment="Center"
                                               />
                         </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border"
-                                        Property="BorderBrush"
-                                        Value="#2F2235"
-                                        />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -171,6 +163,8 @@
                                 Cursor="Hand" Click="MenuOpt"
                                 Style="{StaticResource MyButtonStyle}"
                                 />
+                <Button Click="Button_Click"
+                        Height="25"/>
             </StackPanel>
 
         </Grid>

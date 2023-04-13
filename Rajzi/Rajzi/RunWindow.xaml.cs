@@ -272,5 +272,10 @@ namespace Rajzi
                 }
             }
         }
+
+        private void WindowClose(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

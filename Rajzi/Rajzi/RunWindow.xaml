@@ -39,6 +39,32 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <Style x:Key="MyButtonStylePurple" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                        BorderThickness="1"
+                        Padding="4,2" 
+                        BorderBrush="DarkGray" 
+                        CornerRadius="3" 
+                        Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="#EB9486"
+                                        />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <Grid Background="#252323">
         <!--<Grid.ColumnDefinitions>
@@ -50,6 +76,19 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <Grid x:Name="grid1" Background="#252323" MouseWheel="Grid_MouseWheel" Grid.Column="1">
+            <Button x:Name="btnClose"
+                    Height="25"
+                    Width="25"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="#2F2235"
+                    Foreground="#5DDFC0"
+                    Content="X"
+                    Margin="575,0,0,0" Click="WindowClose"
+                    Style="{StaticResource MyButtonStyle}"
+                    />
             <Grid x:Name="move">
                 <Grid x:Name="grid2">
                     <Grid.RenderTransform>
@@ -64,15 +103,15 @@
             </Grid>
         </Grid>
         <Grid Grid.Row="1"
-              Background="#EB9486"
+              Background="#2F2235"
               >
             <TextBox x:Name="FileName"
                      TextWrapping="Wrap"
-                     HorizontalAlignment="Center"
-                     VerticalAlignment="Top"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
                      Text="FileName"
                      Width="100"
-                     Margin="0,10,0,0"
+                     Margin="189,0,0,0"
                      Height="25"
                      HorizontalContentAlignment="Center"
                      VerticalContentAlignment="Center"
@@ -80,14 +119,14 @@
             <Button x:Name="save"
                     Content="Save"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    Margin="374,4,0,0"
+                    VerticalAlignment="Center"
+                    Margin="313,0,0,0"
                     Click="PngSave"
-                    Background="#2F2235"
-                    Foreground="#5DDFC0"
-                    Height="35"
-                    Width="110"
-                    Style="{StaticResource MyButtonStyle}"/>
+                    Background="#EB9486"
+                    Foreground="#2F2235"
+                    Height="30"
+                    Width="100"
+                    Style="{StaticResource MyButtonStylePurple}"/>
         </Grid>
     </Grid>
 </Window>
