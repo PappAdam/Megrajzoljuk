@@ -11,8 +11,7 @@
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
         MinHeight="300"
-        MinWidth="500"      
-        MouseLeftButtonUp="DragStop"
+        MinWidth="500"        
         >
     <Window.Resources>
         <Style x:Key="MyButtonStyle" TargetType="Button">
@@ -49,13 +48,23 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Label">
                         <Border Name="border" 
-                        BorderThickness="1"
-                        Padding="4,2" 
-                        BorderBrush="#E9D758" 
+                        BorderThickness="3"
+                        Padding="4,2"                                 
+                        BorderBrush="#EB9486"
                         CornerRadius="5" 
                         Background="{TemplateBinding Background}">
-                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              />
                         </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="#2F2235"
+                                        />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -72,32 +81,29 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <Label Name="Debug"
-                   Content="Label"
-                   Canvas.Left="532"
-                   Canvas.Top="20"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Width="108"
-                   Background="#FFDA9696"
-                   Foreground="#FF250606"
-                   Grid.Column="2"
-                   Margin="150,10,0,0"/>
-
         <Canvas x:Name="MainCanvas"
                     Grid.Column="2"
                     Background="#252323"
                     AllowDrop="True"
                     />
 
-        <StackPanel x:Name="stckToolbox"
+        <Border x:Name="brToolbox"
+                Width="0"
+                MaxWidth="250"
+                HorizontalAlignment="Left"
+                Grid.Column="1"
+                Margin="15 0 0 0"
+                BorderBrush="#EB9486"
+                Background="#EB9486"
+                BorderThickness="1"
+                CornerRadius="10"
+                ClipToBounds="True"
+                >
+            <StackPanel x:Name="stckToolbox"
                         Width="0"
                         MaxWidth="250"
-                        HorizontalAlignment="Left"
-                        Background="#EB9486"
-                        Grid.Column="1"
-                        Margin="15 0 0 0"
                         />
+        </Border>
 
         <Grid Background="#297373"
                   x:Name="gr_nav_holder"
@@ -162,11 +168,13 @@
                                 VerticalContentAlignment="Center"
                                 FontSize="15"
                                 Margin="0 0 0 15"
-                                Cursor="Hand" Click="MenuOpt"                                
+                                Cursor="Hand" Click="MenuOpt"
+                                Style="{StaticResource MyButtonStyle}"
                                 />
             </StackPanel>
 
         </Grid>
-        <Button Content="RUN" Click="Button_Click" Width="100" Grid.Column="2" Margin="119,497,48,56"/>
     </Grid>
+
+
 </Window>

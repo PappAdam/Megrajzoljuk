@@ -44,7 +44,7 @@ namespace Rajzi
             "Action_Print;While_While Loop;Statement_If statement",
             "CreateVariable_Add variable;Input_Get Input;Variable_Get Variable;SetVariable_Set Variable",
             "Compare_Compare;Add_Add;Subtr_Subtract;Multip_Multiply;Divide_Divide;Logical_Logical",
-            "Forward_Forward;PencilSize_Pencil Size;Rotate_Rotate;Polygon_Polygon;Color_Color;PencilPosition_Pencil Position;goToLine_go ToL ine"
+            "Forward_Forward;PencilSize_Pencil Size;Rotate_Rotate;Polygon_Polygon;Color_Color;PencilPosition_Pencil Position;goToLine_go To Line"
         };
 
         public MainWindow()
@@ -90,7 +90,7 @@ namespace Rajzi
             {
                 Label lbl = new Label();
                    
-                lbl.Height = 30;                
+                lbl.Height = 50;                
                 lbl.Width = 150;                
                 string[] splittedElement = actContent[c].Split("_");
                 lbl.Name= splittedElement[0];
@@ -121,6 +121,7 @@ namespace Rajzi
                     if (activeMenuBtn == chosenMenuOpt)
                     {
                         BtnCollapseAnimation(activeMenuBtn);
+                        borderCollapseAnimation(brToolbox);
                         toolboxCollapseAnimation(stckToolbox);
                         canvasExpandAnimation(MainCanvas);
                         activeMenuBtn = null;
@@ -136,6 +137,7 @@ namespace Rajzi
                 default:
                     BtnExpandAnimation(chosenMenuOpt);                    
                     canvasCollapseAnimation(MainCanvas);
+                    borderExpandeAnimation(brToolbox);
                     toolboxExpandAnimation(stckToolbox);
                     AddMenuContent(chosenMenuOpt, menoOptContent);
                     activeMenuBtn = chosenMenuOpt;
@@ -215,6 +217,43 @@ namespace Rajzi
             toolboxCollapseAnimation.Children.Add(toolboxExpand);
 
             toolboxCollapseAnimation.Begin(toolbox);
+        }
+
+        private void borderExpandeAnimation(Border border)
+        {
+            brToolbox.Height = grContent.ActualHeight * 0.97;
+            this.RegisterName(border.Name, border);
+
+            DoubleAnimation borderExpand = new DoubleAnimation();
+
+            borderExpand.From = border.Width;
+            borderExpand.To = 200;
+            borderExpand.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+
+            Storyboard.SetTargetName(borderExpand, border.Name);
+            Storyboard.SetTargetProperty(borderExpand, new PropertyPath(Border.WidthProperty));
+            Storyboard borderExpandeAnimation = new Storyboard();
+            borderExpandeAnimation.Children.Add(borderExpand);
+
+            borderExpandeAnimation.Begin(border);
+        }
+
+        private void borderCollapseAnimation(Border border)
+        {
+            this.RegisterName(border.Name, border);
+
+            DoubleAnimation borderCollapse = new DoubleAnimation();
+
+            borderCollapse.From = border.Width;
+            borderCollapse.To = 0;
+            borderCollapse.Duration = new Duration(TimeSpan.FromMilliseconds(250));
+
+            Storyboard.SetTargetName(borderCollapse, border.Name);
+            Storyboard.SetTargetProperty(borderCollapse, new PropertyPath(Border.WidthProperty));
+            Storyboard borderCollapseAnimation = new Storyboard();
+            borderCollapseAnimation.Children.Add(borderCollapse);
+
+            borderCollapseAnimation.Begin(border);
         }
         private void canvasCollapseAnimation(Canvas canvas)
         {
