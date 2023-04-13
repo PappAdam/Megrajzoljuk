@@ -42,6 +42,33 @@
             </Setter>
         </Style>
 
+        <Style x:Key="MyButtonStyleP" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                        BorderThickness="1"
+                        Padding="4,2" 
+                        BorderBrush="DarkGray" 
+                        CornerRadius="3" 
+                        Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="#297373"
+                                        />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="MenuOptLblStyle" TargetType="Label">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="Margin" Value="5"/>
@@ -89,7 +116,7 @@
                 BorderBrush="#EB9486"
                 Background="#EB9486"
                 BorderThickness="1"
-                CornerRadius="10"
+                CornerRadius="5"
                 ClipToBounds="True"
                 >
             <StackPanel x:Name="stckToolbox"
@@ -106,6 +133,9 @@
                   >
             <StackPanel x:Name="stpOptHolder"
                                 Orientation="Vertical"
+                        Height="250"
+                        VerticalAlignment="Top"
+                        Margin="0 0 0 0"
                                 >
 
                 <Button Content="Category"
@@ -164,8 +194,24 @@
                                 Cursor="Hand" Click="MenuOpt"
                                 Style="{StaticResource MyButtonStyle}"
                                 />
+                
             </StackPanel>
-
+            <Button Content="Run"
+                        Name="RUN"
+                        Grid.Column="1"
+                        Height="35"
+                        Width="110"
+                        Background="#EB9486"
+                        Foreground="#2F2235"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center"
+                        FontSize="15"
+                        Margin="0 0 0 25"
+                        Cursor="Hand"
+                        Style="{StaticResource MyButtonStyleP}"
+                        VerticalAlignment="Bottom"
+                        Click="Button_Click"
+                    />
         </Grid>
     </Grid>
 
