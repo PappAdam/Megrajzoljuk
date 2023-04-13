@@ -5,19 +5,95 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Rajzi"
         mc:Ignorable="d"
-        Title="RunWindow" Height="450" Width="800">
+        Title="RunWindow"
+        Height="450"
+        Width="600"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        >
+    <Window.Resources>
+        <Style x:Key="MyButtonStyle" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                        BorderThickness="1"
+                        Padding="4,2" 
+                        BorderBrush="DarkGray" 
+                        CornerRadius="3" 
+                        Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="#297373"
+                                        />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="MyButtonStylePurple" TargetType="Button">
+            <Setter Property="OverridesDefaultStyle" Value="True"/>
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Name="border" 
+                        BorderThickness="1"
+                        Padding="4,2" 
+                        BorderBrush="DarkGray" 
+                        CornerRadius="3" 
+                        Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="border"
+                                        Property="BorderBrush"
+                                        Value="#EB9486"
+                                        />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid Background="#252323">
-        <Grid.ColumnDefinitions>
+        <!--<Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="4*"/>
-        </Grid.ColumnDefinitions>
+        </Grid.ColumnDefinitions>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
         <Grid x:Name="grid1" Background="#252323" MouseWheel="Grid_MouseWheel" Grid.Column="1">
+            <Button x:Name="btnClose"
+                    Height="25"
+                    Width="25"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Background="#2F2235"
+                    Foreground="#5DDFC0"
+                    Content="X"
+                    Margin="575,0,0,0" Click="WindowClose"
+                    Style="{StaticResource MyButtonStyle}"
+                    />
             <Grid x:Name="move">
                 <Grid x:Name="grid2">
                     <Grid.RenderTransform>
                         <MatrixTransform/>
                     </Grid.RenderTransform>
-                    <Canvas x:Name="Canvas" Grid.Column="1">
+                    <Canvas x:Name="Canvas" Grid.Row="0">
                         <StackPanel x:Name="PolygonPanel">
 
                         </StackPanel>
@@ -25,19 +101,31 @@
                 </Grid>
             </Grid>
         </Grid>
-        <Rectangle Grid.Column="0" Fill="#EB9486"></Rectangle>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <Label x:Name="teszt1" Content="fkl" Grid.Row="0"/>
-            <Label x:Name="teszt2" Content="Ez egy csoda doboz: &#xD;&#xA;Ez lesz a png-d neve:" Margin="0,52,0,328" Grid.Row="1"/>
-            <Label x:Name="teszt3" Margin="-5,37,5,375" Grid.Row="1"/>
-            <TextBox x:Name="FileName" TextWrapping="Wrap" Text="FileName" Width="120" Margin="10,99,30,305" Grid.Row="1"/>
-            <Button x:Name="save" Content="Ez itt egy gomb, &#x0a; hogy kimentsed &#x0a; a gyönyörű rajzodat. &#x0a; (elvileg)" Margin="10,122,10,232" Click="PngSave" Grid.Row="1"/>
+        <Grid Grid.Row="1"
+              Background="#2F2235"
+              >
+            <TextBox x:Name="FileName"
+                     TextWrapping="Wrap"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Center"
+                     Text="FileName"
+                     Width="100"
+                     Margin="189,0,0,0"
+                     Height="25"
+                     HorizontalContentAlignment="Center"
+                     VerticalContentAlignment="Center"
+                     />
+            <Button x:Name="save"
+                    Content="Save"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Center"
+                    Margin="313,0,0,0"
+                    Click="PngSave"
+                    Background="#EB9486"
+                    Foreground="#2F2235"
+                    Height="30"
+                    Width="100"
+                    Style="{StaticResource MyButtonStylePurple}"/>
         </Grid>
     </Grid>
 </Window>
