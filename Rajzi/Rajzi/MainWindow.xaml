@@ -11,8 +11,9 @@
         ResizeMode="CanResize"
         WindowStartupLocation="CenterScreen"
         MinHeight="300"
-        MinWidth="500"        
-        >    
+        MinWidth="500"      
+        MouseLeftButtonUp="DragStop"
+        >
     <Window.Resources>
         <Style x:Key="MyButtonStyle" TargetType="Button">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
@@ -26,7 +27,7 @@
                         BorderBrush="DarkGray" 
                         CornerRadius="3" 
                         Background="{TemplateBinding Background}">
-                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
@@ -40,7 +41,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
+
         <Style x:Key="MenuOptLblStyle" TargetType="Label">
             <Setter Property="OverridesDefaultStyle" Value="True"/>
             <Setter Property="Margin" Value="5"/>
@@ -54,24 +55,24 @@
                         CornerRadius="5" 
                         Background="{TemplateBinding Background}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
-                        </Border>                        
+                        </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
 
     </Window.Resources>
-        <Grid x:Name="grContent"
+    <Grid x:Name="grContent"
               Background="#252323"
               SizeChanged="sizeChange"
               Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            
-            <Label Name="Debug"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Label Name="Debug"
                    Content="Label"
                    Canvas.Left="532"
                    Canvas.Top="20"
@@ -82,14 +83,14 @@
                    Foreground="#FF250606"
                    Grid.Column="2"
                    Margin="150,10,0,0"/>
-            
-            <Canvas x:Name="MainCanvas"
+
+        <Canvas x:Name="MainCanvas"
                     Grid.Column="2"
                     Background="#252323"
                     AllowDrop="True"
                     />
-            
-            <StackPanel x:Name="stckToolbox"
+
+        <StackPanel x:Name="stckToolbox"
                         Width="0"
                         MaxWidth="250"
                         HorizontalAlignment="Left"
@@ -98,17 +99,17 @@
                         Margin="15 0 0 0"
                         />
 
-            <Grid Background="#297373"
+        <Grid Background="#297373"
                   x:Name="gr_nav_holder"
                   Grid.Column="0"
                   MinWidth="130"
                   MaxWidth="130"
                   >
-                    <StackPanel x:Name="stpOptHolder"
+            <StackPanel x:Name="stpOptHolder"
                                 Orientation="Vertical"
                                 >
 
-                        <Button Content="Category"
+                <Button Content="Category"
                                 x:Name="btnCategory1"
                                 Grid.Column="1"
                                 Height="35"
@@ -122,7 +123,7 @@
                                 Cursor="Hand" Click="MenuOpt" 
                                 Style="{StaticResource MyButtonStyle}"
                                 />
-                        <Button Content="Category"
+                <Button Content="Category"
                                 x:Name="btnCategory2"
                                 Grid.Column="1"
                                 Height="35"
@@ -136,7 +137,7 @@
                                 Cursor="Hand" Click="MenuOpt"
                                 Style="{StaticResource MyButtonStyle}"
                                 />
-                        <Button Content="Category"
+                <Button Content="Category"
                                 x:Name="btnCategory3"
                                 Grid.Column="1"
                                 Height="35"
@@ -150,7 +151,7 @@
                                 Cursor="Hand" Click="MenuOpt"
                                 Style="{StaticResource MyButtonStyle}"
                                 />
-                        <Button Content="Category"
+                <Button Content="Category"
                                 x:Name="btnCategory4"
                                 Grid.Column="1"
                                 Height="35"
@@ -163,8 +164,9 @@
                                 Margin="0 0 0 15"
                                 Cursor="Hand" Click="MenuOpt"                                
                                 />
-                    </StackPanel>
+            </StackPanel>
 
-                </Grid>
-        </Grid>  
+        </Grid>
+        <Button Content="RUN" Click="Button_Click" Width="100" Grid.Column="2" Margin="119,497,48,56"/>
+    </Grid>
 </Window>

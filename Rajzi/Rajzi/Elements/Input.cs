@@ -15,6 +15,7 @@ namespace Rajzi.Elements
 {
     public class BlockInput
     {
+        public static RunWindow win3 = new RunWindow();
         public static void GetInput(Label sender, Element selectedElement, Container selectedContainer, MouseEventHandler eventHandler, List<Variable> variables)
         {
             switch (sender.Name)
@@ -363,6 +364,98 @@ namespace Rajzi.Elements
                         }));
                     }
 
+                    break;
+
+                case "Forward":
+                    var forward = new Action();
+
+                    forward.func = new Func<Action, bool>(act =>
+                    {
+                        win3.forward(double.Parse(forward.parameters[0].value(null).value.ToString()));
+                        return true;
+                    });
+
+                    forward.InitElement(selectedContainer, eventHandler, "Forward", 1);
+                    selectedContainer.push(forward);
+                    break;
+
+                case "PencilSize":
+                    var pencilsize = new Action();
+
+                    pencilsize.func = new Func<Action, bool>(act =>
+                    {
+                        win3.changeSize(double.Parse(pencilsize.parameters[0].value(null).value.ToString()));
+                        return true;
+                    });
+
+                    pencilsize.InitElement(selectedContainer, eventHandler, "Pencil Size", 1);
+                    selectedContainer.push(pencilsize);
+                    break;
+
+                case "Rotate":
+                    var rotate = new Action();
+
+                    rotate.func = new Func<Action, bool>(act =>
+                    {
+                        win3.Rotate(double.Parse(rotate.parameters[0].value(null).value.ToString()), rotate.parameters[1].value(null).value.ToString());
+                        return true;
+                    });
+
+                    rotate.InitElement(selectedContainer, eventHandler, "Rotate", 2);
+                    selectedContainer.push(rotate);
+                    break;
+
+                case "Polygon":
+                    var polygon = new Action();
+
+                    polygon.func = new Func<Action, bool>(act =>
+                    {
+                        win3.Polygon(bool.Parse(polygon.parameters[0].value(null).value.ToString()));
+                        return true;
+                    });
+
+                    polygon.InitElement(selectedContainer, eventHandler, "Polygon", 1);
+                    selectedContainer.push(polygon);
+                    break;
+
+                case "Color":
+                    var color = new Action();
+
+                    color.func = new Func<Action, bool>(act =>
+                    {
+                        win3.changeColor(double.Parse(color.parameters[0].value(null).value.ToString()), double.Parse(color.parameters[1].value(null).value.ToString()), double.Parse(color.parameters[2].value(null).value.ToString()), double.Parse(color.parameters[3].value(null).value.ToString()));
+                        return true;
+                    });
+
+                    color.InitElement(selectedContainer, eventHandler, "Color", 4);
+                    selectedContainer.push(color);
+                    break;
+
+                case "PencilPosition":
+                    var pencilposition = new Action();
+
+                    pencilposition.func = new Func<Action, bool>(act =>
+                    {
+                        win3.changePosition(double.Parse(pencilposition.parameters[0].value(null).value.ToString()), double.Parse(pencilposition.parameters[1].value(null).value.ToString()));
+                        return true;
+                    });
+
+                    pencilposition.InitElement(selectedContainer, eventHandler, "PencilPosition", 2);
+                    selectedContainer.push(pencilposition);
+                    break;
+
+
+                case "goToLine":
+                    var gotoline = new Action();
+
+                    gotoline.func = new Func<Action, bool>(act =>
+                    {
+                        win3.goToAddLine(double.Parse(gotoline.parameters[0].value(null).value.ToString()), double.Parse(gotoline.parameters[1].value(null).value.ToString()));
+                        return true;
+                    });
+
+                    gotoline.InitElement(selectedContainer, eventHandler, "GoToAddLine", 2);
+                    selectedContainer.push(gotoline);
                     break;
             }
         }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,24 +21,32 @@ using System.Windows.Shapes;
 using System.Xml.Linq;
 
 
+
 namespace Rajzi
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
-<<<<<<< HEAD
     {
         Container selectedContainer; 
         Element selectedElement;
         Label droppedLabel;
+        Button activeMenuBtn;
         Statement mainContainer = new Statement();
         List<Variable> variables = new List<Variable>();
         bool isDragging = false;
-        Button activeMenuBtn;
-        Label droppedLabel;
         BrushConverter bc = new BrushConverter();
         bool startupResize = true;
+
+        public string[] menoOptContent =
+        {
+            "Action_Print;While_While Loop;Statement_If statement",
+            "CreateVariable_Add variable;Input_Get Input;Variable_Get Variable;SetVariable_Set Variable",
+            "Compare_Compare;Add_Add;Subtr_Subtract;Multip_Multiply;Divide_Divide;Logical_Logical",
+            "Forward_Forward;PencilSize_Pencil Size;Rotate_Rotate;Polygon_Polygon;Color_Color;PencilPosition_Pencil Position;goToLine_go ToL ine"
+        };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -52,14 +61,6 @@ namespace Rajzi
             grContent.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
             grContent.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Pixel); 
         }
-
-        public string[] menoOptContent =
-        {
-            "Action_Print;While_While Loop;Statement_If statement",
-            "CreateVariable_Add variable;Input_Get Input;Variable_Get Variable;SetVariable_Set Variable",
-            "Compare_Compare;Add_Add;Subtr_Subtract;Multip_Multiply;Divide_Divide;Logical_Logical",
-            "M4O1_M4O1;M4O2_M4O2;M4O3_M4O3;M4O4_M4O4"
-        };
 
 
         private void RunDraw(object sender, RoutedEventArgs e)
@@ -89,7 +90,7 @@ namespace Rajzi
             {
                 Label lbl = new Label();
                    
-                lbl.Height = 50;                
+                lbl.Height = 30;                
                 lbl.Width = 150;                
                 string[] splittedElement = actContent[c].Split("_");
                 lbl.Name= splittedElement[0];
@@ -103,18 +104,11 @@ namespace Rajzi
                 //Style = "{StaticResource MenuOptLblStyle}"
                 Style style = this.FindResource("MenuOptLblStyle") as Style;
                 lbl.Style = style;
-                lbl.MouseMove += Source_MouseMove;
 
                 lbl.HorizontalContentAlignment = HorizontalAlignment.Center;
                 lbl.VerticalContentAlignment = VerticalAlignment.Center;
                 stckToolbox.Children.Add(lbl);
             }
-
-        }
-
-        private void onDragStart(object sender, MouseButtonEventArgs e)
-        {
-            throw new NotImplementedException();
         }
 
         private void MenuOpt(object sender, RoutedEventArgs e)
@@ -243,6 +237,7 @@ namespace Rajzi
             grContent.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
             grContent.ColumnDefinitions[1].Width = new GridLength(250, GridUnitType.Pixel);
         }
+
         private void canvasExpandAnimation(Canvas canvas)
         {
             canvas.HorizontalAlignment = HorizontalAlignment.Right;
@@ -395,7 +390,14 @@ namespace Rajzi
             }
             else
             {
-                selectedContainer = selectedElement.container as Container;
+                var containerTemp = selectedElement.container;
+
+                while (containerTemp is not Container)
+                {
+                    containerTemp = containerTemp.container;
+                }
+
+                selectedContainer = containerTemp as Container;
             }
         }
 
@@ -414,6 +416,9 @@ namespace Rajzi
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            BlockInput.win3.Hide();
+            BlockInput.win3 = new RunWindow();
+            BlockInput.win3.Show();
             this.Run();
         }
 
@@ -434,6 +439,5 @@ namespace Rajzi
                     AddElement(droppedLabel);
             }
         }
-
     }
 }

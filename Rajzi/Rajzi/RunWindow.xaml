@@ -7,12 +7,37 @@
         mc:Ignorable="d"
         Title="RunWindow" Height="450" Width="800">
     <Grid Background="#252323">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
-                <ColumnDefinition Width="4*"/>
-            </Grid.ColumnDefinitions>
-        <Canvas x:Name="Canvas" Grid.Column="1">
-        </Canvas>
-            <Rectangle Fill="#EB9486"></Rectangle>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <Grid x:Name="grid1" Background="#252323" MouseWheel="Grid_MouseWheel" Grid.Column="1">
+            <Grid x:Name="move">
+                <Grid x:Name="grid2">
+                    <Grid.RenderTransform>
+                        <MatrixTransform/>
+                    </Grid.RenderTransform>
+                    <Canvas x:Name="Canvas" Grid.Column="1">
+                        <StackPanel x:Name="PolygonPanel">
+
+                        </StackPanel>
+                    </Canvas>
+                </Grid>
+            </Grid>
         </Grid>
+        <Rectangle Grid.Column="0" Fill="#EB9486"></Rectangle>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Label x:Name="teszt1" Content="fkl" Grid.Row="0"/>
+            <Label x:Name="teszt2" Content="Ez egy csoda doboz: &#xD;&#xA;Ez lesz a png-d neve:" Margin="0,52,0,328" Grid.Row="1"/>
+            <Label x:Name="teszt3" Margin="-5,37,5,375" Grid.Row="1"/>
+            <TextBox x:Name="FileName" TextWrapping="Wrap" Text="FileName" Width="120" Margin="10,99,30,305" Grid.Row="1"/>
+            <Button x:Name="save" Content="Ez itt egy gomb, &#x0a; hogy kimentsed &#x0a; a gyönyörű rajzodat. &#x0a; (elvileg)" Margin="10,122,10,232" Click="PngSave" Grid.Row="1"/>
+        </Grid>
+    </Grid>
 </Window>
