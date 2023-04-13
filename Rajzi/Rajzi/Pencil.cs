@@ -16,27 +16,10 @@ namespace Rajzi
         public Color color { get; set; } = Colors.White;
 
         public double rotate { get; set; } = -90;
+        public bool polygon { get; set; } = false;
 
         public Pencil()
         {
-        }
-
-        public void changeSize(double size)
-        {
-            this.size = size;
-        }
-        public void changeColor(Color color)
-        {
-            this.color = color;
-        }
-        public void changeRotate(double rotate)
-        {
-            this.rotate = rotate - 90;
-        }
-        public void changePosition(double x, double y)
-        {
-            this.pixelPositionX = x;
-            this.pixelPositionY = y;
         }
     }
 }

@@ -20,12 +20,14 @@ namespace Rajzi.Elements
         GetVariable,
         Input,
         EmptyParam,
-        Parameter,
+        Compare,
         Action,
+        Logical,
+        Math,
     }
     public class Blocks
     {
-        static public Grid CreateBlockWithType(BlockType type, Container container, MouseButtonEventHandler eventHandler, String name, int columns = 1)
+        static public Grid CreateBlockWithType(BlockType type, Container container, MouseEventHandler eventHandler, String name, int columns = 1)
         {
 
             Grid newGrid = CreateNewGrid(150, 30, container != null ? new Thickness(20 * container.depth, 3, 0, 0) : new Thickness(), columns + 1, eventHandler );
@@ -68,13 +70,43 @@ namespace Rajzi.Elements
                     ChangeGrid(newGrid, Color.FromRgb(60, 60, 60), Color.FromRgb(240, 240, 240), name);
                     break;
 
-                case BlockType.Parameter:
+                case BlockType.Compare:
                     ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), name);
+                    var compSign = new ComboBox();
+                    compSign.Width = 50;
+                    compSign.Items.Add("=");
+                    compSign.Items.Add("!=");
+                    compSign.Items.Add(">=");
+                    compSign.Items.Add("<=");
+                    compSign.Items.Add("<");
+                    compSign.Items.Add(">");
+                    var compSignCD = new ColumnDefinition();
+                    newGrid.ColumnDefinitions.Add(compSignCD);
+                    newGrid.Children.Add(compSign);
+                    Grid.SetColumn(compSign, 3);
+                    break;
+
+                case BlockType.Logical:
+                    ChangeGrid(newGrid, Color.FromRgb(20, 50, 88), Color.FromRgb(240, 240, 240), name);
+                    var logOp = new ComboBox();
+                    logOp.Width = 50;
+                    logOp.Items.Add("OR");
+                    logOp.Items.Add("AND");
+                    logOp.Items.Add("XOR");
+
+                    var logOpCD = new ColumnDefinition();
+                    newGrid.ColumnDefinitions.Add(logOpCD);
+                    newGrid.Children.Add(logOp);
+                    Grid.SetColumn(logOp, 3);
                     break;
 
                 case BlockType.Action:
                     ChangeGrid(newGrid, Color.FromRgb(233, 215, 88), Color.FromRgb(12, 20, 99), name);
                     newGrid.Margin = new Thickness(20 + 20 * container.depth, 3, 0, 0);
+                    break;
+
+                case BlockType.Math:
+                    ChangeGrid(newGrid, Color.FromRgb(129, 30, 60), Color.FromRgb(30, 120, 80), name);
                     break;
             }
 
@@ -83,7 +115,7 @@ namespace Rajzi.Elements
             return newGrid;
         }
 
-        static public Grid CreateNewGrid(int width, int height, Thickness margin, int columns, MouseButtonEventHandler eventHandler)
+        static public Grid CreateNewGrid(int width, int height, Thickness margin, int columns, MouseEventHandler eventHandler)
         {
             Grid newGrid = new Grid();
             newGrid.Height = height;
@@ -92,7 +124,7 @@ namespace Rajzi.Elements
             ColumnDefinition colDef = new ColumnDefinition();
             newGrid.ColumnDefinitions.Add(colDef);
             newGrid.Children.Add(new Label());
-            newGrid.Children[0].MouseLeftButtonDown += eventHandler;
+            newGrid.Children[0].MouseEnter += eventHandler;
 
             for (int i = 0; i < columns-1; i++)
             {
@@ -100,7 +132,7 @@ namespace Rajzi.Elements
                 colDef = new ColumnDefinition();
                 Grid.SetColumn(grid, i + 1);
                 newGrid.ColumnDefinitions.Add(colDef);
-                grid.Children[0].MouseLeftButtonDown += eventHandler;
+                grid.Children[0].MouseEnter += eventHandler;
                 newGrid.Children.Add(grid);
             }
 

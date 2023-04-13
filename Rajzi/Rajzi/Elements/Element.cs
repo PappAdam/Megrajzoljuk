@@ -33,7 +33,7 @@ namespace Rajzi
             parameter.value = value;
         }
 
-        public void InitParameters(MouseButtonEventHandler eventHandler)
+        public void InitParameters(MouseEventHandler eventHandler)
         {
             for (int i = 1; i < this.grid.Children.Count; i++)
             {
@@ -113,9 +113,9 @@ namespace Rajzi
             }
         }
 
-        public abstract void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0);
+        public abstract void InitElement(Element container, MouseEventHandler eventHandler, String name, int cols = 0);
     }
-
+        
     public class Container : Element
     {
         public Element? firstChild = null;
@@ -145,7 +145,7 @@ namespace Rajzi
             }
         }
 
-        public override void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0)
+        public override void InitElement(Element container, MouseEventHandler eventHandler, String name, int cols = 0)
         {
             this.panel = new StackPanel();
             this.depth = ((Container)container).depth + 1;
@@ -158,7 +158,7 @@ namespace Rajzi
                 this.grid = Blocks.CreateBlockWithType(BlockType.Statement, this, eventHandler, "If", cols);
             }
             ((Label)grid.Children[0]).Tag = this;
-            ((Label)grid.Children[0]).MouseLeftButtonDown += eventHandler;
+            ((Label)grid.Children[0]).MouseEnter += eventHandler;
             ((Container)container).panel.Children.Add(this.panel);
             this.InitParameters(eventHandler);
         }
@@ -196,11 +196,11 @@ namespace Rajzi
     {
         public Func<Action, bool>? func;
 
-        public override void InitElement(Element container, MouseButtonEventHandler eventHandler, String name, int cols = 0)
+        public override void InitElement(Element container, MouseEventHandler eventHandler, String name, int cols = 0)
         {
             var grid = Blocks.CreateBlockWithType(BlockType.Action, (Container)container, eventHandler, name, cols);
             ((Label)grid.Children[0]).Tag = this;
-            ((Label)grid.Children[0]).MouseLeftButtonDown += eventHandler;
+            ((Label)grid.Children[0]).MouseEnter += eventHandler;
             ((Action)this).grid = grid;
             this.InitParameters(eventHandler);
         }

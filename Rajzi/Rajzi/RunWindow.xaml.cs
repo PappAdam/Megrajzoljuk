@@ -13,12 +13,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-
 namespace Rajzi
 {
     public partial class RunWindow : Window
     {
-        List<Pixel> pixels = new List<Pixel>();
         List<Vector> vectors = new List<Vector>();
         Pencil pencil = new Pencil();
         private TranslateTransform transform = new TranslateTransform(0, 0);
@@ -26,6 +24,8 @@ namespace Rajzi
         private Point _startPoint;
         private int counter = 0;
         TranslateTransform translateTransform = new TranslateTransform(0, 0);
+        List<Polygon> polygonok = new List<Polygon>();
+        PointCollection points = new PointCollection();
         public RunWindow()
         {
             InitializeComponent();
@@ -33,20 +33,106 @@ namespace Rajzi
             grid1.MouseLeftButtonUp += Grid1_MouseLeftButtonUp;
             grid1.MouseMove += Grid1_MouseMove;
 
-            Random random = new Random();
-            for (int i = 5; i > 0; i--)
+            //Random random = new Random();
+            //for (int i = 5; i > 0; i--)
+            //{
+            //    Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
+            //    pencil.changeColor(randomColor);
+            //    for (int e = 0; e < 360; e++)
+            //    {
+            //        forward(i * 10);
+            //        forward(-1 * i * 10);
+            //        pencil.changeRotate(e);
+            //        pencil.changeSize(i / 2);
+            //    }
+            //}
+        }
+
+        public void goToAddLine(double x, double y)
+        {
+            Line line = new Line();
+            line.Stroke = new SolidColorBrush(pencil.color);
+            line.StrokeThickness = pencil.size;
+            line.X1 = pencil.pixelPositionX;
+            line.Y1 = pencil.pixelPositionY;
+            line.X2 = x;
+            line.Y2 = y;
+            vectors.Insert(0, new Vector(line.X1, line.Y1, line.X2, line.Y2));
+            changePosition(line.X2, line.Y2);
+            Canvas.Children.Add(line);
+        }
+        public void forward(double forward)
+        {
+            Line line = new Line();
+            line.Stroke = new SolidColorBrush(pencil.color);
+            line.StrokeThickness = pencil.size;
+            line.X1 = pencil.pixelPositionX;
+            line.Y1 = pencil.pixelPositionY;
+            line.X2 = pencil.pixelPositionX + Math.Cos(Math.PI / 180 * pencil.rotate) * forward;
+            line.Y2 = pencil.pixelPositionY + Math.Sin(Math.PI / 180 * pencil.rotate) * forward;
+            vectors.Insert(0, new Vector(line.X1, line.Y1, line.X2, line.Y2));
+            changePosition(line.X2, line.Y2);
+            Canvas.Children.Add(line);
+            if (pencil.polygon == true)
             {
-                Color randomColor = Color.FromRgb((byte)random.Next(256), (byte)random.Next(256), (byte)random.Next(256));
-                pencil.changeColor(randomColor);
-                for (int e = 0; e < 360; e++)
-                {
-                    forward(i * 10);
-                    forward(-1 * i * 10);
-                    pencil.changeRotate(e);
-                    pencil.changeSize(i / 2);
-                }
+                points.Add(new Point(line.X2, line.Y2));
             }
         }
+
+        public void changeSize(double size)
+        {
+            pencil.size = size;
+        }
+        public void changeColor(double alpha, double red, double green, double blue)
+        {
+            pencil.color = Color.FromArgb((byte)(alpha * 255), (byte)(red * 255), (byte)(green * 255), (byte)(blue * 255));
+        }
+
+        public void Rotate(double rotate, string direction)
+        {
+            if (direction == "right")
+            {
+                pencil.rotate += rotate;
+            }
+            else if (direction == "left")
+            {
+                pencil.rotate -= rotate;
+            }
+            else
+            {
+                pencil.rotate = rotate - 90;
+            }
+        }
+
+        public void changePosition(double x, double y)
+        {
+            pencil.pixelPositionX = x;
+            pencil.pixelPositionY = y;
+        }
+
+        public void Polygon(bool polygon)
+        {
+            pencil.polygon = polygon;
+            if (pencil.polygon == true)
+            {
+                Polygon myPolygon = new Polygon();
+                PointCollection points = new PointCollection();
+                points.Add(new Point(pencil.pixelPositionX, pencil.pixelPositionY));
+            }
+            else
+            {
+                Polygon myPolygon = new Polygon();
+                polygonok.Add(myPolygon);
+                polygonok[polygonok.Count() - 1].Points = points;
+                polygonok[polygonok.Count() - 1].Fill = new SolidColorBrush(pencil.color);
+                PolygonPanel.Children.Add(polygonok[polygonok.Count() - 1]);
+            }
+        }
+
+
+
+
+
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             var matTrans = grid2.RenderTransform as MatrixTransform;
@@ -58,44 +144,6 @@ namespace Rajzi
             mat.ScaleAt(scale, scale, pos1.X, pos1.Y);
             matTrans.Matrix = mat;
             e.Handled = true;
-        }
-        private void goToAddPixel(double x, double y)
-        {
-            pixels.Insert(0, new Pixel(x, y));
-            Rectangle rec = new Rectangle();
-            rec.Width = pencil.size;
-            rec.Height = pencil.size;
-            rec.Fill = new SolidColorBrush(pencil.color);
-            Canvas.Children.Add(rec);
-            pencil.changePosition(x, y);
-            Canvas.SetLeft(rec, x - pencil.size / 2);
-            Canvas.SetTop(rec, y - pencil.size / 2);
-        }
-        private void goToAddLine(double x, double y)
-        {
-            Line line = new Line();
-            line.Stroke = new SolidColorBrush(pencil.color);
-            line.StrokeThickness = pencil.size;
-            line.X1 = pencil.pixelPositionX;
-            line.Y1 = pencil.pixelPositionY;
-            line.X2 = x;
-            line.Y2 = y;
-            vectors.Insert(0, new Vector(line.X1, line.Y1, line.X2, line.Y2));
-            pencil.changePosition(line.X2, line.Y2);
-            Canvas.Children.Add(line);
-        }
-        private void forward(double forward)
-        {
-            Line line = new Line();
-            line.Stroke = new SolidColorBrush(pencil.color);
-            line.StrokeThickness = pencil.size;
-            line.X1 = pencil.pixelPositionX;
-            line.Y1 = pencil.pixelPositionY;
-            line.X2 = pencil.pixelPositionX + Math.Cos(Math.PI / 180 * pencil.rotate) * forward;
-            line.Y2 = pencil.pixelPositionY + Math.Sin(Math.PI / 180 * pencil.rotate) * forward;
-            vectors.Insert(0, new Vector(line.X1, line.Y1, line.X2, line.Y2));
-            pencil.changePosition(line.X2, line.Y2);
-            Canvas.Children.Add(line);
         }
 
 
@@ -224,6 +272,5 @@ namespace Rajzi
                 }
             }
         }
-
     }
 }
