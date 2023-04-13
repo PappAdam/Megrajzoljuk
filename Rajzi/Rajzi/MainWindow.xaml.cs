@@ -336,7 +336,8 @@ namespace Rajzi
         private void AddElement(object sender)
         {
             var eventHandler = new MouseEventHandler(OnHover);
-            BlockInput.GetInput((Label)sender, selectedElement, selectedContainer, eventHandler, variables);
+            var manageElement = new MouseButtonEventHandler(ManageElement);
+            BlockInput.GetInput((Label)sender, selectedElement, selectedContainer, eventHandler, manageElement, variables);
         }
 
         public void Run()
@@ -398,6 +399,14 @@ namespace Rajzi
                 }
 
                 selectedContainer = containerTemp as Container;
+            }
+        }
+
+        public void ManageElement(object sender, MouseButtonEventArgs e)
+        {
+            if (e.RightButton == MouseButtonState.Pressed)
+            {
+                selectedElement.RemoveElement();
             }
         }
 

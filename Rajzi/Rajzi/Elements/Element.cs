@@ -26,22 +26,25 @@ namespace Rajzi
 
         public static void AddParameter(Parameter parameter, int index, Parameter selectedParam, Func<Variable, Variable> value)
         {
-            selectedParam.container.parameters[index-1] = parameter;
+            selectedParam.container.parameters[selectedParam.Index] = parameter;
 
             Blocks.ExpandGrid(parameter.grid, index, selectedParam);
 
             parameter.value = value;
         }
 
-        public void InitParameters(MouseEventHandler eventHandler)
+        public void InitParameters()
         {
-            for (int i = 1; i < this.grid.Children.Count; i++)
+            int i = 0;
+            foreach (var child in this.grid.Children)
             {
-                this.parameters.Add(new Parameter());
-                this.parameters[i - 1].container = this;
-                if (this.grid.Children[i] is Grid) {
-                    ((Label)(((Grid)grid.Children[i]).Children[0])).Tag = this.parameters[i - 1];
-                    this.parameters[i - 1].grid = (Grid)this.grid.Children[i];
+                if (child is Grid) {
+                    this.parameters.Add(new Parameter());
+                    this.parameters[i].container = this;
+                    ((Label)((child as Grid).Children[0])).Tag = this.parameters[i];
+                    this.parameters[i].grid = child as Grid;
+                    this.parameters[i].Index = i;
+                    i++;
                 }
             }
         }
@@ -113,7 +116,7 @@ namespace Rajzi
             }
         }
 
-        public abstract void InitElement(Element container, MouseEventHandler eventHandler, String name, int cols = 0);
+        public abstract void InitElement(Element container, MouseEventHandler eventHandler, MouseButtonEventHandler removeElement, String name, int cols = 0);
     }
         
     public class Container : Element
@@ -145,7 +148,7 @@ namespace Rajzi
             }
         }
 
-        public override void InitElement(Element container, MouseEventHandler eventHandler, String name, int cols = 0)
+        public override void InitElement(Element container, MouseEventHandler eventHandler, MouseButtonEventHandler removeElement, String name, int cols = 0)
         {
             this.panel = new StackPanel();
             this.depth = ((Container)container).depth + 1;
@@ -158,9 +161,9 @@ namespace Rajzi
                 this.grid = Blocks.CreateBlockWithType(BlockType.Statement, this, eventHandler, "If", cols);
             }
             ((Label)grid.Children[0]).Tag = this;
-            ((Label)grid.Children[0]).MouseEnter += eventHandler;
+            ((Label)grid.Children[0]).MouseRightButtonDown += removeElement;
             ((Container)container).panel.Children.Add(this.panel);
-            this.InitParameters(eventHandler);
+            this.InitParameters();
         }
 
         public void push(Element element)
@@ -196,13 +199,13 @@ namespace Rajzi
     {
         public Func<Action, bool>? func;
 
-        public override void InitElement(Element container, MouseEventHandler eventHandler, String name, int cols = 0)
+        public override void InitElement(Element container, MouseEventHandler eventHandler, MouseButtonEventHandler removeElement, String name, int cols = 0)
         {
             var grid = Blocks.CreateBlockWithType(BlockType.Action, (Container)container, eventHandler, name, cols);
             ((Label)grid.Children[0]).Tag = this;
-            ((Label)grid.Children[0]).MouseEnter += eventHandler;
+            ((Label)grid.Children[0]).MouseRightButtonDown += removeElement;
             ((Action)this).grid = grid;
-            this.InitParameters(eventHandler);
+            this.InitParameters();
         }
     }
 }

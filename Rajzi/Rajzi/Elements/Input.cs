@@ -16,7 +16,7 @@ namespace Rajzi.Elements
     public class BlockInput
     {
         public static RunWindow win3 = new RunWindow();
-        public static void GetInput(Label sender, Element selectedElement, Container selectedContainer, MouseEventHandler eventHandler, List<Variable> variables)
+        public static void GetInput(Label sender, Element selectedElement, Container selectedContainer, MouseEventHandler eventHandler, MouseButtonEventHandler removeElement, List<Variable> variables)
         {
             switch (sender.Name)
             {
@@ -28,7 +28,7 @@ namespace Rajzi.Elements
                     if (selectedElement is Parameter)
                     {
                         param.createGrid(BlockType.Input, eventHandler, sender.Name, 0);
-                        param.InitElement(selectedElement.container, eventHandler);
+                        param.InitElement(selectedElement.container, eventHandler, removeElement);
                         var ind = Grid.GetColumn(selectedElement.grid);
                         Element.AddParameter(param, ind, (Parameter)selectedElement, new Func<Variable, Variable>(variable =>
                         {
@@ -65,13 +65,13 @@ namespace Rajzi.Elements
 
                 case "Statement":
                     var c = new Statement();
-                    c.InitElement(selectedContainer, eventHandler, "If", 1);
+                    c.InitElement(selectedContainer, eventHandler, removeElement, "If", 1);
                     selectedContainer.push(c);
                     break;
 
                 case "While":
                     var l = new Loop();
-                    l.InitElement(selectedContainer, eventHandler, "While", 1);                    
+                    l.InitElement(selectedContainer, eventHandler, removeElement, "While", 1);                    
                     selectedContainer.push(l);
                     break;
 
@@ -84,7 +84,7 @@ namespace Rajzi.Elements
                         return true;
                     });
 
-                    f.InitElement(selectedContainer, eventHandler, "Print", 1);
+                    f.InitElement(selectedContainer, eventHandler, removeElement, "Print", 1);
                     selectedContainer.push(f);
                     break;
 
@@ -99,7 +99,7 @@ namespace Rajzi.Elements
                         return true;
                     });
 
-                    cv.InitElement(selectedContainer, eventHandler, "Add variable", 1);
+                    cv.InitElement(selectedContainer, eventHandler, removeElement, "Add variable", 1);
                     selectedContainer.push(cv);                    
                     break;
 
@@ -113,7 +113,7 @@ namespace Rajzi.Elements
                         return true;
                     });
 
-                    set.InitElement(selectedContainer, eventHandler, "Set variable", 2);
+                    set.InitElement(selectedContainer, eventHandler, removeElement, "Set variable", 2);
                     selectedContainer.push(set);
                     break;
 
@@ -122,7 +122,7 @@ namespace Rajzi.Elements
                     if (selectedElement is Parameter)
                     {
                         compare.createGrid(BlockType.Compare, eventHandler, sender.Name, 2);
-                        compare.InitElement(selectedElement.container, eventHandler);
+                        compare.InitElement(selectedElement.container, eventHandler, removeElement);
                         var ind = Grid.GetColumn(selectedElement.grid);
                         Element.AddParameter(compare, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
                         {
@@ -197,7 +197,7 @@ namespace Rajzi.Elements
                     {
                         getparam.createGrid(BlockType.GetVariable, eventHandler, sender.Name, 0);
 
-                        getparam.InitElement(selectedElement.container, eventHandler);
+                        getparam.InitElement(selectedElement.container, eventHandler, removeElement);
                         var ind = Grid.GetColumn(selectedElement.grid);
                         Element.AddParameter(getparam, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
                         {
@@ -225,7 +225,7 @@ namespace Rajzi.Elements
                     {
                         addparam.createGrid(BlockType.Math, eventHandler, sender.Name, 2);
 
-                        addparam.InitElement(selectedElement.container, eventHandler);
+                        addparam.InitElement(selectedElement.container, eventHandler, removeElement);
                         var ind = Grid.GetColumn(selectedElement.grid);
                         Element.AddParameter(addparam, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
                         {
@@ -253,7 +253,7 @@ namespace Rajzi.Elements
                     {
                         subparam.createGrid(BlockType.Math, eventHandler, sender.Name, 2);
 
-                        subparam.InitElement(selectedElement.container, eventHandler);
+                        subparam.InitElement(selectedElement.container, eventHandler, removeElement);
                         var ind = Grid.GetColumn(selectedElement.grid);
                         Element.AddParameter(subparam, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
                         {
@@ -281,7 +281,7 @@ namespace Rajzi.Elements
                     {
                         mulparam.createGrid(BlockType.Math, eventHandler, sender.Name, 2);
 
-                        mulparam.InitElement(selectedElement.container, eventHandler);
+                        mulparam.InitElement(selectedElement.container, eventHandler, removeElement);
                         var ind = Grid.GetColumn(selectedElement.grid);
                         Element.AddParameter(mulparam, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
                         {
@@ -309,7 +309,7 @@ namespace Rajzi.Elements
                     {
                         divparam.createGrid(BlockType.Math, eventHandler, sender.Name, 2);
 
-                        divparam.InitElement(selectedElement.container, eventHandler);
+                        divparam.InitElement(selectedElement.container, eventHandler, removeElement);
                         var ind = Grid.GetColumn(selectedElement.grid);
                         Element.AddParameter(divparam, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
                         {
@@ -333,7 +333,7 @@ namespace Rajzi.Elements
                     if (selectedElement is Parameter)
                     {
                         logical.createGrid(BlockType.Logical, eventHandler, sender.Name, 2);
-                        logical.InitElement(selectedElement.container, eventHandler);
+                        logical.InitElement(selectedElement.container, eventHandler, removeElement);
                         var ind = Grid.GetColumn(selectedElement.grid);
                         Element.AddParameter(logical, ind, (Parameter)selectedElement, new Func<Variable, Variable>(_ =>
                         {
@@ -375,7 +375,7 @@ namespace Rajzi.Elements
                         return true;
                     });
 
-                    forward.InitElement(selectedContainer, eventHandler, "Forward", 1);
+                    forward.InitElement(selectedContainer, eventHandler, removeElement, "Forward", 1);
                     selectedContainer.push(forward);
                     break;
 
@@ -388,7 +388,7 @@ namespace Rajzi.Elements
                         return true;
                     });
 
-                    pencilsize.InitElement(selectedContainer, eventHandler, "Pencil Size", 1);
+                    pencilsize.InitElement(selectedContainer, eventHandler, removeElement, "Pencil Size", 1);
                     selectedContainer.push(pencilsize);
                     break;
 
@@ -401,7 +401,7 @@ namespace Rajzi.Elements
                         return true;
                     });
 
-                    rotate.InitElement(selectedContainer, eventHandler, "Rotate", 2);
+                    rotate.InitElement(selectedContainer, eventHandler, removeElement, "Rotate", 2);
                     selectedContainer.push(rotate);
                     break;
 
@@ -414,7 +414,7 @@ namespace Rajzi.Elements
                         return true;
                     });
 
-                    polygon.InitElement(selectedContainer, eventHandler, "Polygon", 1);
+                    polygon.InitElement(selectedContainer, eventHandler, removeElement, "Polygon", 1);
                     selectedContainer.push(polygon);
                     break;
 
@@ -427,7 +427,7 @@ namespace Rajzi.Elements
                         return true;
                     });
 
-                    color.InitElement(selectedContainer, eventHandler, "Color", 4);
+                    color.InitElement(selectedContainer, eventHandler, removeElement, "Color", 4);
                     selectedContainer.push(color);
                     break;
 
@@ -440,7 +440,7 @@ namespace Rajzi.Elements
                         return true;
                     });
 
-                    pencilposition.InitElement(selectedContainer, eventHandler, "PencilPosition", 2);
+                    pencilposition.InitElement(selectedContainer, eventHandler, removeElement, "PencilPosition", 2);
                     selectedContainer.push(pencilposition);
                     break;
 
@@ -454,7 +454,7 @@ namespace Rajzi.Elements
                         return true;
                     });
 
-                    gotoline.InitElement(selectedContainer, eventHandler, "GoToAddLine", 2);
+                    gotoline.InitElement(selectedContainer, eventHandler, removeElement, "GoToAddLine", 2);
                     selectedContainer.push(gotoline);
                     break;
             }

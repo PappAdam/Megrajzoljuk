@@ -29,6 +29,7 @@ namespace Rajzi.Elements
     public class Parameter : Element
     {
         public Func<Variable ,Variable>? value { get; set;} = null;
+        public int Index { get; set; } = 0;
 
         public void createGrid(BlockType type, MouseEventHandler eventHandler, String name, int cols = 0)
         {
@@ -36,12 +37,12 @@ namespace Rajzi.Elements
         }
 
         // Dont use it, does nothing
-        public override void InitElement(Element container, MouseEventHandler eventHandler, String name, int cols = 0){}
+        public override void InitElement(Element container, MouseEventHandler eventHandler, MouseButtonEventHandler removeElement, String name, int cols = 0){}
 
-        public void InitElement(Element container, MouseEventHandler eventHandler)
+        public void InitElement(Element container, MouseEventHandler eventHandler, MouseButtonEventHandler removeElement)
         {
             this.container = container;
-            this.InitParameters(eventHandler);
+            this.InitParameters();
             ((Label)this.grid.Children[0]).Tag = this;
         }
 

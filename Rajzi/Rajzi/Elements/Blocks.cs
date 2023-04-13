@@ -82,8 +82,9 @@ namespace Rajzi.Elements
                     compSign.Items.Add(">");
                     var compSignCD = new ColumnDefinition();
                     newGrid.ColumnDefinitions.Add(compSignCD);
-                    newGrid.Children.Add(compSign);
-                    Grid.SetColumn(compSign, 3);
+                    newGrid.Children.Insert(2, compSign);
+                    Grid.SetColumn(compSign, 2);
+                    Grid.SetColumn(newGrid.Children[3], 3);
                     break;
 
                 case BlockType.Logical:
@@ -96,8 +97,9 @@ namespace Rajzi.Elements
 
                     var logOpCD = new ColumnDefinition();
                     newGrid.ColumnDefinitions.Add(logOpCD);
-                    newGrid.Children.Add(logOp);
-                    Grid.SetColumn(logOp, 3);
+                    newGrid.Children.Insert(2, logOp);
+                    Grid.SetColumn(logOp, 2);
+                    Grid.SetColumn(newGrid.Children[3], 3);
                     break;
 
                 case BlockType.Action:
