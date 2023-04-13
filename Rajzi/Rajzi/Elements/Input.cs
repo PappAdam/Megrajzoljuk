@@ -80,7 +80,6 @@ namespace Rajzi.Elements
                     f.func = new Func<Action, bool>(act =>
                     {
                         MessageBox.Show($"{act.parameters[0].value(null).value}");
-
                         return true;
                     });
 
@@ -128,7 +127,7 @@ namespace Rajzi.Elements
                         {
                             var val1 = compare.parameters[0].value(null);
                             var val2 = compare.parameters[1].value(null);
-                            var compSign = ((ComboBox)compare.grid.Children[3]).SelectedValue.ToString();
+                            var compSign = ((ComboBox)compare.grid.Children[2]).SelectedValue.ToString();
                             Variable newVar = new Variable();
                             newVar.Type = VariableType.Bool;
                             switch (val1.Type)
@@ -339,7 +338,7 @@ namespace Rajzi.Elements
                         {
                             var val1 = logical.parameters[0].value(null);
                             var val2 = logical.parameters[1].value(null);
-                            var compSign = ((ComboBox)logical.grid.Children[3]).SelectedValue.ToString();
+                            var compSign = ((ComboBox)logical.grid.Children[2]).SelectedValue.ToString();
                             Variable newVar = new Variable();
                             newVar.Type = VariableType.Bool;
                             if(val1.Type != VariableType.Bool && val1.Type != VariableType.Bool)
