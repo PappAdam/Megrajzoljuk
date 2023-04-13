@@ -138,7 +138,7 @@
                         Margin="0 0 0 0"
                                 >
 
-                <Button Content="Category"
+                <Button Content="Loop/Satemnt"
                                 x:Name="btnCategory1"
                                 Grid.Column="1"
                                 Height="35"
@@ -152,7 +152,7 @@
                                 Cursor="Hand" Click="MenuOpt" 
                                 Style="{StaticResource MyButtonStyle}"
                                 />
-                <Button Content="Category"
+                <Button Content="Variables"
                                 x:Name="btnCategory2"
                                 Grid.Column="1"
                                 Height="35"
@@ -166,7 +166,7 @@
                                 Cursor="Hand" Click="MenuOpt"
                                 Style="{StaticResource MyButtonStyle}"
                                 />
-                <Button Content="Category"
+                <Button Content="Logic ops"
                                 x:Name="btnCategory3"
                                 Grid.Column="1"
                                 Height="35"
@@ -180,7 +180,7 @@
                                 Cursor="Hand" Click="MenuOpt"
                                 Style="{StaticResource MyButtonStyle}"
                                 />
-                <Button Content="Category"
+                <Button Content="Draw functions"
                                 x:Name="btnCategory4"
                                 Grid.Column="1"
                                 Height="35"
@@ -194,7 +194,7 @@
                                 Cursor="Hand" Click="MenuOpt"
                                 Style="{StaticResource MyButtonStyle}"
                                 />
-                
+
             </StackPanel>
             <Button Content="Run"
                         Name="RUN"

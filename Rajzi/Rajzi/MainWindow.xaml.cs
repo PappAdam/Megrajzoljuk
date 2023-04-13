@@ -39,12 +39,15 @@ namespace Rajzi
         BrushConverter bc = new BrushConverter();
         bool startupResize = true;
 
+        private bool _isMouseDown;
+        private Point _startPoint;
+
         public string[] menoOptContent =
         {
-            "Action_Print;While_While Loop;Statement_If statement",
+            "While_While Loop;Statement_If statement",
             "CreateVariable_Add variable;Input_Get Input;Variable_Get Variable;SetVariable_Set Variable",
             "Compare_Compare;Add_Add;Subtr_Subtract;Multip_Multiply;Divide_Divide;Logical_Logical",
-            "Forward_Forward;PencilSize_Pencil Size;Rotate_Rotate;Polygon_Polygon;Color_Color;PencilPosition_Pencil Position;goToLine_go To Line"
+            "Action_Print;Forward_Forward;PencilSize_Pencil Size;Rotate_Rotate;Polygon_Polygon;Color_Color;PencilPosition_Pencil Position;goToLine_go To Line"
         };
 
         public MainWindow()
@@ -61,7 +64,6 @@ namespace Rajzi
             grContent.ColumnDefinitions[0].Width = new GridLength(130, GridUnitType.Pixel);
             grContent.ColumnDefinitions[1].Width = new GridLength(0, GridUnitType.Pixel); 
         }
-
 
         private void RunDraw(object sender, RoutedEventArgs e)
         {
@@ -396,7 +398,14 @@ namespace Rajzi
                 }
                 else
                 {
-                    ((Action)el).func((Action)el);
+                    try
+                    {
+                        ((Action)el).func((Action)el);
+                    } catch
+                    {
+                        MessageBox.Show("Failed to run the program, abort");
+                        break;
+                    }
 
                     bool loop = false;
                     while (el != null && el.nextElement == null)

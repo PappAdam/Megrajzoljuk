@@ -130,9 +130,6 @@ namespace Rajzi
         }
 
 
-
-
-
         private void Grid_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             var matTrans = grid2.RenderTransform as MatrixTransform;
