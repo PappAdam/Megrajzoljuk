@@ -10,7 +10,6 @@
         Width="600"
         WindowStyle="None"
         ResizeMode="NoResize"
-        WindowStartupLocation="CenterScreen"
         >
     <Window.Resources>
         <Style x:Key="MyButtonStyle" TargetType="Button">

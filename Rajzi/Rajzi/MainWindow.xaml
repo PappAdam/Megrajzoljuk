@@ -163,8 +163,6 @@
                                 Cursor="Hand" Click="MenuOpt"
                                 Style="{StaticResource MyButtonStyle}"
                                 />
-                <Button Click="Button_Click"
-                        Height="25"/>
             </StackPanel>
 
         </Grid>
