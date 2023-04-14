@@ -166,7 +166,7 @@ namespace Rajzi
             this.InitParameters();
         }
 
-        public void push(Element element)
+        public void push(Element selectedElement, Element element)
         {
             if (this.firstChild == null)
             {

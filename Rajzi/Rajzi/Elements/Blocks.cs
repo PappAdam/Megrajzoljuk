@@ -23,6 +23,7 @@ namespace Rajzi.Elements
         Compare,
         Action,
         Logical,
+        Rotate,
         Math,
     }
     public class Blocks
@@ -104,6 +105,21 @@ namespace Rajzi.Elements
                 case BlockType.Action:
                     ChangeGrid(newGrid, Color.FromRgb(233, 215, 88), Color.FromRgb(12, 20, 99), name);
                     newGrid.Margin = new Thickness(20 + 20 * container.depth, 3, 0, 0);
+                    break;
+
+                case BlockType.Rotate:
+                    ChangeGrid(newGrid, Color.FromRgb(233, 215, 88), Color.FromRgb(12, 20, 99), name);
+                    newGrid.Margin = new Thickness(20 + 20 * container.depth, 3, 0, 0);
+                    var rotate = new ComboBox();
+                    rotate.Width = 50;
+                    rotate.Items.Add("LEFT");
+                    rotate.Items.Add("RIGHT");
+                    rotate.Items.Add("SET");
+
+                    var rotateCD = new ColumnDefinition();
+                    newGrid.ColumnDefinitions.Add(rotateCD);
+                    newGrid.Children.Add(rotate);
+                    Grid.SetColumn(rotate, 2);
                     break;
 
                 case BlockType.Math:

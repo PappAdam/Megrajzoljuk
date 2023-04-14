@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Reflection.Metadata;
 using System.Windows.Media.Media3D;
 using System.Xml.Linq;
+using System.ComponentModel;
 
 namespace Rajzi.Elements
 {
@@ -396,11 +397,15 @@ namespace Rajzi.Elements
 
                     rotate.func = new Func<Action, bool>(act =>
                     {
-                        win3.Rotate(double.Parse(rotate.parameters[0].value(null).value.ToString()), rotate.parameters[1].value(null).value.ToString());
+                        win3.Rotate(double.Parse(rotate.parameters[0].value(null).value.ToString()), (rotate.grid.Children[2] as ComboBox).SelectedValue.ToString());
                         return true;
                     });
 
-                    rotate.InitElement(selectedContainer, eventHandler, removeElement, "Rotate", 2);
+                    var grid = Blocks.CreateBlockWithType(BlockType.Rotate, (Container)selectedContainer, eventHandler, "Rotate", 1);
+                    ((Label)grid.Children[0]).Tag = rotate;
+                    ((Label)grid.Children[0]).MouseRightButtonDown += removeElement;
+                    ((Action)rotate).grid = grid;
+                    rotate.InitParameters();
                     selectedContainer.push(rotate);
                     break;
 

@@ -90,11 +90,11 @@ namespace Rajzi
 
         public void Rotate(double rotate, string direction)
         {
-            if (direction == "right")
+            if (direction == "RIGHT")
             {
                 pencil.rotate += rotate;
             }
-            else if (direction == "left")
+            else if (direction == "LEFT")
             {
                 pencil.rotate -= rotate;
             }
