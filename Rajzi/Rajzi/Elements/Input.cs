@@ -414,11 +414,15 @@ namespace Rajzi.Elements
 
                     polygon.func = new Func<Action, bool>(act =>
                     {
-                        win3.Polygon(bool.Parse(polygon.parameters[0].value(null).value.ToString()));
+                        win3.Polygon((polygon.grid.Children[1] as ComboBox).SelectedValue.ToString());
                         return true;
                     });
 
-                    polygon.InitElement(selectedContainer, eventHandler, removeElement, "Polygon", 1);
+                    var pol = Blocks.CreateBlockWithType(BlockType.Polygon, (Container)selectedContainer, eventHandler, "Polygon", 0);
+                    ((Label)pol.Children[0]).Tag = polygon;
+                    ((Label)pol.Children[0]).MouseRightButtonDown += removeElement;
+                    ((Action)polygon).grid = pol;
+                    polygon.InitParameters();
                     selectedContainer.push(selectedElement, polygon);
                     break;
 

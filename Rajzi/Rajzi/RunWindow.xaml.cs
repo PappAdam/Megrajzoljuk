@@ -110,11 +110,11 @@ namespace Rajzi
             pencil.pixelPositionY = y;
         }
 
-        public void Polygon(bool polygon)
+        public void Polygon(String polygon)
         {
-            pencil.polygon = polygon;
-            if (pencil.polygon == true)
+            if (polygon == "START")
             {
+                pencil.polygon = true;
                 Polygon myPolygon = new Polygon();
                 PointCollection points = new PointCollection();
                 points.Add(new Point(pencil.pixelPositionX, pencil.pixelPositionY));
@@ -122,6 +122,7 @@ namespace Rajzi
             else
             {
                 Polygon myPolygon = new Polygon();
+                pencil.polygon = false;
                 polygonok.Add(myPolygon);
                 polygonok[polygonok.Count() - 1].Points = points;
                 polygonok[polygonok.Count() - 1].Fill = new SolidColorBrush(pencil.color);

@@ -24,6 +24,7 @@ namespace Rajzi.Elements
         Action,
         Logical,
         Rotate,
+        Polygon,
         Math,
     }
     public class Blocks
@@ -120,6 +121,20 @@ namespace Rajzi.Elements
                     newGrid.ColumnDefinitions.Add(rotateCD);
                     newGrid.Children.Add(rotate);
                     Grid.SetColumn(rotate, 2);
+                    break;
+
+                case BlockType.Polygon:
+                    ChangeGrid(newGrid, Color.FromRgb(233, 215, 88), Color.FromRgb(12, 20, 99), name);
+                    newGrid.Margin = new Thickness(20 + 20 * container.depth, 3, 0, 0);
+                    var pol = new ComboBox();
+                    pol.Width = 50;
+                    pol.Items.Add("START");
+                    pol.Items.Add("END");
+
+                    var polCD = new ColumnDefinition();
+                    newGrid.ColumnDefinitions.Add(polCD);
+                    newGrid.Children.Add(pol);
+                    Grid.SetColumn(pol, 2);
                     break;
 
                 case BlockType.Math:
