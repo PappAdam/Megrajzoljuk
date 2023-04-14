@@ -429,6 +429,7 @@ namespace Rajzi
                     }
                 }
             }
+            variables.Clear();
         }
 
         public void OnHover(object sender, MouseEventArgs e)
