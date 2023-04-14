@@ -176,7 +176,7 @@ namespace Rajzi
             }
             else
             {
-                this[containedElementCount - 1].InsertElementAfter(element);
+                this[this.containedElementCount-1].InsertElementAfter(element);
                 this.containedElementCount++;
             }
         }

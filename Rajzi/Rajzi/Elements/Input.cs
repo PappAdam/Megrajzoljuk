@@ -67,13 +67,13 @@ namespace Rajzi.Elements
                 case "Statement":
                     var c = new Statement();
                     c.InitElement(selectedContainer, eventHandler, removeElement, "If", 1);
-                    selectedContainer.push(c);
+                    selectedContainer.push(selectedElement, c);
                     break;
 
                 case "While":
                     var l = new Loop();
                     l.InitElement(selectedContainer, eventHandler, removeElement, "While", 1);                    
-                    selectedContainer.push(l);
+                    selectedContainer.push(selectedElement, l);
                     break;
 
                 case "Action":
@@ -85,7 +85,7 @@ namespace Rajzi.Elements
                     });
 
                     f.InitElement(selectedContainer, eventHandler, removeElement, "Print", 1);
-                    selectedContainer.push(f);
+                    selectedContainer.push(selectedElement, f);
                     break;
 
                 case "CreateVariable":
@@ -100,7 +100,7 @@ namespace Rajzi.Elements
                     });
 
                     cv.InitElement(selectedContainer, eventHandler, removeElement, "Add variable", 1);
-                    selectedContainer.push(cv);                    
+                    selectedContainer.push(selectedElement, cv);                    
                     break;
 
                 case "SetVariable":
@@ -114,7 +114,7 @@ namespace Rajzi.Elements
                     });
 
                     set.InitElement(selectedContainer, eventHandler, removeElement, "Set variable", 2);
-                    selectedContainer.push(set);
+                    selectedContainer.push(selectedElement, set);
                     break;
 
                 case "Compare":
@@ -376,7 +376,7 @@ namespace Rajzi.Elements
                     });
 
                     forward.InitElement(selectedContainer, eventHandler, removeElement, "Forward", 1);
-                    selectedContainer.push(forward);
+                    selectedContainer.push(selectedElement, forward);
                     break;
 
                 case "PencilSize":
@@ -389,7 +389,7 @@ namespace Rajzi.Elements
                     });
 
                     pencilsize.InitElement(selectedContainer, eventHandler, removeElement, "Pencil Size", 1);
-                    selectedContainer.push(pencilsize);
+                    selectedContainer.push(selectedElement, pencilsize);
                     break;
 
                 case "Rotate":
@@ -406,7 +406,7 @@ namespace Rajzi.Elements
                     ((Label)grid.Children[0]).MouseRightButtonDown += removeElement;
                     ((Action)rotate).grid = grid;
                     rotate.InitParameters();
-                    selectedContainer.push(rotate);
+                    selectedContainer.push(selectedElement, rotate);
                     break;
 
                 case "Polygon":
@@ -419,7 +419,7 @@ namespace Rajzi.Elements
                     });
 
                     polygon.InitElement(selectedContainer, eventHandler, removeElement, "Polygon", 1);
-                    selectedContainer.push(polygon);
+                    selectedContainer.push(selectedElement, polygon);
                     break;
 
                 case "Color":
@@ -432,7 +432,7 @@ namespace Rajzi.Elements
                     });
 
                     color.InitElement(selectedContainer, eventHandler, removeElement, "Color", 4);
-                    selectedContainer.push(color);
+                    selectedContainer.push(selectedElement, color);
                     break;
 
                 case "PencilPosition":
@@ -445,7 +445,7 @@ namespace Rajzi.Elements
                     });
 
                     pencilposition.InitElement(selectedContainer, eventHandler, removeElement, "PencilPosition", 2);
-                    selectedContainer.push(pencilposition);
+                    selectedContainer.push(selectedElement, pencilposition);
                     break;
 
 
@@ -459,7 +459,7 @@ namespace Rajzi.Elements
                     });
 
                     gotoline.InitElement(selectedContainer, eventHandler, removeElement, "GoToAddLine", 2);
-                    selectedContainer.push(gotoline);
+                    selectedContainer.push(selectedElement, gotoline);
                     break;
             }
         }
