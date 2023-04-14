@@ -197,24 +197,33 @@ namespace Rajzi
             private static BitmapSource GetRenderTargetBitmapFromControl(Visual targetControl, double dpi = defaultDpi)
             {
                 if (targetControl == null) return null;
-
                 var bounds = VisualTreeHelper.GetDescendantBounds(targetControl);
-                var renderTargetBitmap = new RenderTargetBitmap((int)(bounds.Width * dpi / 96.0),
+                RenderTargetBitmap renderTargetBitmap = null;
+                try
+                {
+                    renderTargetBitmap = new RenderTargetBitmap((int)(bounds.Width * dpi / 96.0),
                                                                 (int)(bounds.Height * dpi / 96.0),
                                                                 dpi,
                                                                 dpi,
                                                                 PixelFormats.Pbgra32);
 
-                var drawingVisual = new DrawingVisual();
+                    var drawingVisual = new DrawingVisual();
 
-                using (var drawingContext = drawingVisual.RenderOpen())
-                {
-                    var visualBrush = new VisualBrush(targetControl);
-                    drawingContext.DrawRectangle(visualBrush, null, new Rect(new Point(), bounds.Size));
+                    using (var drawingContext = drawingVisual.RenderOpen())
+                    {
+                        var visualBrush = new VisualBrush(targetControl);
+                        drawingContext.DrawRectangle(visualBrush, null, new Rect(new Point(), bounds.Size));
+                    }
+
+                    renderTargetBitmap.Render(drawingVisual);
                 }
-
-                renderTargetBitmap.Render(drawingVisual);
+                catch (Exception)
+                {
+                    MessageBox.Show("There was an error during save!");
+                }
+                
                 return renderTargetBitmap;
+
             }
         }
 

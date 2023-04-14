@@ -497,5 +497,52 @@ namespace Rajzi
                     AddElement(droppedLabel);
             }
         }
+
+
+
+
+        private void Grid1_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isMouseDown = true;
+            _startPoint = e.GetPosition(MainCanvas);
+
+        }
+
+        private void Grid1_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isMouseDown = false;
+        }
+
+        private void Grid1_MouseMove(object sender, MouseEventArgs e)
+        {
+            var currentPoint = e.GetPosition(MainCanvas);
+            var offset = currentPoint - _startPoint;
+            _startPoint = currentPoint;
+
+            if (_isMouseDown)
+            {
+                foreach (UIElement child in MainCanvas.Children)
+                {
+                    double left = Canvas.GetLeft(child);
+                    double top = Canvas.GetTop(child);
+                    if (!double.IsNaN(left))
+                    {
+                        Canvas.SetLeft(child, left + offset.X);
+                    }
+                    else
+                    {
+                        Canvas.SetLeft(child, offset.X);
+                    }
+                    if (!double.IsNaN(top))
+                    {
+                        Canvas.SetTop(child, top + offset.Y);
+                    }
+                    else
+                    {
+                        Canvas.SetTop(child, offset.Y);
+                    }
+                }
+            }
+        }
     }
 }

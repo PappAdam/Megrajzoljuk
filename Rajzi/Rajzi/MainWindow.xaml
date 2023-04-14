@@ -104,7 +104,7 @@
         <Canvas x:Name="MainCanvas"
                     Grid.Column="2"
                     Background="#252323"
-                    AllowDrop="True"
+                    AllowDrop="True" MouseLeftButtonDown="Grid1_MouseLeftButtonDown" MouseLeftButtonUp="Grid1_MouseLeftButtonUp" MouseMove="Grid1_MouseMove"
                     />
 
         <Border x:Name="brToolbox"
