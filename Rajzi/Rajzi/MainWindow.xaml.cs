@@ -356,6 +356,7 @@ namespace Rajzi
         private void sizeChange(object sender, SizeChangedEventArgs e)
         {
             stckToolbox.Height = grContent.ActualHeight*0.97;
+            brToolbox.Height = grContent.ActualHeight*0.97;
             switch (startupResize)
             {
                 case false:
